@@ -40,6 +40,7 @@ for (var i in etapasList) {
 for (var i in simuButtons) {
     navbarDiv.removeChild(navbarDiv.lastChild)
 }
+simuButtons = []
 }
 
 let navbarDiv = document.getElementById("navbarDiv")
