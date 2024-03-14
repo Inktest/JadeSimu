@@ -38,7 +38,7 @@ for (var i in etapasList) {
     etapasList[i].deactivate()
 }
 for (var i in simuButtons) {
-    navbarDiv.removeChild(simuButtons[i])
+    navbarDiv.removeChild(navbarDiv.lastChild)
 }
 }
 
