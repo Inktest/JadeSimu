@@ -9,7 +9,6 @@ class NodeEtapa {
         this.activated = true
         this.etapa.symbol.setColor("#0f0")
         updateCanvas()
-
     }
 
     deactivate() {
@@ -31,6 +30,7 @@ var activatedTrans = {}
 var etapasList = []
 
 function step() {
+    let willStep = false
 for (let i = 0; i < etapasList.length; i++) {
     if (etapasList[i].activated) {
         for (let j = 0; j < etapasList[i].transiciones.length; j++) {
@@ -46,6 +46,8 @@ for (let i = 0; i < etapasList.length; i++) {
             if (evaluateTransExpression(etapasList[i].transiciones[j].transicion.options.options[0].value) == 1) {
                 //etapasList[i].deactivate()
 
+                willStep = true
+
                 for (let k = 0; k < etapasList[i].transiciones[j].prevEtapas.length; k++) {
             etapasList[i].transiciones[j].prevEtapas[k].deactivate()
                 }
@@ -58,6 +60,7 @@ for (let i = 0; i < etapasList.length; i++) {
     }
 }
 convertDiagramToNodes()
+if (willStep) step()
 }
 
 function evaluateTransExpression(exp) {
