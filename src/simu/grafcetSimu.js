@@ -151,6 +151,7 @@ function convertDiagramToNodes() {
     for (var e in etapasComponents) {
         let node = new NodeEtapa(etapasComponents[e],[])
             etapaNodes[`${etapasComponents[e].position[0]},${etapasComponents[e].position[1]}`] = node
+            if(!etapasDone)
             etapasList.push(node)
 
             let transBelow = transNodes[`${etapasComponents[e].position[0]},${etapasComponents[e].position[1]+4}`]
