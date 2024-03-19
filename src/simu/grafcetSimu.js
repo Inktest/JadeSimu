@@ -269,24 +269,23 @@ function convertDiagramToNodes() {
 var activatedFC = []
 
 function translateVaiven(vaiven, dir) {
+    if (!simuActivated) return
 vaiven.translate([dir/16, 0])
 
 let checks = vaiven.hitbox.hitbox
 
-for (var i in checks) {
+activatedFC = []
 
-    for (var j in activatedFC) {
-        activatedTrans[activatedFC[j].options.options[0].value] = 0
-    }
-    activatedFC = []
+for (var i in checks) {
 
     let position = [Number.parseInt(vaiven.position[0])+Number.parseInt(checks[i][0]), Number.parseInt(vaiven.position[1])+Number.parseInt(checks[i][1]) - 1]
     if (fcPositions[position]) {
         activatedTrans[fcPositions[position].options.options[0].value] = 1
         activatedFC.push(fcPositions[position])
-        step()
     }
 }
+
+step()
 }
 
 setInterval(async () => {
