@@ -70,6 +70,7 @@ for (let i = 0; i < etapasList.length; i++) {
                     etapasList[i].transiciones[j].etapas[k].activate()
                     if (stepEtapas.includes(etapasList[i].transiciones[j].etapas[k])) {
                         stepEtapas = []
+                        etapasDone = true
                         return;
                     }
                     stepEtapas.push(etapasList[i].transiciones[j].etapas[k])
@@ -80,6 +81,8 @@ for (let i = 0; i < etapasList.length; i++) {
 }
 convertDiagramToNodes()
 if (willStep) step()
+stepEtapas = []
+etapasDone = true
 }
 
 function evaluateTransExpression(exp) {
@@ -88,7 +91,11 @@ function evaluateTransExpression(exp) {
     exp = exp.replace(/[\*·]/, '&&')
     //exp = exp.replaceAll(/[]/, '^')
     exp = exp.replace(/[a-zA-Z0-9-]+\d*/g, function(match) {
-        return activatedTrans[match] || 0
+        let matchesVaivenes = false
+        for (var i in activatedFC) {
+            matchesVaivenes |= match == activatedFC[i].options.options[0].value
+        }
+        return activatedTrans[match] || matchesVaivenes || 0
     });
 
     return eval(exp)
@@ -273,17 +280,18 @@ function translateVaiven(vaiven, dir) {
     if (!simuActivated) return
 vaiven.translate([dir/16, 0])
 
-let checks = vaiven.hitbox.hitbox
-
 activatedFC = []
 
-for (var i in checks) {
+for (var i in vaivenesDerecha) {
+    let checks = vaivenesDerecha[i].hitbox.hitbox
+    for (var j in checks) {
 
-    let position = [Number.parseInt(vaiven.position[0])+Number.parseInt(checks[i][0]), Number.parseInt(vaiven.position[1])+Number.parseInt(checks[i][1]) - 1]
-    if (fcPositions[position]) {
-        activatedTrans[fcPositions[position].options.options[0].value] = 1
-        activatedFC.push(fcPositions[position])
+        let position = [Number.parseInt(vaivenesDerecha[i].position[0])+Number.parseInt(checks[j][0]), Number.parseInt(vaivenesDerecha[i].position[1])+Number.parseInt(checks[j][1]) - 1]
+        if (fcPositions[position]) {
+            activatedFC.push(fcPositions[position])
+        }
     }
+    
 }
 
 step()
