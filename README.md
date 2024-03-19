@@ -2,7 +2,7 @@
 
 ![Jade Simu Logo](logo.png)
 
-Para ir al simulador, haz click [aquí](inktest.github.io/JadeSimu/src)
+Para ir al simulador, haz click [aquí](src)
 
 Jade Simu es un proyecto de simulación de automatismos desarrollado en JavaScript, específicamente diseñado para ser accesible desde cualquier navegador web. Aunque actualmente se encuentra en fase beta, se centra principalmente en la implementación de funciones de Grafcet.
 
