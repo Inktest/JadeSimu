@@ -248,6 +248,10 @@ class Component {
         return this
     }
 
+    roundPosition() {
+        this.position = [Math.round(this.position[0]), Math.round(this.position[1])]
+    }
+
     moveTo(position) {
         this.position = position
         return this

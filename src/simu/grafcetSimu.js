@@ -6,12 +6,22 @@ class NodeEtapa {
     }
 
     activate() {
+
+        if (!this.activated) {
+            activeOutputs[this.etapa.options.options[1].value]++
+        }
+
         this.activated = true
         this.etapa.symbol.setColor("#0f0")
         updateCanvas()
     }
 
     deactivate() {
+
+        if (this.activated) {
+            activeOutputs[this.etapa.options.options[1].value]--
+        }
+
         this.activated = false
         this.etapa.symbol.setColor(DEFAULT_COLOR)
         updateCanvas()
@@ -27,9 +37,12 @@ class NodeTransicion {
 }
 
 var activatedTrans = {}
+var activeOutputs = {}
 var etapasList = []
 
-function step() {
+stepEtapas = []
+
+async function step() {
     let willStep = false
 for (let i = 0; i < etapasList.length; i++) {
     if (etapasList[i].activated) {
@@ -54,6 +67,11 @@ for (let i = 0; i < etapasList.length; i++) {
 
                 for (let k = 0; k < etapasList[i].transiciones[j].etapas.length; k++) {
                     etapasList[i].transiciones[j].etapas[k].activate()
+                    if (stepEtapas.includes(etapasList[i].transiciones[j].etapas[k])) {
+                        stepEtapas = []
+                        return;
+                    }
+                    stepEtapas.push(etapasList[i].transiciones[j].etapas[k])
                 }
             }
         }
@@ -87,8 +105,10 @@ function convertDiagramToNodes() {
     linePoints = {}
 
     transLinks = []
-    if (!simuActivated)
+    if (!simuActivated) {
         activatedTrans = {}
+        activeOutputs = {}
+    }
 
     for (let i = 0; i < wires.length; i++) {
         if (linePoints[`${wires[i].start[0]},${wires[i].start[1]}`] == null) linePoints[`${wires[i].start[0]},${wires[i].start[1]}`] = []
@@ -103,6 +123,9 @@ function convertDiagramToNodes() {
     for (let i = 0; i < components.length; i++) {
         if (components[i].name == "Etapa de Grafcet") {
             etapasComponents.push(components[i])
+            if (!simuActivated) {
+                activeOutputs[components[i].options.options[1].value] = 0
+            }
         }
         if (components[i].name == "Transición de Grafcet") {
             let node = new NodeTransicion(components[i], [], [])
@@ -242,3 +265,40 @@ function convertDiagramToNodes() {
     }
     
 }
+
+var activatedFC = []
+
+function translateVaiven(vaiven, dir) {
+vaiven.translate([dir/16, 0])
+
+let checks = vaiven.hitbox.hitbox
+
+for (var i in checks) {
+
+    for (var j in activatedFC) {
+        activatedTrans[activatedFC[j].options.options[0].value] = 0
+    }
+    activatedFC = []
+
+    let position = [Number.parseInt(vaiven.position[0])+Number.parseInt(checks[i][0]), Number.parseInt(vaiven.position[1])+Number.parseInt(checks[i][1]) - 1]
+    if (fcPositions[position]) {
+        activatedTrans[fcPositions[position].options.options[0].value] = 1
+        activatedFC.push(fcPositions[position])
+        step()
+    }
+}
+}
+
+setInterval(async () => {
+    if (!simuActivated) return
+    for (var i in activeOutputs) {
+        if (activeOutputs[i] > 0) {
+            if (vaivenesIzquierda[i])
+            translateVaiven(vaivenesIzquierda[i], -1)
+            if (vaivenesDerecha[i])
+            translateVaiven(vaivenesDerecha[i], 1)
+        updateCanvas()
+        }
+
+    }
+  }, 1000/32);

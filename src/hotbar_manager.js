@@ -21,14 +21,18 @@ const COMPONENTS_LIST = [
     new Fusible(),
     new Condensador(),*/
     new Grafcet(),
-    new GrafcetTransicion()
+    new GrafcetTransicion(),
+    new Vaiven(),
+    new FC()
 ]
 
 var simuActivated = false
 
 const abreviatures = {
     "Etapa de Grafcet": "Get",
-    "Transición de Grafcet": "Gtr"
+    "Transición de Grafcet": "Gtr",
+    "Vaivén": "Vvn",
+    "Final de Carrera": "Vfc"
 }
 
 function stopSimulation() {
@@ -40,7 +44,13 @@ for (var i in etapasList) {
 for (var i in simuButtons) {
     navbarDiv.removeChild(navbarDiv.lastChild)
 }
+for (var i in vaivenesDerecha) {
+    vaivenesDerecha[i].roundPosition()
+}
+vaivenesDerecha = {}
+vaivenesIzquierda = {}
 simuButtons = []
+updateCanvas()
 }
 
 let navbarDiv = document.getElementById("navbarDiv")
@@ -127,9 +137,23 @@ btn.onclick = () => {
             selectComponent(c)
         }
 
+        if (abreviature == "Vvn") {
+            c = addComponent(new Vaiven()).moveTo([firstCoord, secondCoord])
+            c.options.options[0].value = lines[i]
+            c.options.options[1].value = lines[++i]
+            selectComponent(c)
+        }
+
+        if (abreviature == "Vfc") {
+            c = addComponent(new FC()).moveTo([firstCoord, secondCoord])
+            c.options.options[0].value = lines[i]
+            selectComponent(c)
+        }
+
         if (abreviature == "Wre") {
             wires.push(new Line([firstCoord, secondCoord], lines[i].split(","), 1, DEFAULT_COLOR))
         }
+        
         updateCanvas()
         convertDiagramToNodes()
         unselectSelectedComponent()
@@ -146,6 +170,9 @@ navbarDiv.appendChild(btn)
 
 var currSwitches = []
 var simuButtons = []
+var fcPositions = {}
+var vaivenesDerecha = {}
+var vaivenesIzquierda = {}
 
 btn = createImageButton(`imgs/simulate.png`)
 btn.className = "navbarButton"
@@ -157,6 +184,9 @@ btn.onclick = () => {
     convertDiagramToNodes()
 
     contactsList = []
+    vaivenesDerecha = {}
+    vaivenesIzquierda = {}
+    fcPositions = {}
 
     for (let i = 0; i < components.length; i++) {
         if (components[i].name == "Transición de Grafcet") {
@@ -166,6 +196,14 @@ btn.onclick = () => {
             });
 
     }
+        if (components[i].name == "Vaivén") {
+            vaivenesDerecha[components[i].options.options[0].value] = components[i]
+            vaivenesIzquierda[components[i].options.options[1].value] = components[i]
+        }
+
+        if (components[i].name == "Final de Carrera") {
+            fcPositions[components[i].position] = components[i]
+        }
     }
     let newbtn;
     for (let i in contactsList) {
@@ -176,7 +214,6 @@ btn.onclick = () => {
         (function(btn, index) {
             btn.onclick = () => {
                 activatedTrans[contactsList[index]] = !activatedTrans[contactsList[index]];
-                console.log(index, contactsList[index]);
                 btn.style.backgroundColor = BTN_COLOR
                 if (activatedTrans[contactsList[index]])
                 btn.style.backgroundColor = "#0f0";

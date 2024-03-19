@@ -256,6 +256,79 @@ class GrafcetTransicion extends Component {
             }
 }
 
+class Vaiven extends Component {
+    constructor(position) {
+        super(position, "Vaivén", new ComponentSymbol([
+            new Line([-2,0],[2,0],1,DEFAULT_COLOR),
+            new Line([-2,0.5],[2,0.5],1,DEFAULT_COLOR),
+            new Line([-2,0],[-2,0.5],1,DEFAULT_COLOR),
+            new Line([2,0],[2,0.5],1,DEFAULT_COLOR),
+
+            new Line([1.8,0.5],[1,3],1,DEFAULT_COLOR),
+            new Line([-1.8,0.5],[-1,3],1,DEFAULT_COLOR),
+            new Line([1,3],[-1,3],1,DEFAULT_COLOR),
+
+            new Arc([1,3.5], 0.5, 0, 2*Math.PI, 1, DEFAULT_COLOR),
+            new Arc([-1,3.5], 0.5, 0, 2*Math.PI, 1, DEFAULT_COLOR),
+            ]),
+            HITBOX_RELETERMICO.clone(),
+            new ComponentOptions([
+                new TextboxOption("Marcha Derecha", "KMD", "kmd"),
+                new TextboxOption("Marcha Izquierda", "KMI", "kmi"),
+            ]))}
+
+            update() {
+                updateCanvas()
+            }
+
+            clone() {
+                let newobj = new Vaiven(this.position)
+                newobj.name = this.name
+                newobj.symbol = this.symbol.clone()
+                newobj.hitbox = this.hitbox.clone()
+                newobj.options = this.options.clone()
+                return newobj
+            }
+}
+
+class FC extends Component {
+    constructor(position) {
+        super(position, "Final de Carrera", new ComponentSymbol([
+            new Line([0,0],[0,1],1,DEFAULT_COLOR),
+            new Line([1,1],[0,1],1,DEFAULT_COLOR),
+            new Line([1,1],[1,0],1,DEFAULT_COLOR),
+            new Line([0,0],[1,0],1,DEFAULT_COLOR),
+
+            new Line([0,0.5],[0.25,0.5],1,DEFAULT_COLOR),
+            new Line([0.25,0.5],[0.75,0.25],1,DEFAULT_COLOR),
+            new Line([0.75,0.5],[1,0.5],1,DEFAULT_COLOR),
+            new Line([0.5,0.5],[0.5,1.5],1,DEFAULT_COLOR),
+
+            new Arc([0.5, 1.75], 0.25, 0, 2*Math.PI, 1, DEFAULT_COLOR),
+
+            new Text([0.5,-0.5], 17, "FC1", DEFAULT_COLOR, "center"),
+
+            ]),
+            HITBOX_ONE.clone(),
+            new ComponentOptions([
+                new TextboxOption("Nombre", "FC1", "name"),
+            ]))}
+
+            update() {
+                this.symbol.strokes[9].text = this.options.options[0].getValue()
+                updateCanvas()
+            }
+
+            clone() {
+                let newobj = new FC(this.position)
+                newobj.name = this.name
+                newobj.symbol = this.symbol.clone()
+                newobj.hitbox = this.hitbox.clone()
+                newobj.options = this.options.clone()
+                return newobj
+            }
+}
+
 class Fusible extends Component {
     constructor(position) {
         super(position, "Fusible", new ComponentSymbol([

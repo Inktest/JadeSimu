@@ -55,6 +55,13 @@ window.addEventListener("mousedown", (event) => {
     selectComponent(component[0])
 });
 
+window.addEventListener("wheel", (event) => {
+    scale += event.deltaY * -0.001
+    if (scale < 0.3) scale = 0.3
+    if (scale > 4.4) scale = 4.4
+    updateCanvas()
+})
+
 window.addEventListener("keydown", (event) => {
     
     switch (event.key.toLowerCase()) {
