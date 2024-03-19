@@ -43,6 +43,7 @@ var etapasList = []
 stepEtapas = []
 
 async function step() {
+    if (!simuActivated) return
     let willStep = false
 for (let i = 0; i < etapasList.length; i++) {
     if (etapasList[i].activated) {

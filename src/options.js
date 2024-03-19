@@ -5,21 +5,32 @@ class ComponentOptions {
     }
 
     addOptions() {
-        let optionsDiv = document.getElementById("optionsDiv")
-            let nameDiv = document.createElement("div")
-            nameDiv.className = "nameDiv"
-            nameDiv.innerHTML = this.name
+        let optionsDiv = document.getElementById("optionsDiv");
+        let nameDiv = document.createElement("div");
+        nameDiv.className = "nameDiv";
+        nameDiv.innerHTML = this.name;
+    
+        let deleteButton = createImageButton(`imgs/delete.png`)
+        deleteButton.className = "deleteButton"
+        deleteButton.style.position = "absolute";
 
-            optionsDiv.appendChild(nameDiv)
-
-            let extraHeight = 0
-
+        let nameDivRect = nameDiv.getBoundingClientRect();
+        deleteButton.style.top = nameDivRect.top + "px";
+        deleteButton.style.right = nameDivRect.right + "px";
+        deleteButton.onclick = deleteSelectedObject;
+    
+        nameDiv.appendChild(deleteButton);
+    
+        optionsDiv.appendChild(nameDiv);
+    
+        let extraHeight = 0;
+    
         for (let i = 0; i < this.options.length; i++) {
-            let div = this.options[i].getDiv()
-            extraHeight += this.options[i].height || 0
-            optionsDiv.appendChild(div)
+            let div = this.options[i].getDiv();
+            extraHeight += this.options[i].height || 0;
+            optionsDiv.appendChild(div);
         }
-        optionsDiv.style = `height: ${20 + 20*this.options.length + extraHeight + 10}px; visibility: visible`
+        optionsDiv.style = `height: ${20 + 20 * this.options.length + extraHeight + 10}px; visibility: visible`;
     }
     
     clone() {
