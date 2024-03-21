@@ -240,7 +240,7 @@ class TemporizacionLogica extends Component {
             new Text([0, -1], 17, "T1", DEFAULT_COLOR, "center"),
             new Text([0, 2], 17, "0s", DEFAULT_COLOR, "center")
             ]),
-            HITBOX_RESISTOR.clone(),
+            HITBOX_BOBINA.clone(),
             new ComponentOptions([
                 new TextboxOption("Nombre", "T1", "name"),            ]))}
 
