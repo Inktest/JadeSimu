@@ -23,7 +23,8 @@ const COMPONENTS_LIST = [
     new Grafcet(),
     new GrafcetTransicion(),
     new Vaiven(),
-    new FC()
+    new FC(),
+    new TemporizacionLogica()
 ]
 
 var simuActivated = false
@@ -32,7 +33,8 @@ const abreviatures = {
     "Etapa de Grafcet": "Get",
     "Transición de Grafcet": "Gtr",
     "Vaivén": "Vvn",
-    "Final de Carrera": "Vfc"
+    "Final de Carrera": "Vfc",
+    "Temporizador": "Ton"
 }
 
 function stopSimulation() {
@@ -150,6 +152,12 @@ btn.onclick = () => {
             selectComponent(c)
         }
 
+        if (abreviature == "Ton") {
+            c = addComponent(new TemporizacionLogica()).moveTo([firstCoord, secondCoord])
+            c.options.options[0].value = lines[i]
+            selectComponent(c)
+        }
+
         if (abreviature == "Wre") {
             wires.push(new Line([firstCoord, secondCoord], lines[i].split(","), 1, DEFAULT_COLOR))
         }
@@ -173,6 +181,7 @@ var simuButtons = []
 var fcPositions = {}
 var vaivenesDerecha = {}
 var vaivenesIzquierda = {}
+var temporizadores = {}
 
 btn = createImageButton(`imgs/simulate.png`)
 btn.className = "navbarButton"
@@ -187,6 +196,7 @@ btn.onclick = () => {
     vaivenesDerecha = {}
     vaivenesIzquierda = {}
     fcPositions = {}
+    temporizadores = {}
 
     for (let i = 0; i < components.length; i++) {
         if (components[i].name == "Transición de Grafcet") {
@@ -204,10 +214,15 @@ btn.onclick = () => {
         if (components[i].name == "Final de Carrera") {
             fcPositions[components[i].position] = components[i]
         }
+
+        if (components[i].name == "Temporizador") {
+            temporizadores[components[i].options.options[0].value] = components[i]
+        }
     }
     let newbtn;
     for (let i in contactsList) {
         newbtn = null;
+        if (isNaN(contactsList[i])) {
         console.log(contactsList[i]);
         newbtn = createImageButton(``, contactsList[i]);
         newbtn.className = "navbarButton";
@@ -223,8 +238,9 @@ btn.onclick = () => {
         navbarDiv.appendChild(newbtn);
         simuButtons.push(newbtn);
     }
+    }
     
-    
+    checkFCActivated()
 
     return
 }

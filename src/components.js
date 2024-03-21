@@ -228,6 +228,43 @@ class Grafcet extends Component {
             }
 }
 
+class TemporizacionLogica extends Component {
+    constructor(position) {
+        super(position, "Temporizador", new ComponentSymbol([
+            new Line([-1,0],[1,0],1,DEFAULT_COLOR),
+            new Line([1,3],[1,0],1,DEFAULT_COLOR),
+            new Line([-1,3],[-1,0],1,DEFAULT_COLOR),
+            new Line([1,3],[-1,3],1,DEFAULT_COLOR),
+
+
+            new Text([0, -1], 17, "T1", DEFAULT_COLOR, "center"),
+            new Text([0, 2], 17, "0s", DEFAULT_COLOR, "center")
+            ]),
+            HITBOX_RESISTOR.clone(),
+            new ComponentOptions([
+                new TextboxOption("Nombre", "T1", "name"),            ]))}
+
+            update() {
+               this.symbol.strokes[4].text = this.options.options[0].getValue()
+                /* this.symbol.strokes[12].text = this.options.options[1].getValue()
+
+                this.symbol.strokes[7].hide = this.options.options[0].getValue() == 0
+                this.symbol.strokes[8].hide = this.options.options[0].getValue() == 0
+                this.symbol.strokes[9].hide = this.options.options[0].getValue() == 0
+                this.symbol.strokes[10].hide = this.options.options[0].getValue() == 0
+                updateCanvas()*/
+            }
+
+            clone() {
+                let newobj = new TemporizacionLogica(this.position)
+                newobj.name = this.name
+                newobj.symbol = this.symbol.clone()
+                newobj.hitbox = this.hitbox.clone()
+                newobj.options = this.options.clone()
+                return newobj
+            }
+}
+
 class GrafcetTransicion extends Component {
     constructor(position) {
         super(position, "Transición de Grafcet", new ComponentSymbol([

@@ -20,6 +20,8 @@ class NodeEtapa {
 
         if (this.activated) {
             activeOutputs[this.etapa.options.options[1].value]--
+            if (temporizadores[this.etapa.options.options[1].value] !== undefined)
+                activatedTrans[this.etapa.options.options[1].value] = 0
         }
 
         this.activated = false
@@ -92,6 +94,8 @@ function evaluateTransExpression(exp) {
     //exp = exp.replaceAll(/[]/, '^')
     exp = exp.replace(/[a-zA-Z0-9-]+\d*/g, function(match) {
         let matchesVaivenes = false
+        if (!isNaN(match))
+            return match
         for (var i in activatedFC) {
             matchesVaivenes |= match == activatedFC[i].options.options[0].value
         }
@@ -277,11 +281,8 @@ function convertDiagramToNodes() {
 
 var activatedFC = []
 
-function translateVaiven(vaiven, dir) {
-    if (!simuActivated) return
-vaiven.translate([dir/16, 0])
-
-activatedFC = []
+function checkFCActivated() {
+    activatedFC = []
 
 for (var i in vaivenesDerecha) {
     let checks = vaivenesDerecha[i].hitbox.hitbox
@@ -294,6 +295,13 @@ for (var i in vaivenesDerecha) {
     }
     
 }
+}
+
+function translateVaiven(vaiven, dir) {
+    if (!simuActivated) return
+vaiven.translate([dir/16, 0])
+
+checkFCActivated()
 
 step()
 }
@@ -302,6 +310,14 @@ setInterval(async () => {
     if (!simuActivated) return
     for (var i in activeOutputs) {
         if (activeOutputs[i] > 0) {
+            if (temporizadores[i] !== undefined) {
+                if (!activatedTrans[i]) activatedTrans[i] = 0
+                activatedTrans[i] += 0.034
+                temporizadores[i].symbol.strokes[5].text = Math.round(100*activatedTrans[i])/100 + "s"
+                step()
+                if (!activeOutputs[i])
+                temporizadores[i].symbol.strokes[5].text = "0s"
+            }
             if (vaivenesIzquierda[i])
             translateVaiven(vaivenesIzquierda[i], -1)
             if (vaivenesDerecha[i])
@@ -310,4 +326,4 @@ setInterval(async () => {
         }
 
     }
-  }, 1000/32);
+  }, 34);
