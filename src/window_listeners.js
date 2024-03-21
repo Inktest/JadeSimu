@@ -1,12 +1,13 @@
 window.addEventListener('resize', updateCanvas)
 
-window.addEventListener("mouseup", (event) => {
+function mouseupEvent(event) {
     if (event.target !== canvas) return;
     held = false
     calculateHitboxMap()
-})
+}
 
-window.addEventListener("mousemove", (event) => {
+function mousemoveEvent(event) {
+    
 
     cursorX = Math.round(event.pageX/dotSpace/scale)
     cursorY = Math.round(event.pageY/dotSpace/scale)
@@ -36,10 +37,9 @@ window.addEventListener("mousemove", (event) => {
         }
     }
 
+}
 
-})
-
-window.addEventListener("mousedown", (event) => {
+function mousedownEvent(event) {
     if (event.target !== canvas) return;
         unselectSelectedComponent()
     if (currWire != null && currWire.end != [0,0])
@@ -53,6 +53,24 @@ window.addEventListener("mousedown", (event) => {
     }
     
     selectComponent(component[0])
+}
+
+window.addEventListener("mouseup", (event) => mouseupEvent(event))
+window.addEventListener("touchend", (event) => {
+    mouseupEvent(event)
+ event.preventDefault();   
+})
+
+window.addEventListener("mousemove", (event) => mousemoveEvent(event))
+window.addEventListener("touchmove", (event) => {
+    mousemoveEvent(event)
+ event.preventDefault();   
+})
+
+window.addEventListener("mousedown", (event) => mousedownEvent(event));
+window.addEventListener("touchstart", (event) => {
+    mousedownEvent(event)
+ event.preventDefault();   
 });
 
 window.addEventListener("wheel", (event) => {
