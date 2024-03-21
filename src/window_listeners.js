@@ -56,19 +56,19 @@ function mousedownEvent(event) {
 }
 
 window.addEventListener("mouseup", (event) => mouseupEvent(event))
-window.addEventListener("touchend", (event) => {
+canvas.addEventListener("touchend", (event) => {
     mouseupEvent(event)
  event.preventDefault();   
 })
 
 window.addEventListener("mousemove", (event) => mousemoveEvent(event))
-window.addEventListener("touchmove", (event) => {
+canvas.addEventListener("touchmove", (event) => {
     mousemoveEvent(event)
  event.preventDefault();   
 })
 
 window.addEventListener("mousedown", (event) => mousedownEvent(event));
-window.addEventListener("touchstart", (event) => {
+canvas.addEventListener("touchstart", (event) => {
     mousedownEvent(event)
  event.preventDefault();   
 });
