@@ -55,23 +55,26 @@ function mousedownEvent(event) {
     selectComponent(component[0])
 }
 
-window.addEventListener("mouseup", (event) => mouseupEvent(event))
-canvas.addEventListener("touchend", (event) => {
-    mouseupEvent(event)
- event.preventDefault();   
-})
-
-window.addEventListener("mousemove", (event) => mousemoveEvent(event))
-canvas.addEventListener("touchmove", (event) => {
-    mousemoveEvent(event)
- event.preventDefault();   
-})
-
-window.addEventListener("mousedown", (event) => mousedownEvent(event));
-canvas.addEventListener("touchstart", (event) => {
-    mousedownEvent(event)
- event.preventDefault();   
-});
+if ('ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0) {
+    canvas.addEventListener("touchend", (event) => {
+        mouseupEvent(event)
+     event.preventDefault();   
+    })
+    
+    canvas.addEventListener("touchmove", (event) => {
+        mousemoveEvent(event)
+     event.preventDefault();   
+    })
+    
+    canvas.addEventListener("touchstart", (event) => {
+        mousedownEvent(event)
+     event.preventDefault();   
+    });
+} else {
+    window.addEventListener("mouseup", (event) => mouseupEvent(event))
+    window.addEventListener("mousemove", (event) => mousemoveEvent(event))
+    window.addEventListener("mousedown", (event) => mousedownEvent(event));
+}
 
 window.addEventListener("wheel", (event) => {
     scale += event.deltaY * -0.001
