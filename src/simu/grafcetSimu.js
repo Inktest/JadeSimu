@@ -3,6 +3,7 @@ class NodeEtapa {
         this.etapa = etapa
         this.transiciones = transiciones
         this.activated = activated | false 
+        this.prevTransiciones = []
     }
 
     activate() {
@@ -164,8 +165,10 @@ function convertDiagramToNodes() {
 
             
             let etapaBelow = etapaNodes[`${transBelow.transicion.position[0]},${transBelow.transicion.position[1]+2}`]
-            if (etapaBelow) 
+            if (etapaBelow) {
                 node.etapas.push(etapaBelow)
+                etapaBelow.prevTransiciones.push(node)
+            }
         }
 
         if (transBelow)
@@ -242,8 +245,10 @@ function convertDiagramToNodes() {
         wiresChecked = [`${trans.position[0]},${trans.position[1]+2}`]
 
         let etapaBelow = etapaNodes[`${trans.position[0]},${trans.position[1]+2}`]
-        if (etapaBelow) 
+        if (etapaBelow) {
             node.etapas.push(etapaBelow)
+            etapaBelow.prevTransiciones.push(node)
+        }
 
         while (wiresToCheck.length > 0) {
             let followingWires = linePoints[wiresToCheck[0]]
@@ -257,6 +262,7 @@ function convertDiagramToNodes() {
             }
             if (etapaNodes[wiresToCheck[0]]) {
                 node.etapas.push(etapaNodes[wiresToCheck[0]])
+                etapaNodes[wiresToCheck[0]].prevTransiciones.push(node)
             }
 
             wiresToCheck.shift()

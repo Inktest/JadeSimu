@@ -1,5 +1,27 @@
 const NONE_COLLECTION = new StrokeCollection([],DEFAULT_COLOR)
 
+const CONTACTO_NC_COLLECTION = new StrokeCollection([
+    new Line([-.5,0],[.5,2],1,DEFAULT_COLOR),
+], DEFAULT_COLOR)
+
+const CONTACTO_FB_COLLECTION = new StrokeCollection([
+    new Line([-.5,0],[0,2],1,DEFAULT_COLOR),
+    new Line([.5,0],[0,2],1,DEFAULT_COLOR),
+], DEFAULT_COLOR)
+
+const CONTACTO_FS_COLLECTION = new StrokeCollection([
+    new Line([-.5,2],[0,0],1,DEFAULT_COLOR),
+    new Line([.5,2],[0,0],1,DEFAULT_COLOR),
+], DEFAULT_COLOR)
+
+const BOBINA_SET_COLLECTION = new StrokeCollection([
+    new Text([0, 1], 25, "S", DEFAULT_COLOR, "center"),
+], DEFAULT_COLOR)
+
+const BOBINA_RESET_COLLECTION = new StrokeCollection([
+    new Text([0, 1], 25, "R", DEFAULT_COLOR, "center"),
+], DEFAULT_COLOR)
+
 const PULSADOR_COLLECTION = new StrokeCollection([
     new Line([0,0.5],[-0.5,0.5],1,DEFAULT_COLOR),
     new Line([-0.5,0.5],[-0.5,-0.5],1,DEFAULT_COLOR),
@@ -171,6 +193,19 @@ const SCHOTTKY_DIODO_COLLECTION = new StrokeCollection([
     new Line([-0.5,0],[-0.5,-0.25], 1, DEFAULT_COLOR),
     new Line([-0.5,-0.25],[-0.25,-0.25], 1, DEFAULT_COLOR),
  ])
+
+ const CONTACTO_COLLECTION = [
+    ["imgs/contc/IcoNA.png",NONE_COLLECTION.clone()],
+    ["imgs/contc/IcoNC.png",CONTACTO_NC_COLLECTION.clone()],
+    ["imgs/contc/IcoFS.png",CONTACTO_FS_COLLECTION.clone()],
+    ["imgs/contc/IcoFB.png",CONTACTO_FB_COLLECTION.clone()],
+]
+
+const BOBINA_LOGICA_COLLECTION = [
+    ["imgs/contc/IcoBO.png",NONE_COLLECTION.clone()],
+    ["imgs/contc/IcoS.png",BOBINA_SET_COLLECTION.clone()],
+    ["imgs/contc/IcoR.png",BOBINA_RESET_COLLECTION.clone()],
+]
 
 const ICO_COLLECTION = [
     ["imgs/ico/IcoPulsador.png",PULSADOR_COLLECTION.clone().translate([-2,2])],

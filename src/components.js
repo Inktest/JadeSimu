@@ -228,6 +228,74 @@ class Grafcet extends Component {
             }
 }
 
+class ContactoLógico extends Component {
+    constructor(position) {
+        super(position, "Contacto", new ComponentSymbol([
+            new Line([-2,1],[-.5,1],1,DEFAULT_COLOR),
+            new Line([-.5,0],[-.5,2],1,DEFAULT_COLOR),
+            new Line([2,1],[.5,1],1,DEFAULT_COLOR),
+            new Line([.5,0],[.5,2],1,DEFAULT_COLOR),
+            NONE_COLLECTION.clone(),
+            //new Arc([0,2],1,0,2*Math.PI,1,DEFAULT_COLOR),
+
+            new Text([0, -1], 17, "S1", DEFAULT_COLOR, "center"),
+            ]),
+            HITBOX_RESISTOR.clone(),
+            new ComponentOptions([
+                new TextboxOption("Nombre", "S1", "name"),
+                new ImageSelectOption("Tipo",NONE_COLLECTION.clone(),CONTACTO_COLLECTION)
+            ]))}
+
+            update() {
+                this.symbol.strokes[4] = this.options.options[1].getValue()
+                this.symbol.strokes[5].text = this.options.options[0].getValue()
+                updateCanvas()
+            }
+
+            clone() {
+                let newobj = new ContactoLógico(this.position)
+                newobj.name = this.name
+                newobj.symbol = this.symbol.clone()
+                newobj.hitbox = this.hitbox.clone()
+                newobj.options = this.options.clone()
+                return newobj
+            }
+}
+
+class BobinaLógica extends Component {
+    constructor(position) {
+        super(position, "Bobina", new ComponentSymbol([
+            new Line([-2,1],[-1,1],1,DEFAULT_COLOR),
+            new Arc([0, 1], 1, Math.PI/2+0.3, 3*Math.PI/2-0.3, 1, DEFAULT_COLOR),
+            new Arc([0, 1], 1, 3*Math.PI/2+0.3, Math.PI/2-0.3, 1, DEFAULT_COLOR),
+            new Line([1,1],[2,1],1,DEFAULT_COLOR),
+            NONE_COLLECTION.clone(),
+            //new Arc([0,2],1,0,2*Math.PI,1,DEFAULT_COLOR),
+
+            new Text([0, -1], 17, "Q1", DEFAULT_COLOR, "center"),
+            ]),
+            HITBOX_RESISTOR.clone(),
+            new ComponentOptions([
+                new TextboxOption("Nombre", "Q1", "name"),
+                new ImageSelectOption("Tipo",NONE_COLLECTION.clone(),BOBINA_LOGICA_COLLECTION)
+            ]))}
+
+            update() {
+                this.symbol.strokes[4] = this.options.options[1].getValue()
+                this.symbol.strokes[5].text = this.options.options[0].getValue()
+                updateCanvas()
+            }
+
+            clone() {
+                let newobj = new BobinaLógica(this.position)
+                newobj.name = this.name
+                newobj.symbol = this.symbol.clone()
+                newobj.hitbox = this.hitbox.clone()
+                newobj.options = this.options.clone()
+                return newobj
+            }
+}
+
 class TemporizacionLogica extends Component {
     constructor(position) {
         super(position, "Temporizador", new ComponentSymbol([
@@ -1183,6 +1251,339 @@ class Tierra extends Component {
 
             clone() {
                 let newobj = new Tierra(this.position)
+                newobj.name = this.name
+                newobj.symbol = this.symbol.clone()
+                newobj.hitbox = this.hitbox.clone()
+                newobj.options = this.options.clone()
+                return newobj
+            }
+}
+
+class S71215C extends Component {
+    constructor(position) {
+        super(position, "S7 1200 1215C", new ComponentSymbol([
+            new RectangleArray([0,0],[33,27], 1, DEFAULT_COLOR),
+
+            new Line([0.25,0],[0.25,1.5],1,DEFAULT_COLOR),
+            new Line([1.25,0],[1.25,1.5],1,DEFAULT_COLOR),
+            new Line([1.25,0.25],[2,0.25],1,DEFAULT_COLOR),
+            new Line([1.25,0.5],[2,0.5],2,DEFAULT_COLOR),
+            new Line([2,0],[2,2],1,DEFAULT_COLOR),
+
+            new Arc([3,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([3,3.5], 12, "L1", DEFAULT_COLOR, "center"),
+            //⇩
+            new Text([3.5,4.5], 20, "⇩", DEFAULT_COLOR, "center"),
+            new Arc([4,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([4,3.5], 12, "N", DEFAULT_COLOR, "center"),
+            new Arc([5,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([5,3.75], 20, "⏚", DEFAULT_COLOR, "center"),
+            new Arc([6,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([6,3.5], 12, "L+", DEFAULT_COLOR, "center"),
+            // ⇑
+            new Text([6.5,4.5], 20, "⇧", DEFAULT_COLOR, "center"),
+            new Arc([7,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([7,3.5], 12, "M", DEFAULT_COLOR, "center"),
+            new Arc([8,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([8,3.5], 12, "1M", DEFAULT_COLOR, "center"),
+            new Arc([9,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([9,3.5], 12, ".0", DEFAULT_COLOR, "center"),
+            new Arc([10,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([10,3.5], 12, ".1", DEFAULT_COLOR, "center"),
+            new Arc([11,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([11,3.5], 12, ".2", DEFAULT_COLOR, "center"),
+            new Arc([12,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([12,3.5], 12, ".3", DEFAULT_COLOR, "center"),
+            new Arc([13,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([13,3.5], 12, ".4", DEFAULT_COLOR, "center"),
+            new Arc([14,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([14,3.5], 12, ".5", DEFAULT_COLOR, "center"),
+            new Arc([15,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([15,3.5], 12, ".6", DEFAULT_COLOR, "center"),
+            new Arc([16,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([16,3.5], 12, ".7", DEFAULT_COLOR, "center"),
+            new Arc([17,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([17,3.5], 12, ".0", DEFAULT_COLOR, "center"),
+            new Arc([18,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([18,3.5], 12, ".1", DEFAULT_COLOR, "center"),
+            new Arc([19,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([19,3.5], 12, ".2", DEFAULT_COLOR, "center"),
+            new Arc([20,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([20,3.5], 12, ".3", DEFAULT_COLOR, "center"),
+            new Arc([21,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([21,3.5], 12, ".4", DEFAULT_COLOR, "center"),
+            new Arc([22,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([22,3.5], 12, ".5", DEFAULT_COLOR, "center"),
+            new Arc([24,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([24,3.5], 12, "2M", DEFAULT_COLOR, "center"),
+            new Arc([25,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([25,3.5], 12, ".0", DEFAULT_COLOR, "center"),
+            new Arc([26,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([26,3.5], 12, ".1", DEFAULT_COLOR, "center"),
+            new Arc([27,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([27,3.5], 12, "3M", DEFAULT_COLOR, "center"),
+            new Arc([28,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([28,3.5], 12, ".0", DEFAULT_COLOR, "center"),
+            new Arc([29,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([29,3.5], 12, ".1", DEFAULT_COLOR, "center"),
+
+            new Arc([29,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([29,23.5], 12, ".1", DEFAULT_COLOR, "center"),
+            new Arc([28,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([28,23.5], 12, ".0", DEFAULT_COLOR, "center"),
+            new Arc([27,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([27,23.5], 12, ".7", DEFAULT_COLOR, "center"),
+            new Arc([26,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([26,23.5], 12, ".6", DEFAULT_COLOR, "center"),
+            new Arc([25,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([25,23.5], 12, ".5", DEFAULT_COLOR, "center"),
+            new Arc([24,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([24,23.5], 12, "2L", DEFAULT_COLOR, "center"),
+            new Arc([23,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([23,23.5], 12, ".4", DEFAULT_COLOR, "center"),
+            new Arc([22,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([22,23.5], 12, ".3", DEFAULT_COLOR, "center"),
+            new Arc([21,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([21,23.5], 12, ".2", DEFAULT_COLOR, "center"),
+            new Arc([20,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([20,23.5], 12, ".1", DEFAULT_COLOR, "center"),
+            new Arc([19,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([19,23.5], 12, ".0", DEFAULT_COLOR, "center"),
+            new Arc([18,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Text([18,23.5], 12, "1L", DEFAULT_COLOR, "center"),
+
+            new Text([23.5,22.5], 12, "RELAY OUTPUTS", DEFAULT_COLOR, "center"),
+
+            new Text([4,5.5], 10, "120-240VAC", DEFAULT_COLOR, "center"),
+            new Text([6.5,5.5], 10, "24VDC", DEFAULT_COLOR, "center"),
+            new Text([14,5.5], 12, "24VDC INPUTS", DEFAULT_COLOR, "center"),
+            new Text([25,5.5], 12, "ANALOG", DEFAULT_COLOR, "center"),
+            new Text([25,6], 12, "OUTPUTS", DEFAULT_COLOR, "center"),
+            new Text([28,5.5], 12, "ANALOG", DEFAULT_COLOR, "center"),
+            new Text([28,6], 12, "INPUTS", DEFAULT_COLOR, "center"),
+            new Text([8.5,4.5], 12, "DI a", DEFAULT_COLOR, "center"),
+            new Text([17,4.5], 12, "DI b", DEFAULT_COLOR, "center"),
+            new Text([25,4.5], 12, "AQ", DEFAULT_COLOR, "center"),
+            new Text([28,4.5], 12, "AI", DEFAULT_COLOR, "center"),
+
+            new Text([28,13], 18, "CPU 1215C", DEFAULT_COLOR, "left"),
+            new Text([28,14], 18, "AC/DC/RLY", DEFAULT_COLOR, "left"),
+
+            new Line([2.5,3.5],[2.5,5],1,DEFAULT_COLOR),
+            new Line([4.5,3.5],[4.5,5],1,DEFAULT_COLOR),
+            new Line([2.5,5],[4.5,5],1,DEFAULT_COLOR),
+            new Line([5.5,5],[22.5,5],1,DEFAULT_COLOR),
+            new Line([5.5,3.5],[5.5,5],1,DEFAULT_COLOR),
+            new Line([7.5,3.5],[7.5,5],1,DEFAULT_COLOR),
+            new Line([22.5,3.5],[22.5,5],1,DEFAULT_COLOR),
+            new Line([23.5,3.5],[23.5,5],1,DEFAULT_COLOR),
+            new Line([26.5,3.5],[26.5,5],1,DEFAULT_COLOR),
+            new Line([29.5,3.5],[29.5,5],1,DEFAULT_COLOR),
+            new Line([23.5,5],[29.5,5],1,DEFAULT_COLOR),
+
+            new Text([-4,2], 12, "X10", DEFAULT_COLOR, "center").rotate90Deg(),
+            new Text([-4,23], 12, "X11", DEFAULT_COLOR, "center").rotate90Deg(),
+            new Text([-23.5,17], 12, "X12", DEFAULT_COLOR, "center").rotate90Deg(),
+            new Text([-8,30.5], 12, "X50", DEFAULT_COLOR, "right").rotate90Deg(),
+
+            new Line([29.5,23.75],[29.5,22.75],1,DEFAULT_COLOR),
+            new Line([23.5,23.75],[23.5,22.75],1,DEFAULT_COLOR),
+            new Line([17.5,23.75],[17.5,22.75],1,DEFAULT_COLOR),
+            new Line([17.5,22.75],[29.5,22.75],1,DEFAULT_COLOR),
+
+            new Arc([3,2], 1, -3*Math.PI/2, -Math.PI,1,DEFAULT_COLOR),
+            new Arc([29,2], 1, 0, -3*Math.PI/2,1,DEFAULT_COLOR),
+            new Arc([21.75,2], 1, 0, -3*Math.PI/2,1,DEFAULT_COLOR),
+            new Arc([24.25,2], 1, -3*Math.PI/2, -Math.PI,1,DEFAULT_COLOR),
+            new Line([3,3],[21.75,3],1,DEFAULT_COLOR),
+            new Line([22.75,0],[22.75,2],1,DEFAULT_COLOR),
+            new Line([23.2,0],[23.2,2],1,DEFAULT_COLOR),
+            new Line([24.25,3],[29,3],1,DEFAULT_COLOR),
+            new Line([30,0],[30,2],1,DEFAULT_COLOR),
+
+            new Arc([18,25], 1, -Math.PI, -Math.PI/2,1,DEFAULT_COLOR),
+            new Arc([29,25], 1, 3*Math.PI/2, 2*Math.PI,1,DEFAULT_COLOR),
+            new Line([29,24],[18,24],1,DEFAULT_COLOR),
+            new Line([30,25],[30,27],1,DEFAULT_COLOR),
+            new Line([17,25],[17,27],1,DEFAULT_COLOR),
+
+            new RectangleArray([1,9.75],[1.5,10.25],3,DEFAULT_COLOR),
+            new RectangleArray([2,9.75],[2.5,10.25],3,DEFAULT_COLOR),
+            new RectangleArray([3,9.75],[3.5,10.25],3,DEFAULT_COLOR),
+            new Text([-11,1.5], 12, "RUN/STOP", DEFAULT_COLOR, "right").rotate90Deg(),
+            new Text([-11,2.5], 12, "ERROR", DEFAULT_COLOR, "right").rotate90Deg(),
+            new Text([-11,3.5], 12, "MAINT", DEFAULT_COLOR, "right").rotate90Deg(),
+
+            new RectangleArray([1,18.75],[1.5,19.25],3,DEFAULT_COLOR),
+            new RectangleArray([4,18.75],[4.5,19.25],3,DEFAULT_COLOR),
+            new Text([2.75,19], 12, "LINK", DEFAULT_COLOR, "center"),
+            new RectangleArray([1,19.75],[1.5,20.25],3,DEFAULT_COLOR),
+            new RectangleArray([4,19.75],[4.5,20.25],3,DEFAULT_COLOR),
+            new Text([2.75,20], 12, "Rx/Tx", DEFAULT_COLOR, "center"),
+
+            new Text([1,23], 12, "X1 P1R", DEFAULT_COLOR, "left"),
+            new Text([6.5,23], 12, "X1 P2R", DEFAULT_COLOR, "right"),
+            new Text([4,24], 12, "PROFINET (LAN)", DEFAULT_COLOR, "center"),
+            new Text([3.75,25], 9, "MAC ADDRESS 00-00-00-00-00-00", DEFAULT_COLOR, "center"),
+            new Text([32,18.5], 12, "215-1AG40-0XB0", DEFAULT_COLOR, "right"),
+
+            new RectangleArray([31,9.75],[31.5,10.25],3,DEFAULT_COLOR),
+            new RectangleArray([30,9.75],[30.5,10.25],3,DEFAULT_COLOR),
+            new RectangleArray([29,9.75],[29.5,10.25],3,DEFAULT_COLOR),
+            new RectangleArray([28,9.75],[28.5,10.25],3,DEFAULT_COLOR),
+            new RectangleArray([27,9.75],[27.5,10.25],3,DEFAULT_COLOR),
+            new RectangleArray([26,9.75],[26.5,10.25],3,DEFAULT_COLOR),
+            new RectangleArray([25,9.75],[25.5,10.25],3,DEFAULT_COLOR),
+            new RectangleArray([24,9.75],[24.5,10.25],3,DEFAULT_COLOR),
+            new RectangleArray([23,9.75],[23.5,10.25],3,DEFAULT_COLOR),
+            new RectangleArray([22,9.75],[22.5,10.25],3,DEFAULT_COLOR),
+            new RectangleArray([21,9.75],[21.5,10.25],3,DEFAULT_COLOR),
+            new RectangleArray([20,9.75],[20.5,10.25],3,DEFAULT_COLOR),
+            new RectangleArray([19,9.75],[19.5,10.25],3,DEFAULT_COLOR),
+            new RectangleArray([18,9.75],[18.5,10.25],3,DEFAULT_COLOR),
+
+            new RectangleArray([31,16.75],[31.5,17.25],3,DEFAULT_COLOR),
+            new RectangleArray([30,16.75],[30.5,17.25],3,DEFAULT_COLOR),
+            new RectangleArray([29,16.75],[29.5,17.25],3,DEFAULT_COLOR),
+            new RectangleArray([28,16.75],[28.5,17.25],3,DEFAULT_COLOR),
+            new RectangleArray([27,16.75],[27.5,17.25],3,DEFAULT_COLOR),
+            new RectangleArray([26,16.75],[26.5,17.25],3,DEFAULT_COLOR),
+            new RectangleArray([25,16.75],[25.5,17.25],3,DEFAULT_COLOR),
+            new RectangleArray([24,16.75],[24.5,17.25],3,DEFAULT_COLOR),
+            new RectangleArray([23,16.75],[23.5,17.25],3,DEFAULT_COLOR),
+            new RectangleArray([22,16.75],[22.5,17.25],3,DEFAULT_COLOR),
+            new RectangleArray([21,16.75],[21.5,17.25],3,DEFAULT_COLOR),
+            new RectangleArray([20,16.75],[20.5,17.25],3,DEFAULT_COLOR),
+            new RectangleArray([19,16.75],[19.5,17.25],3,DEFAULT_COLOR),
+            new RectangleArray([18,16.75],[18.5,17.25],3,DEFAULT_COLOR),
+
+            new RectangleArray([6,7],[15,20],1,DEFAULT_COLOR),
+            new RectangleArray([11.5,7],[9.5,6.25],1,DEFAULT_COLOR),
+
+            new Line([15,20],[15,21],2,DEFAULT_COLOR),
+            new Line([6,20],[6,21],2,DEFAULT_COLOR),
+            new Line([6,21],[7.5,21],2,DEFAULT_COLOR),
+            new Line([15,21],[13.5,21],2,DEFAULT_COLOR),
+            new Line([7.5,21],[7.5,27],2,DEFAULT_COLOR),
+            new Line([13.5,21],[13.5,27],2,DEFAULT_COLOR),
+
+            new Line([32.5,17.5],[32.5,25.5],2,DEFAULT_COLOR),
+            new Line([32.5,25.5],[30,25.5],2,DEFAULT_COLOR),
+            new Line([17,25.5],[13.5,25.5],2,DEFAULT_COLOR),
+            new Line([7.5,25.5],[0.5,25.5],2,DEFAULT_COLOR),
+            new Line([0.5,24.5],[0.5,17.5],2,DEFAULT_COLOR),
+            new Line([0.5,9.5],[0.5,1.5],2,DEFAULT_COLOR),
+
+            new Text([18.25,11.25], 12, ".0", DEFAULT_COLOR, "center"),
+            new Text([18,12.25], 12, "DI a", DEFAULT_COLOR, "left"),
+            new Text([19.25,11.25], 12, ".1", DEFAULT_COLOR, "center"),
+            new Text([20.25,11.25], 12, ".2", DEFAULT_COLOR, "center"),
+            new Text([21.25,11.25], 12, ".3", DEFAULT_COLOR, "center"),
+            new Text([22.25,11.25], 12, ".4", DEFAULT_COLOR, "center"),
+            new Text([23.25,11.25], 12, ".5", DEFAULT_COLOR, "center"),
+            new Text([24.25,11.25], 12, ".6", DEFAULT_COLOR, "center"),
+            new Text([25.25,11.25], 12, ".7", DEFAULT_COLOR, "center"),
+            new Text([26.25,11.25], 12, ".0", DEFAULT_COLOR, "center"),
+            new Text([26,12.25], 12, "DI b", DEFAULT_COLOR, "left"),
+            new Text([27.25,11.25], 12, ".1", DEFAULT_COLOR, "center"),
+            new Text([28.25,11.25], 12, ".2", DEFAULT_COLOR, "center"),
+            new Text([29.25,11.25], 12, ".3", DEFAULT_COLOR, "center"),
+            new Text([30.25,11.25], 12, ".4", DEFAULT_COLOR, "center"),
+            new Text([31.25,11.25], 12, ".5", DEFAULT_COLOR, "center"),
+
+            new Text([18.25,16.25], 12, ".0", DEFAULT_COLOR, "center"),
+            new Text([18,15], 12, "DQ a", DEFAULT_COLOR, "left"),
+            new Text([19.25,16.25], 12, ".1", DEFAULT_COLOR, "center"),
+            new Text([20.25,16.25], 12, ".2", DEFAULT_COLOR, "center"),
+            new Text([21.25,16.25], 12, ".3", DEFAULT_COLOR, "center"),
+            new Text([22.25,16.25], 12, ".4", DEFAULT_COLOR, "center"),
+            new Text([23.25,16.25], 12, ".5", DEFAULT_COLOR, "center"),
+            new Text([24.25,16.25], 12, ".6", DEFAULT_COLOR, "center"),
+            new Text([25.25,16.25], 12, ".7", DEFAULT_COLOR, "center"),
+            new Text([26.25,16.25], 12, ".0", DEFAULT_COLOR, "center"),
+            new Text([26,15], 12, "DQ b", DEFAULT_COLOR, "left"),
+            new Text([27.25,16.25], 12, ".1", DEFAULT_COLOR, "center"),
+
+            new Line([32,10.75],[32,11.75],1,DEFAULT_COLOR),
+            new Line([25.75,10.75],[25.75,11.75],1,DEFAULT_COLOR),
+            new Line([17.75,10.75],[17.75,11.75],1,DEFAULT_COLOR),
+            new Line([17.75,11.75],[32,11.75],1,DEFAULT_COLOR),
+
+            new Line([32,16.25],[32,15.25],1,DEFAULT_COLOR),
+            new Line([25.75,16.25],[25.75,15.25],1,DEFAULT_COLOR),
+            new Line([17.75,16.25],[17.75,15.25],1,DEFAULT_COLOR),
+            new Line([17.75,15.25],[32,15.25],1,DEFAULT_COLOR),
+
+            new Line([32,2],[32,9],1,DEFAULT_COLOR),
+            new Line([32,9],[31,9],1,DEFAULT_COLOR),
+            new Line([32,2],[31,2],1,DEFAULT_COLOR),
+            new Line([31,9],[31,2],1,DEFAULT_COLOR),
+            new Line([32.5,1.5],[32.5,9.5],2,DEFAULT_COLOR),
+            new RectangleArray([0,9.5],[33,10.5],2,DEFAULT_COLOR),
+            new Line([32.5,1.5],[30,1.5],2,DEFAULT_COLOR),
+            new Line([22.75,1.5],[23.2,1.5],2,DEFAULT_COLOR),
+            new RectangleArray([0,16.5],[33,17.5],2,DEFAULT_COLOR),
+            new Line([30,9],[30,8],1,DEFAULT_COLOR),
+            new Line([28,9],[28,7.5],1,DEFAULT_COLOR),
+            new Line([30,9],[28,9],1,DEFAULT_COLOR),
+            new Line([28,7.5],[29.5,7.5],1,DEFAULT_COLOR),
+            new Line([30,8],[29.5,7.5],1,DEFAULT_COLOR),
+            new Text([29.8,8.5], 12, "MC ⇨", DEFAULT_COLOR, "right"),
+
+            new Line([1,27],[0.5,26],2,DEFAULT_COLOR),
+            new Line([6,27],[6.5,26],2,DEFAULT_COLOR),
+            new Line([0.5,26],[6.5,26],2,DEFAULT_COLOR),
+
+            new Line([0.5,26.15],[2,26.15],1,DEFAULT_COLOR),
+            new Line([2.75,26.15],[4.25,26.15],1,DEFAULT_COLOR),
+            new Line([5,26.15],[6.5,26.15],1,DEFAULT_COLOR),
+
+            new Line([0,1.5],[1.75,1.5],2,DEFAULT_COLOR),
+            ]),
+            HITBOX_RESISTOR.clone(),
+            new ComponentOptions([
+                new TextboxOption("Temp", "0", "stage"),
+            ]))}
+
+            update() {
+                updateCanvas()
+            }
+
+            clone() {
+                let newobj = new S71215C(this.position)
+                newobj.name = this.name
+                newobj.symbol = this.symbol.clone()
+                newobj.hitbox = this.hitbox.clone()
+                newobj.options = this.options.clone()
+                return newobj
+            }
+}
+
+class S7SM1223 extends Component {
+    constructor(position) {
+        super(position, "S7 1200 SM 1223", new ComponentSymbol([
+            new RectangleArray([0,0],[18,27], 1, DEFAULT_COLOR),
+            
+            new Arc([3,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Arc([5,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Arc([7,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Arc([9,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Arc([11,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Arc([13,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Arc([15,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+
+            ]),
+            HITBOX_RESISTOR.clone(),
+            new ComponentOptions([
+                new TextboxOption("Temp", "0", "stage"),
+            ]))}
+
+            update() {
+                updateCanvas()
+            }
+
+            clone() {
+                let newobj = new S71215C(this.position)
                 newobj.name = this.name
                 newobj.symbol = this.symbol.clone()
                 newobj.hitbox = this.hitbox.clone()

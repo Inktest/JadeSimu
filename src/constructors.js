@@ -92,6 +92,41 @@ class Rectangle {
     }
 }
 
+class RectangleArray {
+    constructor(corner1, corner2, width, color, hide) {
+        this.corner1 = corner1
+        this.corner2 = corner2
+        this.width = width
+        this.color = color
+        this.hide = hide
+    }
+
+    translate(pos) {
+        this.corner1 = [this.corner1[0]+pos[0], this.corner1[1]+pos[1]]
+        this.corner2 = [this.corner2[0]+pos[0], this.corner2[1]+pos[1]]
+        return this
+    }
+
+    clone() {
+        return new RectangleArray(this.corner1, this.corner2, this.width, this.color, this.hide)
+    }
+
+    draw() {
+        new Line(this.corner1, [this.corner1[0], this.corner2[1]], this.width, this.color).draw()
+        new Line(this.corner1, [this.corner2[0], this.corner1[1]], this.width, this.color).draw()
+        new Line(this.corner2, [this.corner1[0], this.corner2[1]], this.width, this.color).draw()
+        new Line(this.corner2, [this.corner2[0], this.corner1[1]], this.width, this.color).draw()
+    }
+
+    rotate90Deg() {
+        let temp = corner1
+       this.corner1 = corner2
+       this.corner2 = temp
+
+        return this;
+    }
+}
+
 class Arc {
     constructor(center, radius, sAngle, eAngle, width, color, hide) {
         this.center = center
