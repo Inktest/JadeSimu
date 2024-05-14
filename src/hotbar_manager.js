@@ -1,5 +1,6 @@
 const COMPONENTS_LIST = [
     
+    new Texto(),
     new Fuente(),
     // new Tierra(),
     // new FuenteAlimentacion(),
@@ -43,7 +44,8 @@ const abreviatures = {
     "Bobina": "Lbn",
     "Alimentación": "Vcc",
     "Contacto Pulsador": "Swt",
-    "S7 1200 1215C": "S75"
+    "S7 1200 1215C": "S75",
+    "Texto": "txt"
 }
 
 function stopSimulation() {
@@ -181,6 +183,13 @@ btn.onclick = () => {
 
         if (abreviature == "S75") {
             c = addComponent(new S71215C()).moveTo([firstCoord, secondCoord])
+            selectComponent(c)
+        }
+
+        if (abreviature == "txt") {
+            c = addComponent(new Texto()).moveTo([firstCoord, secondCoord])
+            c.options.options[0].value = lines[i]
+            c.options.options[1].value = lines[++i]
             selectComponent(c)
         }
 

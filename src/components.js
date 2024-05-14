@@ -92,6 +92,33 @@ class Piloto extends Component {
             }
 }
 
+class Texto extends Component {
+    constructor(position) {
+        super(position, "Texto", new ComponentSymbol([
+            new Text([-1, 1], 17, "Texto", DEFAULT_COLOR, "left")
+            ]),
+            HITBOX_BOBINA.clone(),
+            new ComponentOptions([
+                new TextboxOption("Texto", "Texto", "text"),
+                new TextboxOption("Tamaño", "17", "size"),
+            ]))}
+
+            update() {
+                this.symbol.strokes[0].text = this.options.options[0].getValue()
+                this.symbol.strokes[0].size = isNaN(this.options.options[1].getValue())?17:Number.parseInt(this.options.options[1].getValue())
+                updateCanvas()
+            }
+
+            clone() {
+                let newobj = new Texto(this.position)
+                newobj.name = this.name
+                newobj.symbol = this.symbol.clone()
+                newobj.hitbox = this.hitbox.clone()
+                newobj.options = this.options.clone()
+                return newobj
+            }
+}
+
 class EightDisplay extends Component {
     constructor(position) {
         super(position, "Display de 7 Segmentos", new ComponentSymbol([

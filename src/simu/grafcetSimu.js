@@ -165,7 +165,7 @@ function convertDiagramToNodes() {
 
             
             let etapaBelow = etapaNodes[`${transBelow.transicion.position[0]},${transBelow.transicion.position[1]+2}`]
-            if (etapaBelow) {
+            if (etapaBelow && node.etapas) {
                 node.etapas.push(etapaBelow)
                 etapaBelow.prevTransiciones.push(node)
             }
