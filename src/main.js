@@ -35,6 +35,9 @@ function updateCanvas() {
   canvas.width = Math.min(window.innerWidth, A3_width*scale)
   canvas.height = Math.min(window.innerHeight, A3_height*scale)
 
+context.fillStyle = "#ffffff"
+context.fillRect(0, 0, canvas.width, canvas.height)
+
   drawGrid()
   drawComponents()
   drawWires()
