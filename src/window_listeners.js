@@ -89,5 +89,6 @@ window.addEventListener("keydown", (event) => {
         case "delete": handleDeleteKeyPress(event); break
         case "r": handleRKeyPress(event); break
         case "w": handleWKeyPress(event); break
+        case "q": handleQKeyPress(event); break
     }
 });

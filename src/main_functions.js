@@ -22,6 +22,9 @@ function deleteSelectedObject() {
     let index = components.findIndex(c => c === selectedComponent)
     if (index === -1) return
 
+    let grafIndex = currGrafcetStages.findIndex(c => c === selectComponent)
+    if (grafIndex !== -1) currGrafcetStages.splice(grafIndex, 1)
+
     unselectSelectedComponent()
     components.splice(index, 1)
     updateCanvas()
