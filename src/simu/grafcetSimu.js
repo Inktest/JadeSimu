@@ -230,7 +230,7 @@ function convertDiagramToNodes() {
             coord1[1] = Number.parseInt(coord1[1]) + 0.1
             coord2[1] = Number.parseInt(coord2[1]) + 0.1
             let line = new Line(coord1, coord2, 1, DEFAULT_COLOR)
-            line.translate([offsetX/dotSpace/scale, offsetY/dotSpace/scale]).draw()
+            line.translate([offsetX, offsetY]).draw()
         }
 
     }
