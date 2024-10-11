@@ -230,7 +230,7 @@ function convertDiagramToNodes() {
             coord1[1] = Number.parseInt(coord1[1]) + 0.1
             coord2[1] = Number.parseInt(coord2[1]) + 0.1
             let line = new Line(coord1, coord2, 1, DEFAULT_COLOR)
-            line.draw()
+            line.translate([offsetX/dotSpace/scale, offsetY/dotSpace/scale]).draw()
         }
 
     }
@@ -274,10 +274,12 @@ function convertDiagramToNodes() {
                 if (!wiresChecked[w] || !linePoints[wiresChecked[w]][0]) continue
                 let coord1 = wiresChecked[w].split(",")
                 let coord2 = linePoints[wiresChecked[w]][0].split(",")
-                coord1[1] = Number.parseInt(coord1[1]) + 0.1
-                coord2[1] = Number.parseInt(coord2[1]) + 0.1
+                coord1[0] = Number.parseFloat(coord1[0])
+                coord2[0] = Number.parseFloat(coord2[0])
+                coord1[1] = Number.parseFloat(coord1[1]) + 0.1
+                coord2[1] = Number.parseFloat(coord2[1]) + 0.1
                 let line = new Line(coord1, coord2, 1, DEFAULT_COLOR)
-                line.draw()
+                line.translate([offsetX, offsetY]).draw()
             }
         }
 

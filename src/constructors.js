@@ -1,3 +1,129 @@
+
+class Rectangle {
+    constructor(corner1, corner2, color, hide) {
+        this.corner1 = corner1
+        this.corner2 = corner2
+        this.color = color
+        this.hide = !hide
+    }
+
+    translate(pos) {
+        this.corner1 = [this.corner1[0]+pos[0], this.corner1[1]+pos[1]]
+        this.corner2 = [this.corner2[0]+pos[0], this.corner2[1]+pos[1]]
+        return this
+    }
+
+    clone() {
+        return new Rectangle(this.corner1, this.corner2, this.color, !this.hide)
+    }
+    
+    draw() {
+        if (!this.hide) return
+        context.fillStyle = this.color
+        
+        /*context.beginPath()
+        context.moveTo(this.start[0]*dotSpace*scale+0.5, this.start[1]*dotSpace*scale+0.5)
+        context.lineTo(this.end[0]*dotSpace*scale+0.5, this.end[1]*dotSpace*scale+0.5)
+        context.lineWidth = this.width
+        context.stroke()*/
+        
+        context.fillRect(
+            this.corner1[0]*dotSpace*scale+0.5,
+            this.corner1[1]*dotSpace*scale+0.5,
+            this.corner2[0]*dotSpace*scale+0.5 - this.corner1[0]*dotSpace*scale+0.5,
+            this.corner2[1]*dotSpace*scale+0.5 - this.corner1[1]*dotSpace*scale+0.5
+        )
+    }
+
+    rotate90Deg() {
+        this.corner1 = [this.corner1[1],-this.corner1[0]]
+        this.corner2 = [this.corner2[1],-this.corner2[0]]
+        return this;
+    }
+
+    rotateTimes(num) {
+        for (let i = num; i > 0; i--) {
+            this.rotate90Deg()
+        }
+        return this
+    }
+}
+
+class RectangleArray {
+    constructor(corner1, corner2, width, color, hide) {
+        this.corner1 = corner1
+        this.corner2 = corner2
+        this.width = width
+        this.color = color
+        this.hide = hide
+    }
+    
+    translate(pos) {
+        this.corner1 = [this.corner1[0]+pos[0], this.corner1[1]+pos[1]]
+        this.corner2 = [this.corner2[0]+pos[0], this.corner2[1]+pos[1]]
+        return this
+    }
+    
+    clone() {
+        return new RectangleArray(this.corner1, this.corner2, this.width, this.color, this.hide)
+    }
+    
+    draw() {
+        new Line(this.corner1, [this.corner1[0], this.corner2[1]], this.width, this.color).draw()
+        new Line(this.corner1, [this.corner2[0], this.corner1[1]], this.width, this.color).draw()
+        new Line(this.corner2, [this.corner1[0], this.corner2[1]], this.width, this.color).draw()
+        new Line(this.corner2, [this.corner2[0], this.corner1[1]], this.width, this.color).draw()
+    }
+    
+    rotate90Deg() {
+        let temp = corner1
+        this.corner1 = corner2
+        this.corner2 = temp
+        
+        return this;
+    }
+}
+
+class Arc {
+    constructor(center, radius, sAngle, eAngle, width, color, hide) {
+        this.center = center
+        this.radius = radius
+        this.sAngle = sAngle
+        this.eAngle = eAngle
+        this.width = width
+        this.color = color
+        this.hide = !hide
+    }
+    
+    translate(pos) {
+        this.center = [this.center[0]+pos[0], this.center[1]+pos[1]]
+        return this
+    }
+
+    clone() {
+        return new Arc(this.center, this.radius, this.sAngle, this.eAngle, this.width, this.color, this.hide)
+    }
+    
+    draw() {
+        if (!this.hide) return
+        context.strokeStyle = this.color
+        
+        context.beginPath()
+        context.arc(this.center[0]*dotSpace*scale,this.center[1]*dotSpace*scale,this.radius*dotSpace*scale, this.sAngle, this.eAngle)
+        context.lineWidth = this.width
+        context.stroke()
+    }
+
+    rotate90Deg() {
+        this.center = [this.center[1],-this.center[0]]
+        
+        this.sAngle -= Math.PI/2
+        this.eAngle -= Math.PI/2
+        
+        return this;
+    }
+}
+
 class Line {
     constructor(start, end, width, color, hide) {
         this.start = start
@@ -9,7 +135,7 @@ class Line {
 
     translate(pos) {
         this.start = [this.start[0]+pos[0], this.start[1]+pos[1]]
-        this.end = [this.end[0]+pos[0], this.end[1]+pos[1]]
+        this.end = [Number.parseFloat(this.end[0])+pos[0], Number.parseFloat(this.end[1])+pos[1]]
         return this
     }
 
@@ -42,132 +168,8 @@ class Line {
     }
 }
 
-class Rectangle {
-    constructor(corner1, corner2, color, hide) {
-        this.corner1 = corner1
-        this.corner2 = corner2
-        this.color = color
-        this.hide = !hide
-    }
-
-    translate(pos) {
-        this.corner1 = [this.corner1[0]+pos[0], this.corner1[1]+pos[1]]
-        this.corner2 = [this.corner2[0]+pos[0], this.corner2[1]+pos[1]]
-        return this
-    }
-
-    clone() {
-        return new Rectangle(this.corner1, this.corner2, this.color, !this.hide)
-    }
-
-    draw() {
-        if (!this.hide) return
-        context.fillStyle = this.color
-    
-        /*context.beginPath()
-        context.moveTo(this.start[0]*dotSpace*scale+0.5, this.start[1]*dotSpace*scale+0.5)
-        context.lineTo(this.end[0]*dotSpace*scale+0.5, this.end[1]*dotSpace*scale+0.5)
-        context.lineWidth = this.width
-        context.stroke()*/
-
-        context.fillRect(
-            this.corner1[0]*dotSpace*scale+0.5,
-            this.corner1[1]*dotSpace*scale+0.5,
-            this.corner2[0]*dotSpace*scale+0.5 - this.corner1[0]*dotSpace*scale+0.5,
-            this.corner2[1]*dotSpace*scale+0.5 - this.corner1[1]*dotSpace*scale+0.5
-            )
-    }
-
-    rotate90Deg() {
-        this.corner1 = [this.corner1[1],-this.corner1[0]]
-        this.corner2 = [this.corner2[1],-this.corner2[0]]
-        return this;
-    }
-
-    rotateTimes(num) {
-        for (let i = num; i > 0; i--) {
-            this.rotate90Deg()
-        }
-        return this
-    }
-}
-
-class RectangleArray {
-    constructor(corner1, corner2, width, color, hide) {
-        this.corner1 = corner1
-        this.corner2 = corner2
-        this.width = width
-        this.color = color
-        this.hide = hide
-    }
-
-    translate(pos) {
-        this.corner1 = [this.corner1[0]+pos[0], this.corner1[1]+pos[1]]
-        this.corner2 = [this.corner2[0]+pos[0], this.corner2[1]+pos[1]]
-        return this
-    }
-
-    clone() {
-        return new RectangleArray(this.corner1, this.corner2, this.width, this.color, this.hide)
-    }
-
-    draw() {
-        new Line(this.corner1, [this.corner1[0], this.corner2[1]], this.width, this.color).draw()
-        new Line(this.corner1, [this.corner2[0], this.corner1[1]], this.width, this.color).draw()
-        new Line(this.corner2, [this.corner1[0], this.corner2[1]], this.width, this.color).draw()
-        new Line(this.corner2, [this.corner2[0], this.corner1[1]], this.width, this.color).draw()
-    }
-
-    rotate90Deg() {
-        let temp = corner1
-       this.corner1 = corner2
-       this.corner2 = temp
-
-        return this;
-    }
-}
-
-class Arc {
-    constructor(center, radius, sAngle, eAngle, width, color, hide) {
-        this.center = center
-        this.radius = radius
-        this.sAngle = sAngle
-        this.eAngle = eAngle
-        this.width = width
-        this.color = color
-        this.hide = !hide
-    }
-
-    translate(pos) {
-        this.center = [this.center[0]+pos[0], this.center[1]+pos[1]]
-        return this
-    }
-
-    clone() {
-        return new Arc(this.center, this.radius, this.sAngle, this.eAngle, this.width, this.color, this.hide)
-    }
-
-    draw() {
-        if (!this.hide) return
-        context.strokeStyle = this.color
-
-        context.beginPath()
-        context.arc(this.center[0]*dotSpace*scale,this.center[1]*dotSpace*scale,this.radius*dotSpace*scale, this.sAngle, this.eAngle)
-        context.lineWidth = this.width
-        context.stroke()
-    }
-
-    rotate90Deg() {
-        this.center = [this.center[1],-this.center[0]]
-
-        this.sAngle -= Math.PI/2
-        this.eAngle -= Math.PI/2
-
-        return this;
-    }
-}
-
 class Text {
+    // new Text([0, 1], 25, "S", DEFAULT_COLOR, "center", false),
     constructor (position, size, text, color, align, rotation, hide) {
 
         this.position = position
@@ -186,7 +188,7 @@ class Text {
     }
 
     clone() {
-        return new Text(this.position, this.size, this.text, this.color, this.align, this.rotation, this.hide)
+        return new Text(this.position, this.size, this.text, this.color, this.align, this.rotation, !this.hide)
     }
 
     draw() {
@@ -206,6 +208,12 @@ class Text {
     rotate90Deg() {
         this.position = [this.position[1],-this.position[0]]
         this.rotation -= Math.PI/2
+        return this
+    }
+    rotateTimes(num) {
+        for (let i = num; i > 0; i--) {
+            this.rotate90Deg()
+        }
         return this
     }
 

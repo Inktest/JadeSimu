@@ -7,7 +7,7 @@ function handleRKeyPress(event) {
 
 function handleWKeyPress(event) {
     unselectSelectedComponent()
-    wire = new Line([cursorX,cursorY], [,], 1, DEFAULT_COLOR, false)
+    wire = new Line([parseInt(cursorX-offsetX+0.5),parseInt(cursorY-offsetY+0.5)], [,], 1, DEFAULT_COLOR, false)
     if (currWire == null)
         currWire = wire
     currWire.draw()
@@ -15,15 +15,17 @@ function handleWKeyPress(event) {
 
 
 function handleQKeyPress(event) {
+    let aCursorX = parseInt(cursorX-offsetX+0.5) 
+    let aCursorY = parseInt(cursorY-offsetY+0.5) 
     for (let i = 0; i < wires.length; i++) {
-        if ((cursorY-wires[i].start[1])*(cursorX-wires[i].end[0]) == (cursorY-wires[i].end[1])*(cursorX-wires[i].start[0])) {
+        if ((aCursorY-wires[i].start[1])*(aCursorX-wires[i].end[0]) == (aCursorY-wires[i].end[1])*(aCursorX-wires[i].start[0])) {
             if ((wires[i].start[0] == wires[i].end[0] && 
-                (wires[i].start[1] <= cursorY && cursorY <= wires[i].end[1] ||
-                wires[i].end[1] <= cursorY && cursorY <= wires[i].start[1])
+                (wires[i].start[1] <= aCursorY && aCursorY <= wires[i].end[1] ||
+                wires[i].end[1] <= aCursorY && aCursorY <= wires[i].start[1])
             ) || (
                 wires[i].start[1] == wires[i].end[1] && 
-                (wires[i].start[0] <= cursorX && cursorX <= wires[i].end[0] ||
-                wires[i].end[0] <= cursorX && cursorX <= wires[i].start[0])
+                (wires[i].start[0] <= aCursorX && aCursorX <= wires[i].end[0] ||
+                wires[i].end[0] <= aCursorX && aCursorX <= wires[i].start[0])
             )) {
             console.log(wires[i])
             wires.splice(i, 1)

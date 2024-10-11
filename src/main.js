@@ -14,6 +14,8 @@ const BTN_COLOR = "#efefef"
 const BTN_HOVER_COLOR = "#e0e0e0"
 
 var scale = 1
+var offsetX = 0
+var offsetY = 0
 
 var hitboxMap = {}
 var wires = []
@@ -28,6 +30,7 @@ var movedY = 0
 
 var cursorX
 var cursorY
+
 
 var currGrafcetStages = []
 
@@ -50,8 +53,8 @@ if (!simuActivated)
 function drawGrid() {
     
     context.fillStyle = GRID_COLOR
-    for (let x = 0; x < canvas.width; x += dotSpace*scale) {
-        for (let y = 0; y < canvas.height; y += dotSpace*scale) {
+    for (let x = offsetX*dotSpace*scale; x < canvas.width; x += dotSpace*scale) {
+        for (let y = offsetY*dotSpace*scale; y < canvas.height; y += dotSpace*scale) {
             context.fillRect(x, y, dotSize, dotSize)
         }
     }
@@ -59,7 +62,7 @@ function drawGrid() {
 
 function drawWires() {
     for (let i = 0; i < wires.length; i++) 
-        wires[i].draw()
+        wires[i].clone().translate([offsetX, offsetY]).draw()
 }
 
 function drawComponents() {
@@ -72,7 +75,7 @@ function drawComponents() {
 function drawComponent(component) {
 
     for (let i = 0; i < component.symbol.strokes.length; i++) {
-    component.symbol.strokes[i].clone().translate(component.position).draw()
+    component.symbol.strokes[i].clone().translate(component.position).translate([offsetX, offsetY]).draw()
     }
 }
 

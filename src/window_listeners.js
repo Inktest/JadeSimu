@@ -1,5 +1,6 @@
 window.addEventListener('resize', updateCanvas)
 
+
 function mouseupEvent(event) {
     if (event.target !== canvas) return;
     held = false
@@ -14,15 +15,24 @@ function mousemoveEvent(event) {
 
     if (currWire != null) {
         updateCanvas()
-        if (Math.abs(cursorX-currWire.start[0]) < Math.abs(cursorY-currWire.start[1]))
-            currWire.end = [currWire.start[0],cursorY]
+        if (Math.abs(parseInt(cursorX-offsetX+0.5)-currWire.start[0]) < Math.abs(parseInt(cursorY-offsetY+0.5)-currWire.start[1]))
+            currWire.end = [currWire.start[0],parseInt(cursorY-offsetY+0.5)]
         else 
-            currWire.end = [cursorX, currWire.start[1]]
-        currWire.draw()
+            currWire.end = [parseInt(cursorX-offsetX+0.5), currWire.start[1]]
+        currWire.clone().translate([offsetX, offsetY]).draw()
     }
 
-    if (!selectedComponent) return
-    if (held) {
+    
+    if (event.buttons === 1 && !selectedComponent) {
+        offsetX += event.movementX/dotSpace/scale
+        offsetY += event.movementY/dotSpace/scale
+        
+        updateCanvas()
+        
+    }
+
+    if (!held) return
+
         movedX += event.movementX/dotSpace/scale
         movedY += event.movementY/dotSpace/scale
 
@@ -32,20 +42,22 @@ function mousemoveEvent(event) {
         if (Math.abs(floorX) >= 1 || Math.abs(floorY) >= 1) {
             movedX -= floorX
             movedY -= floorY
-            selectedComponent.translate([floorX,floorY])
+            if (selectedComponent)
+                selectedComponent.translate([floorX,floorY])
             updateCanvas()
         }
-    }
 
 }
 
 function mousedownEvent(event) {
+
+    
     if (event.target !== canvas) return;
         unselectSelectedComponent()
     if (currWire != null && currWire.end != [0,0])
         wires.push(currWire)
     currWire = null
-    let component = hitboxMap[[Math.floor(event.pageX/dotSpace/scale), Math.floor(event.pageY/dotSpace/scale)]]
+    let component = hitboxMap[[Math.floor(event.pageX/dotSpace/scale-offsetX), Math.floor(event.pageY/dotSpace/scale-offsetY)]]
     if (!component) {
         if (!simuActivated)
             updateCanvas()

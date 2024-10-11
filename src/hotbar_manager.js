@@ -28,7 +28,7 @@ const COMPONENTS_LIST = [
     //new TemporizacionLogica(),
     //new ContactoLógico(),
     //new BobinaLógica(),
-    new S71215C(),
+    //new S71215C(),
     //new S7SM1223()
 ]
 
@@ -200,6 +200,7 @@ btn.onclick = () => {
         updateCanvas()
         convertDiagramToNodes()
         unselectSelectedComponent()
+        held = false;
       }
     };
     reader.readAsText(file);
@@ -296,44 +297,48 @@ btn.onclick = () => {
     // Etapa Cero
     let i = 0;
     for (var co in etapaNodes) {
-        i++
         let currEtapa = etapaNodes[co]
-
-        let c = addComponent(new ContactoLógico()).moveTo([3 + 3*i, 5]);
-        c.options.options[0].value = "_X" + i;
+        
+        let c = addComponent(new ContactoLógico()).moveTo([2 + 3*(i+1), 5]);
+        c.options.options[0].value = i;
         c.options.options[1].value = CONTACTO_NC_COLLECTION;
         selectComponent(c);
         unselectSelectedComponent(c);
-
+        
         // Fase Etapas
         for (var j in currEtapa.prevTransiciones) {
-          let str = currEtapa.prevTransiciones[j].transicion.options.options[0].value
-          calculateContactMatrix(str, currEtapa.prevTransiciones[j].prevEtapas, j)
-          // console.log(j)
+            calculateContactMatrix(currEtapa, j)
+            // console.log(j)
         }
-
+        
+        i++
     }
-
-    let c2 = addComponent(new BobinaLógica()).moveTo([3*(i+2), 5]);
-    c2.options.options[0].value = "_X0";
-    c2.options.options[1].value = NONE_COLLECTION;
+    let c2 = addComponent(new BobinaLógica()).moveTo([3*(i+2)-1, 5]);
+    c2.options.options[0].value = "0";
+    c2.options.options[1].value = BOBINA_SET_COLLECTION;
     selectComponent(c2);
     unselectSelectedComponent(c2)
+    
 
 };
 
 
-// navbarDiv.appendChild(btn)
+navbarDiv.appendChild(btn)
 
-function calculateContactMatrix(str, sets, index) {
+function calculateContactMatrix(currEtapa, index) {
 
     let currVar = ""
+    let sets = currEtapa.prevTransiciones[index].prevEtapas
+    let str = currEtapa.prevTransiciones[index].transicion.options.options[0].value
 
     let currMatrix = [[]]
     let currMatX = 0
     let currMatY = 0
     let currMatYs = []
+    let openBrackets = []
     let lastContactPos;
+
+    let initHeight = currHeight;
 
     let pluses = 0
 
@@ -342,12 +347,18 @@ function calculateContactMatrix(str, sets, index) {
         if (["*", "+"].includes(str[i])) {
 
             if (!currMatrix[currMatX]) currMatrix[currMatX] = []
-            currMatrix[currMatX][currMatY] = currVar
+            if (!currMatrix[currMatX][currMatY]) currMatrix[currMatX][currMatY] = ""
+            
+            currMatrix[currMatX][currMatY] += currVar
             currVar = ""
         }
 
         switch (str[i]) {
             case "+": 
+            if (openBrackets != [] && openBrackets.length > 0) {
+                if (!currMatrix[openBrackets.at(-1)][currMatY+1]) currMatrix[openBrackets.at(-1)][currMatY+1] = ""
+                currMatrix[openBrackets.at(-1)][currMatY+1] += "+"
+            }
                 currMatY++
                 pluses++
             break;
@@ -361,8 +372,13 @@ function calculateContactMatrix(str, sets, index) {
             break;
             case "(": 
             currMatYs.push(currMatY)
+            openBrackets.push(currMatX)
             break;
-            case ")": break;
+            case ")": 
+            if (!currMatrix[currMatX]) currMatrix[currMatX] = []
+            currMatrix[currMatX][currMatY] = "|"
+            openBrackets.pop()
+            break;
             default:
                 currVar += str[i]
         }
@@ -371,19 +387,45 @@ function calculateContactMatrix(str, sets, index) {
     currMatrix[currMatX][currMatY] = currVar
 
     let mat = currMatrix
+    console.log(mat)
 
     for (let k = 0; k < mat.length; k++) {
         for (let l = 0; l < mat[k].length; l++) {
-            
         if (mat[k][l]) {
-            
+            mat[k][l] = mat[k][l].trim()
             if (mat[k][l].startsWith("*")) {
                 let m = mat[k][l].split("").pop()
-                wires.push(new Line([7 + 3*k, 3 + 3*(l) + currHeight], [7 + 3*k, 3+3*(l)-3*Number.parseInt(m) + currHeight], 1, DEFAULT_COLOR, false))
+                wires.push(new Line([7 + 3*k, 3 + 4*(l) + currHeight], [7 + 3*k, 3+4*(l)-4*Number.parseInt(m) + currHeight], 1, DEFAULT_COLOR, false))
             } else {
                 
-                let c = addComponent(new ContactoLógico()).moveTo([5 + 3*k, 5 + 3*l + currHeight]);
-                lastContactPos = [5 + 3*k, 5 + 3*l + currHeight]
+                lastContactPos = [5 + 3*k, 5 + 4*l + currHeight]
+                let c = addComponent(new ContactoLógico()).moveTo(lastContactPos);
+
+                if (mat[k][l].startsWith("+")) {
+                    let tmp = mat[k][l].split("")
+                    tmp.shift()
+                    mat[k][l] = tmp.join("")
+                    wires.push(new Line(lastContactPos, [5 + 3*k, 5 + 4*l + currHeight - 4], 1, DEFAULT_COLOR, false).translate([-2, 1]))
+                }
+
+                if (mat[k][l].startsWith("|")) {
+                    let tmp = mat[k][l].split("")
+                    tmp.shift()
+                    mat[k][l] = tmp.join("")
+                    let tempMatY = currMatY-1
+                    while (tempMatY > 0) {
+                        tempMatY--
+                        if (currMatrix[currMatX][tempMatY]) break;
+                        tempMatX = currMatX
+                        while (tempMatX > 0) {
+                            wires.push(new Line([5 + 3*tempMatX+4, 5 + 4*tempMatY + currHeight], [5 + 3*tempMatX, 5 + 4*tempMatY + currHeight], 1, DEFAULT_COLOR, false).translate([-2, 1]))
+                            if (currMatrix[tempMatX-1][tempMatY]) break;
+                            tempMatX--
+                        }
+                    }
+
+                }
+
                 if (mat[k][l].startsWith("_")) {
                     let tmp = mat[k][l].split("")
                     tmp.shift()
@@ -401,8 +443,8 @@ function calculateContactMatrix(str, sets, index) {
     }
 }
 
-    wires.push(new Line([3, 6 + currHeight], [3, 6 + 3*pluses + currHeight], 1, DEFAULT_COLOR, false))
-wires.push(new Line([7 + 3*currMatX, 6 + currHeight], [7 + 3*currMatX, 6 + 3*pluses + currHeight], 1, DEFAULT_COLOR, false))
+    wires.push(new Line([3, 6 + currHeight], [3, 6 + 4*pluses + currHeight], 1, DEFAULT_COLOR, false))
+wires.push(new Line([7 + 3*currMatX, 6 + currHeight], [7 + 3*currMatX, 6 + 4*pluses + currHeight], 1, DEFAULT_COLOR, false))
 sets = [... new Set(sets)]
 for (var i in sets) {
     console.log(i, sets[i].etapa.options.options[0].value, sets[i])
@@ -412,13 +454,31 @@ let c = addComponent(new ContactoLógico()).moveTo(lastContactPos);
                 c.options.options[1].value = NONE_COLLECTION;
                 selectComponent(c);
                 unselectSelectedComponent(c);
+            }
+            lastContactPos = [lastContactPos[0]+3, lastContactPos[1]]
+            c = addComponent(new BobinaLógica()).moveTo(lastContactPos);
+                            c.options.options[0].value = currEtapa.etapa.options.options[0].value;
+                            c.options.options[1].value = BOBINA_SET_COLLECTION;
+                            selectComponent(c);
+                            unselectSelectedComponent(c);
+                            lastContactPos = [lastContactPos[0], lastContactPos[1]+4]
+for (var i in sets) {
+    if (i>0) {
+        lastContactPos = [lastContactPos[0], lastContactPos[1]+4]
+        currHeight += 4
+    }
+    wires.push(new Line([lastContactPos[0]-2, lastContactPos[1]+1], [lastContactPos[0]-2, lastContactPos[1]-3], 1, DEFAULT_COLOR, false))
+c = addComponent(new BobinaLógica()).moveTo(lastContactPos);
+                            c.options.options[0].value = sets[i].etapa.options.options[0].value;
+                            c.options.options[1].value = BOBINA_RESET_COLLECTION;
+                            selectComponent(c);
+                            unselectSelectedComponent(c);
 }
-
 if (index !== 0) {
-    
+    // Ni idea qué quería hacer aquí
 }
 
-currHeight += 3*pluses + 4
+currHeight += 4*pluses + 9
     return currMatrix
 
 }
