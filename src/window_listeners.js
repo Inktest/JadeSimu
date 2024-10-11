@@ -43,7 +43,7 @@ function mousemoveEvent(event) {
             movedX -= floorX
             movedY -= floorY
             if (selectedComponent)
-                selectedComponent.translate([floorX,floorY])
+                selectedComponent.moveTo([Math.floor(event.pageX/dotSpace/scale-offsetX), Math.floor(event.pageY/dotSpace/scale-offsetY)])
             updateCanvas()
         }
 
