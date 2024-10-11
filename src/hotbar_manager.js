@@ -294,10 +294,20 @@ btn.onclick = () => {
 
     currHeight = 4
 
+    let marcasMap = {}
+
     // Etapa Cero
     let i = 0;
     for (var co in etapaNodes) {
         let currEtapa = etapaNodes[co]
+
+        let currMarcas = currEtapa.etapa.options.options[1].value.trim().split(",")
+
+        for (let marca of currMarcas) {
+            marca = marca.trim()
+            if (marcasMap[marca] == null || !marcasMap[marca]) marcasMap[marca] = []
+            marcasMap[marca].push(currEtapa.etapa.options.options[0].value)
+        }
         
         let c = addComponent(new ContactoLógico()).moveTo([2 + 3*(i+1), 5]);
         c.options.options[0].value = i;
@@ -318,7 +328,39 @@ btn.onclick = () => {
     c2.options.options[1].value = BOBINA_SET_COLLECTION;
     selectComponent(c2);
     unselectSelectedComponent(c2)
+
+    // Fase Actuadores (Marcas)
     
+    for (let [marca, etapasMarca] of Object.entries(marcasMap)) {
+    c = addComponent(new ContactoLógico()).moveTo([5, currHeight + 5])
+    c.options.options[0].value = etapasMarca[0];
+    c.options.options[1].value = NONE_COLLECTION;
+    selectComponent(c);
+    unselectSelectedComponent(c);
+
+    etapasMarca.shift()
+
+    c = addComponent(new BobinaLógica()).moveTo([9, currHeight + 5])
+    c.options.options[0].value = marca;
+    c.options.options[1].value = NONE_COLLECTION;
+    selectComponent(c);
+    unselectSelectedComponent(c);
+    currHeight += 4
+
+ for (let i = 0; i < etapasMarca.length; i++) {
+            currHeight += 5
+            c = addComponent(new ContactoLógico()).moveTo([5, currHeight])
+            c.options.options[0].value = etapasMarca[i];
+            c.options.options[1].value = NONE_COLLECTION;
+            selectComponent(c);
+            unselectSelectedComponent(c);
+
+            wires.push(new Line([3, currHeight-3], [3, currHeight+1], 1, DEFAULT_COLOR, false))
+            wires.push(new Line([7, currHeight-3], [7, currHeight+1], 1, DEFAULT_COLOR, false))
+        }
+        updateCanvas()
+
+    }
 
 };
 
@@ -387,7 +429,6 @@ function calculateContactMatrix(currEtapa, index) {
     currMatrix[currMatX][currMatY] = currVar
 
     let mat = currMatrix
-    console.log(mat)
 
     for (let k = 0; k < mat.length; k++) {
         for (let l = 0; l < mat[k].length; l++) {
@@ -429,7 +470,6 @@ function calculateContactMatrix(currEtapa, index) {
                 if (mat[k][l].startsWith("_")) {
                     let tmp = mat[k][l].split("")
                     tmp.shift()
-                    console.log(tmp)
                     mat[k][l] = tmp.join("")
                     c.options.options[1].value = CONTACTO_NC_COLLECTION;
                 } else {
@@ -447,7 +487,6 @@ function calculateContactMatrix(currEtapa, index) {
 wires.push(new Line([7 + 3*currMatX, 6 + currHeight], [7 + 3*currMatX, 6 + 4*pluses + currHeight], 1, DEFAULT_COLOR, false))
 sets = [... new Set(sets)]
 for (var i in sets) {
-    console.log(i, sets[i].etapa.options.options[0].value, sets[i])
     lastContactPos = [lastContactPos[0]+3, lastContactPos[1]]
 let c = addComponent(new ContactoLógico()).moveTo(lastContactPos);
                 c.options.options[0].value = sets[i].etapa.options.options[0].value;
