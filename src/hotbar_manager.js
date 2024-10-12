@@ -69,7 +69,19 @@ updateCanvas()
 }
 
 let navbarDiv = document.getElementById("navbarDiv")
-let btn = createImageButton(`imgs/save.png`)
+let btn = createImageButton(`imgs/new.png`)
+btn.className = "navbarButton"
+btn.onclick = () => {
+    stopSimulation()
+    components = []
+    wires = []
+    currGrafcetStages = []
+    updateCanvas()
+}
+
+navbarDiv.appendChild(btn)
+
+btn = createImageButton(`imgs/save.png`)
 btn.className = "navbarButton"
 btn.onclick = () => {
     let componentsText = "v1.1\n"
