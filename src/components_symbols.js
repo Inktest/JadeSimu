@@ -1,26 +1,26 @@
-const NONE_COLLECTION = new StrokeCollection([],DEFAULT_COLOR)
+const NONE_COLLECTION = new StrokeCollection([],DEFAULT_COLOR,0)
 
 const CONTACTO_NC_COLLECTION = new StrokeCollection([
     new Line([-.5,0],[.5,2],1,DEFAULT_COLOR),
-], DEFAULT_COLOR)
+], DEFAULT_COLOR,3)
 
 const CONTACTO_FB_COLLECTION = new StrokeCollection([
     new Line([-.5,0],[0,2],1,DEFAULT_COLOR),
     new Line([.5,0],[0,2],1,DEFAULT_COLOR),
-], DEFAULT_COLOR)
+], DEFAULT_COLOR,5)
 
 const CONTACTO_FS_COLLECTION = new StrokeCollection([
     new Line([-.5,2],[0,0],1,DEFAULT_COLOR),
     new Line([.5,2],[0,0],1,DEFAULT_COLOR),
-], DEFAULT_COLOR)
+], DEFAULT_COLOR,4)
 
 const BOBINA_SET_COLLECTION = new StrokeCollection([
     new Text([0, 1], 25, "S", DEFAULT_COLOR, "center", false),
-], DEFAULT_COLOR)
+], DEFAULT_COLOR,1)
 
 const BOBINA_RESET_COLLECTION = new StrokeCollection([
     new Text([0, 1], 25, "R", DEFAULT_COLOR, "center"),
-], DEFAULT_COLOR)
+], DEFAULT_COLOR,2)
 
 const PULSADOR_COLLECTION = new StrokeCollection([
     new Line([0,0.5],[-0.5,0.5],1,DEFAULT_COLOR),
@@ -256,3 +256,5 @@ new Line([1,1.66],[1.5,1.66],1,DEFAULT_COLOR),
 new Line([1.5,1.66],[1.5,2.33],1,DEFAULT_COLOR),
 new Line([1.5,2.33],[1,2.33],1,DEFAULT_COLOR),
 new Line([1,2.33],[1,3],1,DEFAULT_COLOR),], DEFAULT_COLOR)
+
+const StrokeCollectionList = [NONE_COLLECTION, BOBINA_SET_COLLECTION, BOBINA_RESET_COLLECTION, CONTACTO_NC_COLLECTION, CONTACTO_FS_COLLECTION, CONTACTO_FB_COLLECTION]

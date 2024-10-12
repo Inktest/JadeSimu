@@ -101,7 +101,7 @@ class Arc {
     }
 
     clone() {
-        return new Arc(this.center, this.radius, this.sAngle, this.eAngle, this.width, this.color, this.hide)
+        return new Arc(this.center, this.radius, this.sAngle, this.eAngle, this.width, this.color, !this.hide)
     }
     
     draw() {
@@ -220,9 +220,10 @@ class Text {
 }
 
 class StrokeCollection {
-    constructor(strokes, color) {
+    constructor(strokes, color, id) {
         this.strokes = strokes
         this.color = color
+        this.id = id
         this.rotation = 0
     }
 
@@ -238,7 +239,7 @@ class StrokeCollection {
         this.strokes.forEach(s => {
             newStrokes.push(s.clone())
         });
-       return new StrokeCollection(newStrokes, this.color)
+       return new StrokeCollection(newStrokes, this.color, this.id)
     }
 
     draw() {

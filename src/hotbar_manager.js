@@ -45,7 +45,9 @@ const abreviatures = {
     "Alimentación": "Vcc",
     "Contacto Pulsador": "Swt",
     "S7 1200 1215C": "S75",
-    "Texto": "txt"
+    "Texto": "txt",
+    "Contacto": "Lct",
+    "Bobina": "Lbn"
 }
 
 function stopSimulation() {
@@ -70,30 +72,34 @@ let navbarDiv = document.getElementById("navbarDiv")
 let btn = createImageButton(`imgs/save.png`)
 btn.className = "navbarButton"
 btn.onclick = () => {
-    let componentsText = "v1\n"
+    let componentsText = "v1.1\n"
     for (var i in components) {
-        componentsText += components[i].position[0]
-        componentsText += abreviatures[components[i].name]
-        componentsText += components[i].position[1]
-        componentsText += " "
-        componentsText += components[i].options.options[0].value
-        componentsText += "\n"
-        if (components[i].options.options[1]) {
-            componentsText += components[i].options.options[1].value
-            componentsText += "\n"
+        componentsText += `${components[i].position[0]}\u{001d}${components[i].position[1]}\u{001d}${abreviatures[components[i].name]}`
+        for (option of components[i].options.options) {
+            console.log(option)
+            if (typeof option.value === "object") { 
+                componentsText += `\u{001d}` + option.value.id
+                console.log(option.value)}
+            else
+                componentsText += `\u{001d}` + option.value
         }
+
+        componentsText += "\n"
     }
     for (var i in wires) {
-        componentsText += wires[i].start[0]
-        componentsText += "Wre"
-        componentsText += wires[i].start[1]
-        componentsText += " "
-        componentsText += `${wires[i].end[0]},${wires[i].end[1]}`
-        componentsText += "\n"
+        componentsText += `${wires[i].start[0]}\u{001d}${wires[i].start[1]}\u{001d}Wre\u{001d}${wires[i].end[0]}\u{001d}${wires[i].end[1]}\n`
     }
     downloadTextFile("file.jad", componentsText)
 }
 navbarDiv.appendChild(btn)
+
+function prepareFileLoad() {
+    stopSimulation()
+      components = []
+      wires = []
+      currGrafcetStages = []
+      lines.shift()
+}
 
 btn = createImageButton(`imgs/load.png`)
 btn.className = "navbarButton"
@@ -109,99 +115,21 @@ btn.onclick = () => {
     const reader = new FileReader();
     reader.onload = function(event) {
       const contents = event.target.result;
+      console.log("File contents:", contents);
       lines = contents.split("\n")
-      if (lines[0] != "v1") {
-        document.alert("Versión del archivo no soportada")
+      if (lines[0] === "v1") {
+        prepareFileLoad()
+        loadv1(lines)
+        console.log("Loaded file from v1")
         return
       }
-      stopSimulation()
-      components = []
-      wires = []
-      currGrafcetStages = []
-      lines.shift()
-      console.log("File contents:", contents);
-      for (let i = 0; i < lines.length; i++) {
-        let coordRegex = /[0-9]*/
-        let abrRegex = /.../
-        let match = lines[i].match(coordRegex)
-        let firstCoord = Number.parseInt(match[0])
-        lines[i] = lines[i].replace(coordRegex, '')
-
-        let abreviature = lines[i].match(abrRegex)[0]
-        lines[i] = lines[i].replace(abrRegex, '')
-
-        match = lines[i].match(coordRegex)
-        let secondCoord = Number.parseInt(match[0])
-        lines[i] = lines[i].replace(coordRegex, '')
-        lines[i] = lines[i].replace(' ', '')
-
-        console.log({abv: abreviature, c1: firstCoord, c2: secondCoord, line: lines[i]})
-        let c
-        if (abreviature == "Get") {
-            c = addComponent(new Grafcet()).moveTo([firstCoord, secondCoord])
-            c.options.options[0].value = lines[i]
-            c.options.options[1].value = lines[++i]
-            selectComponent(c)
-        }
-
-        if (abreviature == "Gtr") {
-            c = addComponent(new GrafcetTransicion()).moveTo([firstCoord, secondCoord])
-            c.options.options[0].value = lines[i]
-            selectComponent(c)
-        }
-
-        if (abreviature == "Vvn") {
-            c = addComponent(new Vaiven()).moveTo([firstCoord, secondCoord])
-            c.options.options[0].value = lines[i]
-            c.options.options[1].value = lines[++i]
-            selectComponent(c)
-        }
-
-        if (abreviature == "Vfc") {
-            c = addComponent(new FC()).moveTo([firstCoord, secondCoord])
-            c.options.options[0].value = lines[i]
-            selectComponent(c)
-        }
-
-        if (abreviature == "Ton") {
-            c = addComponent(new TemporizacionLogica()).moveTo([firstCoord, secondCoord])
-            c.options.options[0].value = lines[i]
-            selectComponent(c)
-        }
-
-        if (abreviature == "Vcc") {
-            c = addComponent(new Fuente()).moveTo([firstCoord, secondCoord])
-            c.options.options[0].value = lines[i]
-            selectComponent(c)
-        }
-
-        if (abreviature == "Swt") {
-            c = addComponent(new Pulsador()).moveTo([firstCoord, secondCoord])
-            c.options.options[0].value = lines[i]
-            selectComponent(c)
-        }
-
-        if (abreviature == "S75") {
-            c = addComponent(new S71215C()).moveTo([firstCoord, secondCoord])
-            selectComponent(c)
-        }
-
-        if (abreviature == "txt") {
-            c = addComponent(new Texto()).moveTo([firstCoord, secondCoord])
-            c.options.options[0].value = lines[i]
-            c.options.options[1].value = lines[++i]
-            selectComponent(c)
-        }
-
-        if (abreviature == "Wre") {
-            wires.push(new Line([firstCoord, secondCoord], lines[i].split(","), 1, DEFAULT_COLOR))
-        }
-        
-        updateCanvas()
-        convertDiagramToNodes()
-        unselectSelectedComponent()
-        held = false;
+      if (lines[0] === "v1.1") {
+        prepareFileLoad()
+        loadv1_1(lines)
+        console.log("Loaded file from v1.1")
+        return
       }
+      document.alert("Versión del archivo no soportada")
     };
     reader.readAsText(file);
   };
@@ -495,7 +423,7 @@ let c = addComponent(new ContactoLógico()).moveTo(lastContactPos);
                 unselectSelectedComponent(c);
             }
             lastContactPos = [lastContactPos[0]+3, lastContactPos[1]]
-            c = addComponent(new BobinaLógica()).moveTo(lastContactPos);
+            c = addComponent(new BobinaLógica().clone()).moveTo(lastContactPos);
                             c.options.options[0].value = currEtapa.etapa.options.options[0].value;
                             c.options.options[1].value = BOBINA_SET_COLLECTION;
                             selectComponent(c);
@@ -507,7 +435,7 @@ for (var i in sets) {
         currHeight += 4
     }
     wires.push(new Line([lastContactPos[0]-2, lastContactPos[1]+1], [lastContactPos[0]-2, lastContactPos[1]-3], 1, DEFAULT_COLOR, false))
-c = addComponent(new BobinaLógica()).moveTo(lastContactPos);
+c = addComponent(new BobinaLógica().clone()).moveTo(lastContactPos);
                             c.options.options[0].value = sets[i].etapa.options.options[0].value;
                             c.options.options[1].value = BOBINA_RESET_COLLECTION;
                             selectComponent(c);
