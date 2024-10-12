@@ -463,7 +463,7 @@ currHeight += 4*pluses + 9
 }
 
 function addComponent(comp) {
-    let c = comp.clone().moveTo([cursorX,cursorY])
+    let c = comp.clone().moveTo([cursorX-offsetX,cursorY-offsetY])
 
         if (c.name == "Etapa de Grafcet")  {
             c.symbol.strokes[11].text = currGrafcetStages.length

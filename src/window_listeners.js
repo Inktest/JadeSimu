@@ -43,11 +43,14 @@ function mousemoveEvent(event) {
             movedX -= floorX
             movedY -= floorY
             if (selectedComponent)
-                selectedComponent.moveTo([Math.floor(event.pageX/dotSpace/scale-offsetX), Math.floor(event.pageY/dotSpace/scale-offsetY)])
+                selectedComponent.moveTo([Math.floor(event.pageX/dotSpace/scale-offsetX-objOffsetX), Math.floor(event.pageY/dotSpace/scale-offsetY-objOffsetY)])
             updateCanvas()
         }
 
 }
+
+objOffsetX = 0
+objOffsetY = 0
 
 function mousedownEvent(event) {
 
@@ -65,6 +68,8 @@ function mousedownEvent(event) {
     }
     
     selectComponent(component[0])
+    objOffsetX = event.pageX/dotSpace/scale-offsetX - component[0].position[0]
+    objOffsetY = event.pageY/dotSpace/scale-offsetY - component[0].position[1]
 }
 
 if ('ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0) {
