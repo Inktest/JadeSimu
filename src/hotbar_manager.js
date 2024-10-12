@@ -26,8 +26,8 @@ const COMPONENTS_LIST = [
     new Vaiven(),
     new FC(),
     //new TemporizacionLogica(),
-    //new ContactoLógico(),
-    //new BobinaLógica(),
+    new ContactoLógico(),
+    new BobinaLógica(),
     //new S71215C(),
     //new S7SM1223()
 ]
