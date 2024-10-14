@@ -297,8 +297,12 @@ for (var i in vaivenesDerecha) {
     for (var j in checks) {
 
         let position = [Number.parseInt(vaivenesDerecha[i].position[0])+Number.parseInt(checks[j][0]), Number.parseInt(vaivenesDerecha[i].position[1])+Number.parseInt(checks[j][1]) - 1]
+        let position2 = [Number.parseInt(vaivenesDerecha[i].position[0])+Number.parseInt(checks[j][0]+1), Number.parseInt(vaivenesDerecha[i].position[1])+Number.parseInt(checks[j][1]) - 1]
         if (fcPositions[position]) {
             activatedFC.push(fcPositions[position])
+        }
+        if (fcPositions[position2]) {
+            activatedFC.push(fcPositions[position2])
         }
     }
     

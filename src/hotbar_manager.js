@@ -281,8 +281,16 @@ btn.onclick = () => {
     etapasMarca.shift()
 
     c = addComponent(new BobinaLógica()).moveTo([9, currHeight + 5])
-    c.options.options[0].value = marca;
     c.options.options[1].value = NONE_COLLECTION;
+    if (marca.replace(/[ ]*?\:\=[ ]*?1[ ]*?/, "") !== marca) {
+        c.options.options[1].value = BOBINA_SET_COLLECTION;
+        marca = marca.replace(/[ ]*?\:\=[ ]*?1[ ]*?/, "")
+    }
+    if (marca.replace(/[ ]*?\:\=[ ]*?0[ ]*?/, "") !== marca) {
+        c.options.options[1].value = BOBINA_RESET_COLLECTION;
+        marca = marca.replace(/[ ]*?\:\=[ ]*?0[ ]*?/, "")
+    }
+    c.options.options[0].value = marca;
     selectComponent(c);
     unselectSelectedComponent(c);
     currHeight += 5
