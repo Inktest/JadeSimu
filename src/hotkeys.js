@@ -15,8 +15,8 @@ function handleWKeyPress(event) {
 
 
 function handleQKeyPress(event) {
-    let aCursorX = parseInt(cursorX-offsetX+0.5) 
-    let aCursorY = parseInt(cursorY-offsetY+0.5) 
+    let aCursorX = parseInt(cursorX-offsetX) 
+    let aCursorY = parseInt(cursorY-offsetY) 
     for (let i = 0; i < wires.length; i++) {
         if ((aCursorY-wires[i].start[1])*(aCursorX-wires[i].end[0]) == (aCursorY-wires[i].end[1])*(aCursorX-wires[i].start[0])) {
             if ((wires[i].start[0] == wires[i].end[0] && 

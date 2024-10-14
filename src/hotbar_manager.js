@@ -285,10 +285,10 @@ btn.onclick = () => {
     c.options.options[1].value = NONE_COLLECTION;
     selectComponent(c);
     unselectSelectedComponent(c);
-    currHeight += 4
+    currHeight += 5
 
  for (let i = 0; i < etapasMarca.length; i++) {
-            currHeight += 5
+            currHeight += 4
             c = addComponent(new ContactoLógico()).moveTo([5, currHeight])
             c.options.options[0].value = etapasMarca[i];
             c.options.options[1].value = NONE_COLLECTION;
