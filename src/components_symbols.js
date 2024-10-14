@@ -149,6 +149,20 @@ const INTERMITENTE_BOBINA_COLLECTION = new StrokeCollection([
     new Line([-0.25,-1],[-0.25,0],1,DEFAULT_COLOR),
 ], DEFAULT_COLOR)
 
+const TEMP_TON_COLLECTION = new StrokeCollection([
+    new Line([-0.75, 1],[-0.5,1],1,DEFAULT_COLOR),
+    new Line([0.75, 1],[0.5,1],1,DEFAULT_COLOR),
+    new Line([-0.5,1],[-0.5,0.5],1,DEFAULT_COLOR),
+    new Line([0.5,1],[0.5,0.5],1,DEFAULT_COLOR),
+    new Line([0.5, 0.5],[-0.5, 0.5],1,DEFAULT_COLOR),
+
+    new Line([-0.75, 2],[0.25,2],1,DEFAULT_COLOR),
+    new Line([0.5, 2],[0.75,2],1,DEFAULT_COLOR),
+    new Line([0.25,2],[0.25,1.5],1,DEFAULT_COLOR),
+    new Line([0.5,2],[0.5,1.5],1,DEFAULT_COLOR),
+    new Line([0.25, 1.5],[0.5, 1.5],1,DEFAULT_COLOR),
+], DEFAULT_COLOR)
+
 const IMPULSO_BOBINA_COLLECTION = new StrokeCollection([
     new Line([-0.25,-0.25],[-0.45,-0.25],1,DEFAULT_COLOR),
     new Line([-0.8,-0.25],[-1,-0.25],1,DEFAULT_COLOR),
@@ -199,6 +213,10 @@ const SCHOTTKY_DIODO_COLLECTION = new StrokeCollection([
     ["imgs/contc/IcoNC.png",CONTACTO_NC_COLLECTION.clone()],
     ["imgs/contc/IcoFS.png",CONTACTO_FS_COLLECTION.clone()],
     ["imgs/contc/IcoFB.png",CONTACTO_FB_COLLECTION.clone()],
+]
+
+const TEMPORIZADOR_COLLECTION = [
+    ["imgs/tlogica/Conexion.png",TEMP_TON_COLLECTION.clone()],
 ]
 
 const BOBINA_LOGICA_COLLECTION = [

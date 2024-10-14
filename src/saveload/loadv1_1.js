@@ -39,6 +39,7 @@ const loadv1_1 = (line) => {
     if (abreviature == "Ton") {
         c = addComponent(new TemporizacionLogica()).moveTo([firstCoord, secondCoord])
         c.options.options[0].value = lines[0]
+        c.options.options[1].value = lines[1]?lines[1]:TEMP_TON_COLLECTION.clone()
         selectComponent(c)
     }
 

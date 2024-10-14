@@ -223,13 +223,17 @@ function convertDiagramToNodes() {
 
         if (!shouldBeY) continue
 
+
         for (var w in wiresChecked) {
-            if (!linePoints[wiresChecked[w]][0]) continue
-            let coord1 = wiresChecked[w].split(",")
-            let coord2 = linePoints[wiresChecked[w]][0].split(",")
+                //if (!linePoints[wiresChecked[w]][0]) continue")
+            let coord1 = wiresChecked[0].split(",")
+            let coord2 = wiresChecked[1].split(",")
+            coord1[0] = Number.parseFloat(coord1[0])
+            coord2[0] = Number.parseFloat(coord2[0])
             coord1[1] = Number.parseInt(coord1[1]) + 0.1
             coord2[1] = Number.parseInt(coord2[1]) + 0.1
             let line = new Line(coord1, coord2, 1, DEFAULT_COLOR)
+            console.log(line)
             line.translate([offsetX, offsetY]).draw()
         }
 

@@ -327,20 +327,29 @@ class TemporizacionLogica extends Component {
     constructor(position) {
         super(position, "Temporizador", new ComponentSymbol([
             new Line([-1,0],[1,0],1,DEFAULT_COLOR),
+            new Line([-1,1],[-2,1],1,DEFAULT_COLOR),
+            new Line([1,1],[2,1],1,DEFAULT_COLOR),
             new Line([1,3],[1,0],1,DEFAULT_COLOR),
             new Line([-1,3],[-1,0],1,DEFAULT_COLOR),
             new Line([1,3],[-1,3],1,DEFAULT_COLOR),
+            TEMP_TON_COLLECTION.clone(),
 
 
             new Text([0, -1], 17, "T1", DEFAULT_COLOR, "center"),
-            new Text([0, 2], 17, "0s", DEFAULT_COLOR, "center")
+            new Text([1.25, 2.5], 17, "0s", DEFAULT_COLOR, "left"),
+            new Text([-1.25, 2.5], 17, "T#1s", DEFAULT_COLOR, "right"),
+            new Text([1.25, 0.5], 12, "Q", DEFAULT_COLOR, "left")
             ]),
             HITBOX_BOBINA.clone(),
             new ComponentOptions([
-                new TextboxOption("Nombre", "T1", "name"),            ]))}
+                new TextboxOption("Nombre", "T1", "name"),
+                new TextboxOption("Tiempo", "1", "time"),
+                new ImageSelectOption("Tipo",TEMP_TON_COLLECTION.clone(),TEMPORIZADOR_COLLECTION)
+            ]))}
 
             update() {
-               this.symbol.strokes[4].text = this.options.options[0].getValue()
+               this.symbol.strokes[7].text = this.options.options[0].getValue()
+               this.symbol.strokes[9].text = "T#" + this.options.options[1].getValue() + "s"
                 /* this.symbol.strokes[12].text = this.options.options[1].getValue()
 
                 this.symbol.strokes[7].hide = this.options.options[0].getValue() == 0
