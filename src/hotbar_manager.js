@@ -233,7 +233,7 @@ var marcasMap = {}
 btn = createImageButton(`imgs/tia.png`)
 btn.className = "navbarButton"
 btn.onclick = () => {
-
+    currTemp = 0
     currHeight = 4
 
     marcasMap = {}
@@ -258,7 +258,7 @@ btn.onclick = () => {
         unselectSelectedComponent(c);
         
         // Fase Etapas
-        currTemp = 0
+        
         for (var j in currEtapa.prevTransiciones) {
             calculateContactMatrix(currEtapa, j, currTemp)
             // console.log(j)
@@ -274,6 +274,8 @@ btn.onclick = () => {
 
     // Fase Actuadores (Marcas)
     
+ let currMarcaTemp = 0
+
     for (let [marca, etapasMarca] of Object.entries(marcasMap)) {
     c = addComponent(new ContactoLógico()).moveTo([5, currHeight + 5])
     c.options.options[0].value = etapasMarca[0];
@@ -286,6 +288,7 @@ btn.onclick = () => {
     if (marca.replace(/[0-9]*\#T[0-9]*/, "").trim() === "" && marca.replace(/[0-9]*#T[0-9]*/, "") !== marca) {
         c = addComponent(new TemporizacionLogica()).moveTo([9, currHeight + 5])
         c.options.options[0].value = "#T" + marca.replace(/[0-9]*\#T/, "")
+        currMarcaTemp++
         c.options.options[1].value = marca.replace(/\#T[0-9]*/, "")
     } else {
 
@@ -327,7 +330,7 @@ btn.onclick = () => {
 
 navbarDiv.appendChild(btn)
 
-function calculateContactMatrix(currEtapa, index, currTemp) {
+function calculateContactMatrix(currEtapa, index) {
 
     let currVar = ""
     let sets = currEtapa.prevTransiciones[index].prevEtapas
