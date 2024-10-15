@@ -25,7 +25,7 @@ const COMPONENTS_LIST = [
     new GrafcetTransicion(),
     new Vaiven(),
     new FC(),
-    //new TemporizacionLogica(),
+    new TemporizacionLogica(),
     new ContactoLógico(),
     new BobinaLógica(),
     //new S71215C(),
@@ -227,6 +227,8 @@ stopSimulation()
 navbarDiv.appendChild(btn)
 
 var currHeight = 0
+var currTemp = 0
+var marcasMap = {}
 
 btn = createImageButton(`imgs/tia.png`)
 btn.className = "navbarButton"
@@ -234,7 +236,7 @@ btn.onclick = () => {
 
     currHeight = 4
 
-    let marcasMap = {}
+    marcasMap = {}
 
     // Etapa Cero
     let i = 0;
@@ -256,8 +258,9 @@ btn.onclick = () => {
         unselectSelectedComponent(c);
         
         // Fase Etapas
+        currTemp = 0
         for (var j in currEtapa.prevTransiciones) {
-            calculateContactMatrix(currEtapa, j)
+            calculateContactMatrix(currEtapa, j, currTemp)
             // console.log(j)
         }
         
@@ -280,6 +283,13 @@ btn.onclick = () => {
 
     etapasMarca.shift()
 
+    if (marca.replace(/[0-9]*\#T[0-9]*/, "").trim() === "" && marca.replace(/[0-9]*#T[0-9]*/, "") !== marca) {
+        c = addComponent(new TemporizacionLogica()).moveTo([9, currHeight + 5])
+        c.options.options[0].value = "#T" + marca.replace(/[0-9]*\#T/, "")
+        c.options.options[1].value = marca.replace(/\#T[0-9]*/, "")
+    } else {
+
+
     c = addComponent(new BobinaLógica()).moveTo([9, currHeight + 5])
     c.options.options[1].value = NONE_COLLECTION;
     if (marca.replace(/[ ]*?\:\=[ ]*?1[ ]*?/, "") !== marca) {
@@ -291,10 +301,12 @@ btn.onclick = () => {
         marca = marca.replace(/[ ]*?\:\=[ ]*?0[ ]*?/, "")
     }
     c.options.options[0].value = marca;
+}
     selectComponent(c);
     unselectSelectedComponent(c);
     currHeight += 5
 
+    
  for (let i = 0; i < etapasMarca.length; i++) {
             currHeight += 4
             c = addComponent(new ContactoLógico()).moveTo([5, currHeight])
@@ -315,10 +327,11 @@ btn.onclick = () => {
 
 navbarDiv.appendChild(btn)
 
-function calculateContactMatrix(currEtapa, index) {
+function calculateContactMatrix(currEtapa, index, currTemp) {
 
     let currVar = ""
     let sets = currEtapa.prevTransiciones[index].prevEtapas
+    sets = [... new Set(sets)]
     let str = currEtapa.prevTransiciones[index].transicion.options.options[0].value
 
     let currMatrix = [[]]
@@ -327,6 +340,8 @@ function calculateContactMatrix(currEtapa, index) {
     let currMatYs = []
     let openBrackets = []
     let lastContactPos;
+
+
 
     let initHeight = currHeight;
 
@@ -339,6 +354,14 @@ function calculateContactMatrix(currEtapa, index) {
             if (!currMatrix[currMatX]) currMatrix[currMatX] = []
             if (!currMatrix[currMatX][currMatY]) currMatrix[currMatX][currMatY] = ""
             
+            if (currVar.trim().replace(/\/[0-9]*s/, "") === "") {
+                for (var j in sets) {
+                    marcasMap[currVar.replace("/", "").replace("s", "") + "#T" + currTemp] = [sets[j].etapa.options.options[0].value]
+                }
+                currVar = currVar.replace("s", "").replace(/\/[0-9]*/, "") + "#T" + currTemp
+                currTemp++
+            }
+
             currMatrix[currMatX][currMatY] += currVar
             currVar = ""
         }
@@ -374,6 +397,13 @@ function calculateContactMatrix(currEtapa, index) {
         }
     }
     if (!currMatrix[currMatX]) currMatrix[currMatX] = []
+    if (currVar.trim().replace(/\/[0-9]*s/, "") === "") {
+        for (var j in sets) {
+            marcasMap[currVar.replace("/", "").replace("s", "") + "#T" + currTemp] = [sets[j].etapa.options.options[0].value]
+        }
+        currVar = currVar.replace("s", "").replace(/\/[0-9]*/, "") + "#T" + currTemp
+        currTemp++
+    }
     currMatrix[currMatX][currMatY] = currVar
 
     let mat = currMatrix
@@ -433,7 +463,6 @@ function calculateContactMatrix(currEtapa, index) {
 
     wires.push(new Line([3, 6 + currHeight], [3, 6 + 4*pluses + currHeight], 1, DEFAULT_COLOR, false))
 wires.push(new Line([7 + 3*currMatX, 6 + currHeight], [7 + 3*currMatX, 6 + 4*pluses + currHeight], 1, DEFAULT_COLOR, false))
-sets = [... new Set(sets)]
 for (var i in sets) {
     lastContactPos = [lastContactPos[0]+3, lastContactPos[1]]
 let c = addComponent(new ContactoLógico()).moveTo(lastContactPos);
