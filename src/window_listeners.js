@@ -1,4 +1,4 @@
-window.addEventListener('resize', updateCanvas)
+
 
 
 function mouseupEvent(event) {

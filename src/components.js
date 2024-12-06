@@ -1,6 +1,6 @@
 class Condensador extends Component {
     constructor(position) {
-        super(position, "Carga Capacitiva", new ComponentSymbol([
+        super(position, "Condensador", new ComponentSymbol([
                 new Line([0,0],[0,0.85],1,DEFAULT_COLOR),
                 new Line([-1,0.85],[1,0.85],1,DEFAULT_COLOR),
                 new Line([-1,1.15],[1,1.15],1,DEFAULT_COLOR),
@@ -190,11 +190,11 @@ class EightDisplay extends Component {
                 this.symbol.strokes[1].hide = !this.options.options[10].getValue()
                 this.symbol.strokes[2].hide = !this.options.options[10].getValue()
                 this.symbol.strokes[3].hide = !this.options.options[10].getValue()
-                this.symbol.strokes[19].hide = this.options.options[10].getValue()
-                this.symbol.strokes[26].hide = this.options.options[10].getValue()
-                this.symbol.strokes[27].hide = this.options.options[10].getValue()
-                this.symbol.strokes[28].hide = this.options.options[10].getValue()
-                this.symbol.strokes[29].hide = this.options.options[10].getValue()
+                this.symbol.strokes[19].hide = !this.options.options[10].getValue()
+                this.symbol.strokes[26].hide = !this.options.options[10].getValue()
+                this.symbol.strokes[27].hide = !this.options.options[10].getValue()
+                this.symbol.strokes[28].hide = !this.options.options[10].getValue()
+                this.symbol.strokes[29].hide = !this.options.options[10].getValue()
                 updateCanvas()
             }
 
@@ -238,10 +238,10 @@ class Grafcet extends Component {
                 this.symbol.strokes[11].text = this.options.options[0].getValue()
                 this.symbol.strokes[12].text = this.options.options[1].getValue()
 
-                this.symbol.strokes[7].hide = this.options.options[0].getValue() == 0
-                this.symbol.strokes[8].hide = this.options.options[0].getValue() == 0
-                this.symbol.strokes[9].hide = this.options.options[0].getValue() == 0
-                this.symbol.strokes[10].hide = this.options.options[0].getValue() == 0
+                this.symbol.strokes[7].hide = this.options.options[0].getValue().startsWith(0)
+                this.symbol.strokes[8].hide = this.options.options[0].getValue().startsWith(0)
+                this.symbol.strokes[9].hide = this.options.options[0].getValue().startsWith(0)
+                this.symbol.strokes[10].hide = this.options.options[0].getValue().startsWith(0)
                 updateCanvas()
             }
 
@@ -291,7 +291,7 @@ class ContactoLógico extends Component {
 
 class BobinaLógica extends Component {
     constructor(position) {
-        super(position, "Bobina", new ComponentSymbol([
+        super(position, "Bobina Lógica", new ComponentSymbol([
             new Line([-2,1],[-1,1],1,DEFAULT_COLOR),
             new Arc([0, 1], 1, Math.PI/2+0.3, 3*Math.PI/2-0.3, 1, DEFAULT_COLOR),
             new Arc([0, 1], 1, 3*Math.PI/2+0.3, Math.PI/2-0.3, 1, DEFAULT_COLOR),
@@ -560,8 +560,8 @@ class Transformador extends Component {
 
                 this.symbol.strokes[0].hide = !this.options.options[7].getValue()
                 this.symbol.strokes[3].hide = !this.options.options[7].getValue()
-                this.symbol.strokes[18].hide = this.options.options[7].getValue()
-                this.symbol.strokes[21].hide = this.options.options[7].getValue()
+                this.symbol.strokes[18].hide = !this.options.options[7].getValue()
+                this.symbol.strokes[21].hide = !this.options.options[7].getValue()
                 updateCanvas()
             }
 
@@ -577,7 +577,7 @@ class Transformador extends Component {
 
 class MotorDC extends Component {
     constructor(position) {
-        super(position, "Fusible", new ComponentSymbol([
+        super(position, "Motor de Corriente Continua", new ComponentSymbol([
             new Line([0,0],[0,1],1,DEFAULT_COLOR),
             new Line([0,3],[0,4],1,DEFAULT_COLOR),
             new Arc([0, 2], 1, 0, 2*Math.PI,1,DEFAULT_COLOR),
@@ -674,15 +674,15 @@ class MotorAC extends Component {
 
                 this.symbol.strokes[8].text = this.options.options[8].getValue()?1:3
                 this.symbol.strokes[0].hide = !this.options.options[8].getValue()
-                this.symbol.strokes[16].hide = this.options.options[8].getValue()
+                this.symbol.strokes[16].hide = !this.options.options[8].getValue()
                 //this.symbol.strokes[2].
 
                 this.symbol.strokes[11].hide = this.options.options[9].getValue() && !this.options.options[8].getValue()
                 this.symbol.strokes[12].hide = this.options.options[9].getValue()
                 this.symbol.strokes[13].hide = this.options.options[9].getValue()
-                this.symbol.strokes[19].hide = !this.options.options[9].getValue()
-                this.symbol.strokes[20].hide = !this.options.options[9].getValue() || this.options.options[8].getValue()
-                this.symbol.strokes[21].hide = !this.options.options[9].getValue()
+                this.symbol.strokes[19].hide = this.options.options[9].getValue()
+                this.symbol.strokes[20].hide = this.options.options[9].getValue() && !this.options.options[8].getValue()
+                this.symbol.strokes[21].hide = this.options.options[9].getValue()
                 updateCanvas()
             }
 
@@ -803,7 +803,7 @@ class FuenteAlimentacion extends Component {
                 this.symbol.strokes[23].text = this.options.options[6].getValue()?this.options.options[5].getValue():this.options.options[4].getValue()
 
                 this.symbol.strokes[0].hide = this.options.options[6].getValue()
-                this.symbol.strokes[20].hide = !this.options.options[6].getValue()
+                this.symbol.strokes[20].hide = this.options.options[6].getValue()
                 updateCanvas()
             }
 
@@ -860,7 +860,7 @@ class Diodo extends Component {
 
 class Bobina extends Component {
     constructor(position) {
-        super(position, "Fusible", new ComponentSymbol([
+        super(position, "Bobina", new ComponentSymbol([
             new Line([0,0],[0,1],1,DEFAULT_COLOR),
             new Line([-1,1], [1,1],1,DEFAULT_COLOR),
             new Line([1,1],[1,2],1,DEFAULT_COLOR),
@@ -868,13 +868,13 @@ class Bobina extends Component {
             new Line([-1,2],[1,2],1,DEFAULT_COLOR),
             new Line([0,2],[0,3],1,DEFAULT_COLOR),
             NONE_COLLECTION.clone().translate([0,2]),
-            new Text([-1.5,1.5], 17, "-K", DEFAULT_COLOR, "right"),
+            new Text([-1.5,1.5], 17, "-Q", DEFAULT_COLOR, "right"),
             new Text([0.25,0.5], 17, "A1", DEFAULT_COLOR, "left"),
             new Text([0.25,2.66], 17, "A2", DEFAULT_COLOR, "left")
             ]),
             HITBOX_BOBINA.clone(),
             new ComponentOptions([
-                new TextboxOption("Nombre", "-K", "name"),
+                new TextboxOption("Nombre", "-Q", "name"),
                 new TextboxOption("Conexión 1", "A1", "con1"),
                 new TextboxOption("Conexión 2", "A2", "con2"),
                 new ImageSelectOption("Tipo",  NONE_COLLECTION.clone().translate([0,2]), BOBINA_COLLECTION)

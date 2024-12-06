@@ -2,25 +2,25 @@ const COMPONENTS_LIST = [
     
     new Texto(),
     new Fuente(),
-    // new Tierra(),
-    // new FuenteAlimentacion(),
-    // new Transformador(),
-    // new Diferencial(),
-    // new ReleTermico(),
-    // new Diodo(),
-    // new Contactor(),
-    // new Conmutador(),
-    // new Pulsador(),
-    // new PulsadorConmutado(),
-    // new ContactoTemporizado(),
-    // new ConmutadorTemporizado(),
-    // new Bobina(),
-    // new MotorAC(),
+    new Tierra(),
+    new FuenteAlimentacion(),
+    new Transformador(),
+    new Diferencial(),
+    new ReleTermico(),
+    new Diodo(),
+    new Contactor(),
+    new Conmutador(),
+    new Pulsador(),
+    new PulsadorConmutado(),
+    new ContactoTemporizado(),
+    new ConmutadorTemporizado(),
+    new Bobina(),
+    new MotorAC(),
     // new MotorDC(),
-    // new Piloto(),
-    // new EightDisplay(),
-    // new Fusible(),
-    // new Condensador(),
+    new Piloto(),
+    new EightDisplay(),
+    new Fusible(),
+    new Condensador(),
     new Grafcet(),
     new GrafcetTransicion(),
     new Vaiven(),
@@ -40,14 +40,32 @@ const abreviatures = {
     "Vaivén": "Vvn",
     "Final de Carrera": "Vfc",
     "Temporizador": "Ton",
-    "Contacto": "Lct",
-    "Bobina": "Lbn",
+    "Contacto Lógico": "Lct",
+    "Bobina Lógica": "Lbn",
     "Alimentación": "Vcc",
     "Contacto Pulsador": "Swt",
     "S7 1200 1215C": "S75",
     "Texto": "txt",
     "Contacto": "Lct",
-    "Bobina": "Lbn"
+    "Contactor": "Ctr",
+    "Bobina": "Lbn",
+    "Toma de Tierra": "Gnd",
+    "Fuente de Alimentación":"Alm",
+    "Transformador":"Tsf",
+    "Diferencial":"Dif",
+    "Relé Térmico":"Ter",
+    "Diodo":"Led",
+    "Contacto Conmutado":"CCo",
+    "Contacto Pulsador Conmutado":"CPC",
+    "Temporizador":"Tmp",
+    "Contacto Conmutado Temporizado":"CCT",
+    "Motor de Corriente Alterna":"mCA",
+    "Señalización Óptica":"Opt",
+    "Display de 7 Segmentos":"Ds7",
+    "Fusible":"Fus",
+    "Condensador":"Cdr",
+    "Bobina":"Bob",
+    "Contacto Temporizado": "CTm"
 }
 
 function stopSimulation() {
@@ -233,6 +251,10 @@ var marcasMap = {}
 btn = createImageButton(`imgs/tia.png`)
 btn.className = "navbarButton"
 btn.onclick = () => {
+
+    let grafcetSCLCodeEtapaCero = "IF"
+    let grafcetSCLCodeFaseEtapas = ""
+
     currTemp = 0
     currHeight = 4
 
@@ -254,6 +276,7 @@ btn.onclick = () => {
         let c = addComponent(new ContactoLógico()).moveTo([2 + 3*(i+1), 5]);
         c.options.options[0].value = i;
         c.options.options[1].value = CONTACTO_NC_COLLECTION;
+        grafcetSCLCodeEtapaCero += ` NOT "Etapa ${i}" AND`
         selectComponent(c);
         unselectSelectedComponent(c);
         
@@ -261,11 +284,44 @@ btn.onclick = () => {
         
         for (var j in currEtapa.prevTransiciones) {
             calculateContactMatrix(currEtapa, j, currTemp)
-            // console.log(j)
+            console.log(currEtapa.prevTransiciones[j])
+
+            let sclTemp = "IF"
+
+            currEtapa.prevTransiciones[j].prevEtapas.pop()
+            for (var k in currEtapa.prevTransiciones[j].prevEtapas) {
+                sclTemp += ` "Etapa ${currEtapa.prevTransiciones[j].prevEtapas[k].etapa.options.options[0].value}" AND `
+            }
+            sclTemp += "\""
+            let scpAdd = currEtapa.prevTransiciones[j].transicion.options.options[0].value
+            .replace(/\*/g, '" AND "')
+            .replace(/\+/g, '" OR "')
+            .replace(/_/g, ' NOT "') 
+            .replace(/\(/g, '( "') 
+            .replace(/\)/g, '" )') 
+            sclTemp += `${scpAdd}" THEN`
+            for (var k in currEtapa.prevTransiciones[j].etapas) {
+                sclTemp += ` "Etapa ${currEtapa.prevTransiciones[j].etapas[k].etapa.options.options[0].value}" := 1;`
+            }
+            for (var k in currEtapa.prevTransiciones[j].prevEtapas) {
+                sclTemp += ` "Etapa ${currEtapa.prevTransiciones[j].prevEtapas[k].etapa.options.options[0].value}" := 0;`
+            }
+            sclTemp += `END_IF;`
+            grafcetSCLCodeFaseEtapas += sclTemp + "\n\n"
         }
         
         i++
     }
+
+    grafcetSCLCodeEtapaCero = grafcetSCLCodeEtapaCero.split("")
+    grafcetSCLCodeEtapaCero.pop()
+    grafcetSCLCodeEtapaCero.pop()
+    grafcetSCLCodeEtapaCero.pop()
+    grafcetSCLCodeEtapaCero = grafcetSCLCodeEtapaCero.join("")
+    grafcetSCLCodeEtapaCero += `THEN "Etapa 0" := 1; END_IF;`
+
+    console.log(grafcetSCLCodeEtapaCero + "\n\n" + grafcetSCLCodeFaseEtapas)
+
     let c2 = addComponent(new BobinaLógica()).moveTo([3*(i+2)-1, 5]);
     c2.options.options[0].value = "0";
     c2.options.options[1].value = BOBINA_SET_COLLECTION;
