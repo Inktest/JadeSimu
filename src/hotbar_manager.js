@@ -170,6 +170,41 @@ btn.onclick = () => {
 
 navbarDiv.appendChild(btn)
 
+btn = createImageButton(`imgs/print.png`)
+btn.className = "navbarButton"
+btn.onclick = () => {
+
+    //const { jsPDF } = window.jspdf;
+    let prevScale = scale;
+    let prevOffsetX = offsetX;
+    let prevOffsetY = offsetY;
+
+    canvas.width = A4_width
+    canvas.height = A4_height
+
+    scale = 1;
+    offsetX = 0;
+    offsetY = 0;
+
+    updateCanvas(true)
+
+    var imgData = canvas.toDataURL("image/jpeg", 1.0);
+    var pdf = new jsPDF( 700, "px", 980);
+  
+    
+    pdf.addImage(imgData, 'JPEG', 0, 0);
+    pdf.save("jadePdf.pdf");
+
+    scale = prevScale
+    offsetX = prevOffsetX
+    offsetY = prevOffsetY
+    updateCanvas()
+
+}
+
+navbarDiv.appendChild(btn)
+
+
 var currSwitches = []
 var simuButtons = []
 var fcPositions = {}
