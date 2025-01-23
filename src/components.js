@@ -226,12 +226,12 @@ class Grafcet extends Component {
             new Line([0.8,2.8],[-0.8,2.8],1,DEFAULT_COLOR),
 
             new Text([0,2], 17, "0", DEFAULT_COLOR, "center"),
-            new Text([2.5,2], 17, "None", DEFAULT_COLOR, "left")
+            new Text([2.5,2], 17, "", DEFAULT_COLOR, "left")
             ]),
             HITBOX_RESISTOR.clone(),
             new ComponentOptions([
                 new TextboxOption("Etapa", "0", "stage"),
-                new TextboxOption("Función", "None", "func")
+                new TextboxOption("Función", "", "func")
             ]))}
 
             update() {

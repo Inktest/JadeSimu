@@ -145,6 +145,9 @@ btn.onclick = () => {
     components = []
     wires = []
     currGrafcetStages = []
+    project_author = "Pablo Espinar"
+    project_name = "Proyecto 1"
+    project_name_size = "35"
     updateCanvas()
 }
 
@@ -153,7 +156,7 @@ navbarDiv.appendChild(btn)
 btn = createImageButton(`imgs/save.png`)
 btn.className = "navbarButton"
 btn.onclick = () => {
-    let componentsText = "v1.1\n"
+    let componentsText = `v1.1.1\n${page_vertical}\u{001d}${project_name}\u{001d}${project_name_size}\u{001d}${project_author}\n`
     for (var i in components) {
         componentsText += `${components[i].position[0]}\u{001d}${components[i].position[1]}\u{001d}${abreviatures[components[i].name]}`
         for (option of components[i].options.options) {
@@ -180,6 +183,9 @@ function prepareFileLoad() {
       wires = []
       currGrafcetStages = []
       lines.shift()
+      project_author = ""
+      project_name = ""
+      project_name_size = "35"
 }
 
 btn = createImageButton(`imgs/load.png`)
@@ -210,6 +216,11 @@ btn.onclick = () => {
         console.log("Loaded file from v1.1")
         return
       }
+      if (lines[0] === "v1.1.1") {
+        prepareFileLoad()
+        loadv1_1_1(lines)
+        console.log("Loaded file from v1.1.1")
+      }
       document.alert("Versión del archivo no soportada")
     };
     reader.readAsText(file);
@@ -230,8 +241,8 @@ btn.onclick = () => {
     let prevOffsetX = offsetX;
     let prevOffsetY = offsetY;
 
-    canvas.width = A4_width
-    canvas.height = A4_height
+    canvas.width = page_vertical?page_height:page_width
+    canvas.height = page_vertical?page_width:page_height
 
     scale = 1;
     offsetX = 0;
@@ -240,7 +251,9 @@ btn.onclick = () => {
     updateCanvas(true)
 
     var imgData = canvas.toDataURL("image/jpeg", 1.0);
-    var pdf = new jsPDF( 700, "px", 980);
+    let pdfHeight = page_vertical?980:700
+    let pdfWidth = page_vertical?700:980
+    var pdf = new jsPDF( pdfHeight, "px", pdfWidth);
   
     
     pdf.addImage(imgData, 'JPEG', 0, 0);
@@ -255,6 +268,73 @@ btn.onclick = () => {
 
 navbarDiv.appendChild(btn)
 
+function addTextboxToOptionsDiv(id, optionName, value, width, optionFunction) {
+    let optionsDiv = document.getElementById("optionsDiv");
+
+    let div = document.createElement("div")
+    let textbox = document.createElement('input')
+    textbox.className = "opt-txtbox"
+    textbox.type = 'text'
+    textbox.value = value
+    textbox.id = "opt-txt-"+id
+    textbox.autocomplete = "off"
+    textbox.style += `;width: ${width}px`
+    textbox.onchange = () => {
+        optionFunction(document.getElementById("opt-txt-" + id).value);
+        updateCanvas()
+    }
+
+    div.appendChild(document.createTextNode(optionName + " "));
+    div.appendChild(textbox)
+
+    optionsDiv.appendChild(div);
+}
+
+function addCheckboxToOptionsDiv(id, optionName, value, optionFunction) {
+    let optionsDiv = document.getElementById("optionsDiv");
+
+    let div = document.createElement("div")
+    let textbox = document.createElement('input')
+    textbox.className = "opt-checkbox"
+    textbox.type = 'checkbox'
+    textbox.checked = value
+    textbox.id = "opt-chk-" + id
+    textbox.onchange = () => {
+        optionFunction(document.getElementById("opt-chk-" + id).checked)
+        updateCanvas()
+    }
+
+    div.appendChild(document.createTextNode(optionName + " "));
+    div.appendChild(textbox)
+
+    optionsDiv.appendChild(div);
+}
+
+btn = createImageButton(`imgs/settings.png`)
+btn.className = "navbarButton"
+btn.onclick = () => {
+   unselectSelectedComponent()
+   let optionsDiv = document.getElementById("optionsDiv");
+   let nameDiv = document.createElement("div");
+   nameDiv.className = "nameDiv";
+   nameDiv.innerHTML = "Opciones";
+   optionsDiv.appendChild(nameDiv);
+    optionsDiv.style = `height: 105px; visibility: visible`;
+
+    //addTextboxToOptionsDiv("height", "Altura", page_height, () => {})
+    //addTextboxToOptionsDiv("width", "Anchura", page_width, () => {})
+
+    addTextboxToOptionsDiv("name", "Proyecto", project_name, 100, (name) => {project_name = name})
+    addTextboxToOptionsDiv("nameSize", "Tamaño Texto", project_name_size, 25, (name) => {project_name_size = name})
+    addTextboxToOptionsDiv("author", "Autor", project_author, 100, (name) => {project_author = name})
+    addCheckboxToOptionsDiv("vertical", "Página Vertical", page_vertical, (val) => {page_vertical = val})
+/*var project_name = "Proyecto 1"
+var project_name_size = 35
+var project_author = "Pablo Espinar"*/
+
+}
+navbarDiv.appendChild(btn)
+
 
 var currSwitches = []
 var simuButtons = []
@@ -263,7 +343,7 @@ var vaivenesDerecha = {}
 var vaivenesIzquierda = {}
 var temporizadores = {}
 
-btn = createImageButton(`imgs/simulate.png`)
+/*btn = createImageButton(`imgs/simulate.png`)
 btn.className = "navbarButton"
 btn.onclick = () => {
     if (!simuActivated) {
@@ -280,7 +360,7 @@ btn.onclick = () => {
 
     for (let i = 0; i < components.length; i++) {
         if (components[i].name == "Transición de Grafcet") {
-            Array.from(new Set(components[i].options.options[0].value.match(/[a-zA-Z0-9-]+\d*/g))).forEach(variable => {
+            Array.from(new Set(components[i].options.options[0].value.match(/[a-zA-Z0-9-]+\d* /g))).forEach(variable => {
                 if (!contactsList.includes(variable))
                     contactsList.push(variable)
             });
@@ -328,7 +408,9 @@ stopSimulation()
 }
 
 
-navbarDiv.appendChild(btn)
+navbarDiv.appendChild(btn)*/
+
+
 
 var currHeight = 0
 var currTemp = 0
@@ -644,12 +726,24 @@ currHeight += 4*pluses + 9
 
 }
 
+
+
 function addComponent(comp) {
     let c = comp.clone().moveTo([cursorX-offsetX,cursorY-offsetY])
 
         if (c.name == "Etapa de Grafcet")  {
-            c.symbol.strokes[11].text = currGrafcetStages.length
-            c.options.options[0].setValue(currGrafcetStages.length)
+            let currGrafcetsNumbers = []
+            for (let comp of components) {
+                if (comp.name == "Etapa de Grafcet") {
+                    currGrafcetsNumbers.push(Number.parseInt(comp.options.options[0].value))
+                }
+            }
+            let grafVal = 0
+            while (currGrafcetsNumbers.indexOf(grafVal) != -1) {
+                grafVal++
+            }
+            c.symbol.strokes[11].text = grafVal
+            c.options.options[0].setValue(grafVal)
             currGrafcetStages.push(c)
         
         }

@@ -107,5 +107,6 @@ window.addEventListener("keydown", (event) => {
         case "r": handleRKeyPress(event); break
         case "w": handleWKeyPress(event); break
         case "q": handleQKeyPress(event); break
+        case "c": handleCKeyPress(event); break
     }
 });

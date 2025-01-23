@@ -1,8 +1,14 @@
 const canvas = document.getElementById('cadeCanvas')
 const context = canvas.getContext('2d')
 
-const A4_width = 1748
-const A4_height = 1240
+var page_width = 1748
+var page_height = 1240
+var page_vertical = false
+
+var project_name = "Proyecto 1"
+var project_name_size = 35
+var project_author = "Pablo Espinar"
+
 const dotSize = 1
 const dotSpace = 20
 
@@ -56,10 +62,11 @@ if (!simuActivated)
 }
 
 function drawGrid() {
-    
+    let heightLimit = page_vertical?page_width:page_height
+    let widthLimit = page_vertical?page_height:page_width
     context.fillStyle = GRID_COLOR
-    for (let x = offsetX*dotSpace*scale; x < canvas.width && x < scale*(A4_width+dotSpace*offsetX); x += dotSpace*scale) {
-        for (let y = offsetY*dotSpace*scale; y < canvas.height && y < scale*(A4_height+dotSpace*offsetY); y += dotSpace*scale) {
+    for (let x = offsetX*dotSpace*scale; x < canvas.width && x < scale*(widthLimit+dotSpace*offsetX); x += dotSpace*scale) {
+        for (let y = offsetY*dotSpace*scale; y < canvas.height && y < scale*(heightLimit+dotSpace*offsetY); y += dotSpace*scale) {
             context.fillRect(x, y, dotSize, dotSize)
         }
     }
@@ -78,28 +85,64 @@ function drawBoxLine(x1, y1, x2, y2) {
 }
 
 function drawBox() {
+    if (page_vertical) {
+        drawBoxLine(3, 1, 3, 86)
+        drawBoxLine(3, 1, 61, 1)
+        drawBoxLine(61, 86, 61, 1)
+        drawBoxLine(61, 86, 3, 86)
+
+        drawBoxLine(22, 82, 61, 82)
+        drawBoxLine(22, 82, 22, 86)
+        drawBoxLine(37, 82, 37, 86)
+
+        drawBoxLine(37, 83.5, 61, 83.5)
+    } else {
    drawBoxLine(1, 3, 1, 61)
    drawBoxLine(1, 3, 86, 3)
    drawBoxLine(86, 3, 86, 61)
    drawBoxLine(1, 61, 86, 61)
+
    drawBoxLine(55, 57, 86, 57)
    drawBoxLine(70, 57, 70, 61)
    drawBoxLine(55, 57, 55, 61)
    drawBoxLine(70, 58.5, 86, 58.5)
+}
 
    context.fillStyle = BOX_COLOR
         
 
         context.textBaseline = "middle"
         context.textAlign = "left"
+        if (page_vertical) {
+            context.font = `${40*scale}px Arial`
+        context.fillText("JadeSimu", (27+offsetX)*dotSpace*scale,(84+offsetY)*dotSpace*scale)
+
+        context.font = `${project_name_size*scale}px Arial`
+        context.fillText(project_name, (38+offsetX)*dotSpace*scale,(84.75+offsetY)*dotSpace*scale)
+
+        context.font = `${17*scale}px Arial`
+        context.fillText(project_author, (38+offsetX)*dotSpace*scale,(82.75+offsetY)*dotSpace*scale)
+
+
+        img = new Image()
+        img.src = 'imgs/logo_outline.png'
+        context.drawImage(img, (22+offsetX)*dotSpace*scale, (81.5+offsetY)*dotSpace*scale, 100*scale, 100*scale)
+        }
+        else {
         context.font = `${40*scale}px Arial`
         context.fillText("JadeSimu", (60+offsetX)*dotSpace*scale,(59+offsetY)*dotSpace*scale)
-   
+
+        context.font = `${project_name_size*scale}px Arial`
+        context.fillText(project_name, (71+offsetX)*dotSpace*scale,(59.75+offsetY)*dotSpace*scale)
+
+        context.font = `${17*scale}px Arial`
+        context.fillText(project_author, (71+offsetX)*dotSpace*scale,(57.75+offsetY)*dotSpace*scale)
+
 
         img = new Image()
         img.src = 'imgs/logo_outline.png'
         context.drawImage(img, (55+offsetX)*dotSpace*scale, (56.5+offsetY)*dotSpace*scale, 100*scale, 100*scale)
-
+    }
 }
 
 function drawWires() {
