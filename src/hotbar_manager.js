@@ -1,36 +1,84 @@
 const COMPONENTS_LIST = [
     
     new Texto(),
-    new Fuente(),
-    new Tierra(),
-    new FuenteAlimentacion(),
-    new Transformador(),
-    new Diferencial(),
-    new ReleTermico(),
-    new Diodo(),
-    new Contactor(),
-    new Conmutador(),
-    new Pulsador(),
-    new PulsadorConmutado(),
-    new ContactoTemporizado(),
-    new ConmutadorTemporizado(),
-    new Bobina(),
-    new MotorAC(),
+    //new Fuente(),
+    //new Tierra(),
+    //new FuenteAlimentacion(),
+    //new Transformador()
+    //new Diferencial(),
+    //new ReleTermico(),
+    //new Diodo(),
+    //new Contactor(),
+    //new Conmutador(),
+    //new Pulsador(),
+    //new PulsadorConmutado(),
+    //new ContactoTemporizado(),
+    //new ConmutadorTemporizado(),
+    //new Bobina(),
+    //new MotorAC(),
     // new MotorDC(),
-    new Piloto(),
-    new EightDisplay(),
-    new Fusible(),
-    new Condensador(),
-    new Grafcet(),
-    new GrafcetTransicion(),
+    //new Piloto(),
+    //new EightDisplay(),
+    //new Fusible(),
+    //new Condensador(),
+    //new Grafcet(),
+    //new GrafcetTransicion(),
     new Arrow(),
-    new Vaiven(),
-    new FC(),
-    new TemporizacionLogica(),
-    new ContactoLógico(),
-    new BobinaLógica(),
+    //new Vaiven(),
+    //new FC(),
+    //new TemporizacionLogica(),
+    //new ContactoLógico(),
+    //new BobinaLógica(),
     //new S71215C(),
     //new S7SM1223()
+]
+
+class ComponentGroup {
+    constructor(name, imageName, elements) {
+        this.name = name
+        this.imageName = imageName
+        this.elements = elements
+    }
+}
+
+
+const GROUP_LIST = [
+    new ComponentGroup("Alimentación", "Fuente", [
+        new Fuente(),
+        new Tierra(),
+        new FuenteAlimentacion(),
+        new Transformador()
+    ]),
+    new ComponentGroup("Protecciones", "Diferencial", [
+        new Diferencial(),
+        new ReleTermico(),
+        new Diodo(),
+        new Condensador()
+    ]),
+    new ComponentGroup("Contactos", "Contactor", [
+        new Contactor(),
+        new Conmutador(),
+        new Pulsador(),
+        new PulsadorConmutado(),
+        new ContactoTemporizado(),
+        new ConmutadorTemporizado(),
+        new Fusible()
+    ]),
+    new ComponentGroup("Actuadores", "Bobina", [
+        new Bobina(),
+        new MotorAC(),
+        new Piloto(),
+        new EightDisplay(),
+    ]),
+    new ComponentGroup("Grafcet", "Grafcet", [
+        new Grafcet(),
+        new GrafcetTransicion(),
+        new Vaiven(),
+        new FC(),
+        new TemporizacionLogica(),
+        new ContactoLógico(),
+        new BobinaLógica()
+    ])
 ]
 
 var simuActivated = false
@@ -89,6 +137,7 @@ updateCanvas()
 }
 
 let navbarDiv = document.getElementById("navbarDiv")
+let groupDiv = document.getElementById("navbarDiv2")
 let btn = createImageButton(`imgs/new.png`)
 btn.className = "navbarButton"
 btn.onclick = () => {
@@ -621,5 +670,25 @@ for (let i = 0; i < COMPONENTS_LIST.length; i++) {
     
     }
 
+    navbarDiv.appendChild(btn)
+}
+
+for (let group of GROUP_LIST) {
+     let btn = createImageButton(`imgs/components/${group.imageName}.png`)
+    btn.className = "navbarButton"
+    btn.onclick = () => {
+        groupDiv.innerHTML = ''
+        for (let component of group.elements) {
+             let btn2 = createImageButton(`imgs/components/${component.imageName}.png`)
+            btn2.className = "navbarButton"
+            btn2.onclick = () => {
+                let c = addComponent(component)
+                unselectSelectedComponent()
+                selectComponent(c)
+            
+            }
+            navbarDiv2.appendChild(btn2)
+        }
+    }
     navbarDiv.appendChild(btn)
 }

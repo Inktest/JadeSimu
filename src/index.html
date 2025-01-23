@@ -33,11 +33,18 @@
           border: 1px solid #2e2a24;
           border-width: 3px; 
         }
+        .navbarDiv2 {
+          position:absolute;
+          width:100%;
+          height:50px;
+          top:30px;
+        }
         .versionDiv {
           position:absolute;
           width:100%;
           height:50px;
           top:2px;
+          pointer-events: none;
         }
         .opt-txtbox {
           width: 50px;
@@ -45,8 +52,14 @@
       </style>
 </head>
 <body>
+
+  
   <div class="navbarDiv" id="navbarDiv">
-    <div style="text-align: right;font-size: 10px; padding-right: 5px; border-top: 50px;">v1.1.2b</div>
+  </div>
+  <div class="navbarDiv2" id="navbarDiv2">
+  </div>
+  <div class="versionDiv" id="versionDiv">
+    <div style="text-align: right;font-size: 10px; padding-right: 5px; border-top: 50px;">v1.1.2c</div>
   </div>
   <canvas id="cadeCanvas"></canvas>
   
