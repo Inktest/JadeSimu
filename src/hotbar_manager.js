@@ -23,6 +23,7 @@ const COMPONENTS_LIST = [
     new Condensador(),
     new Grafcet(),
     new GrafcetTransicion(),
+    new Arrow(),
     new Vaiven(),
     new FC(),
     new TemporizacionLogica(),
@@ -65,7 +66,8 @@ const abreviatures = {
     "Fusible":"Fus",
     "Condensador":"Cdr",
     "Bobina":"Bob",
-    "Contacto Temporizado": "CTm"
+    "Contacto Temporizado": "CTm",
+    "Continuación de Linea": "Arr"
 }
 
 function stopSimulation() {

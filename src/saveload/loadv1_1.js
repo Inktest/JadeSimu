@@ -266,6 +266,12 @@ const loadv1_1 = (line) => {
         selectComponent(c)
     }
 
+    if (abreviature == "Arr") {
+        c = addComponent(new Arrow()).moveTo([firstCoord, secondCoord])
+        c.options.options[0].value = lines[0]
+        selectComponent(c)
+    }
+
     if (abreviature == "Wre") {
         wires.push(new Line([firstCoord, secondCoord], [lines[0], lines[1]], 1, DEFAULT_COLOR))
     }

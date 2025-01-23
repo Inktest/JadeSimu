@@ -238,6 +238,7 @@ class Grafcet extends Component {
                 this.symbol.strokes[11].text = this.options.options[0].getValue()
                 this.symbol.strokes[12].text = this.options.options[1].getValue()
 
+                this.symbol.strokes[2].hide = this.options.options[1].getValue().trim() != ""
                 this.symbol.strokes[7].hide = this.options.options[0].getValue().startsWith(0)
                 this.symbol.strokes[8].hide = this.options.options[0].getValue().startsWith(0)
                 this.symbol.strokes[9].hide = this.options.options[0].getValue().startsWith(0)
@@ -247,6 +248,36 @@ class Grafcet extends Component {
 
             clone() {
                 let newobj = new Grafcet(this.position)
+                newobj.name = this.name
+                newobj.symbol = this.symbol.clone()
+                newobj.hitbox = this.hitbox.clone()
+                newobj.options = this.options.clone()
+                return newobj
+            }
+}
+
+class Arrow extends Component {
+    constructor(position) {
+        super(position, "Continuación de Linea", new ComponentSymbol([
+            new Line([-0.5,0],[0.5,0],1,DEFAULT_COLOR),
+            new Line([-0.5,0],[0,1],1,DEFAULT_COLOR),
+            new Line([0.5, 0],[0, 1],1,DEFAULT_COLOR),
+
+            new Text([1, 0.5], 17, "X0", DEFAULT_COLOR, "left")
+            ]),
+            HITBOX_RESISTOR.clone(),
+            new ComponentOptions([
+                new TextboxOption("Texto", "X0", "txt"),
+            ]))}
+
+            update() {
+                this.symbol.strokes[3].text = this.options.options[0].getValue()
+                
+                updateCanvas()
+            }
+
+            clone() {
+                let newobj = new Arrow(this.position)
                 newobj.name = this.name
                 newobj.symbol = this.symbol.clone()
                 newobj.hitbox = this.hitbox.clone()
