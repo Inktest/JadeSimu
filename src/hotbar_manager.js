@@ -160,21 +160,21 @@ btn.onclick = () => {
     project_name = "Proyecto 1"
     project_name_size = "35"
     updateCanvas()
+    saveComponents()
 }
 
 navbarDiv.appendChild(btn)
 
-btn = createImageButton(`imgs/save.png`)
-btn.className = "navbarButton"
-btn.onclick = () => {
+function getSaveText() {
     let componentsText = `v1.1.1\n${page_vertical}\u{001d}${project_name}\u{001d}${project_name_size}\u{001d}${project_author}\n`
     for (var i in components) {
         componentsText += `${components[i].position[0]}\u{001d}${components[i].position[1]}\u{001d}${abreviatures[components[i].name]}`
         for (option of components[i].options.options) {
-            console.log(option)
+            //console.log(option)
             if (typeof option.value === "object") { 
                 componentsText += `\u{001d}` + option.value.id
-                console.log(option.value)}
+                //console.log(option.value)
+            }
             else
                 componentsText += `\u{001d}` + option.value
         }
@@ -184,7 +184,13 @@ btn.onclick = () => {
     for (var i in wires) {
         componentsText += `${wires[i].start[0]}\u{001d}${wires[i].start[1]}\u{001d}Wre\u{001d}${wires[i].end[0]}\u{001d}${wires[i].end[1]}\n`
     }
-    downloadTextFile(project_name?project_name+".jad":"jadeFile.jad", componentsText)
+    return componentsText
+}
+
+btn = createImageButton(`imgs/save.png`)
+btn.className = "navbarButton"
+btn.onclick = () => {
+    downloadTextFile(project_name?project_name+".jad":"jadeFile.jad", getSaveText())
 }
 navbarDiv.appendChild(btn)
 
@@ -213,31 +219,8 @@ btn.onclick = () => {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = function(event) {
-      const contents = event.target.result;
-      console.log("File contents:", contents);
-      lines = contents.split("\n")
-      if (lines[0] === "v1") {
-        prepareFileLoad()
-        loadv1(lines)
-        console.log("Loaded file from v1")
-        updateCanvas()
-        return
-      }
-      if (lines[0] === "v1.1") {
-        prepareFileLoad()
-        loadv1_1(lines)
-        console.log("Loaded file from v1.1")
-        updateCanvas()
-        return
-      }
-      if (lines[0] === "v1.1.1") {
-        prepareFileLoad()
-        loadv1_1_1(lines)
-        console.log("Loaded file from v1.1.1")
-        updateCanvas()
-        return
-      }
-      document.alert("Versión del archivo no soportada")
+      loadFromFileText(event.target.result)
+      saveComponents()
     };
     reader.readAsText(file);
   };

@@ -102,6 +102,7 @@ window.addEventListener("wheel", (event) => {
 
 window.addEventListener("keydown", (event) => {
     
+    if (document.activeElement.nodeName.toLocaleLowerCase() !== 'input')
     switch (event.key.toLowerCase()) {
         case "delete": handleDeleteKeyPress(event); break
         case "r": handleRKeyPress(event); break
@@ -110,3 +111,9 @@ window.addEventListener("keydown", (event) => {
         case "c": handleCKeyPress(event); break
     }
 });
+
+window.addEventListener('load', () => {
+    let savedData = localStorage.getItem('components')
+    if (savedData)
+        loadFromFileText(savedData)
+})

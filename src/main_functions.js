@@ -5,6 +5,7 @@ function unselectSelectedComponent() {
         selectedComponent = null
             }
         clearOptions()
+        saveComponents()
 }
 
 function spawnObjectAtCursor(obj) {
@@ -29,6 +30,7 @@ function deleteSelectedObject() {
     components.splice(index, 1)
     updateCanvas()
     calculateHitboxMap()
+    saveComponents()
 }
 
 function selectComponent(obj) {
@@ -106,4 +108,35 @@ function downloadTextFile(name, content) {
     link.download = name
     link.click()
     URL.revokeObjectURL(link.href)
+}
+
+function saveComponents() {
+    localStorage.setItem("components", getSaveText())
+}
+
+function loadFromFileText(contents) {
+    console.log("File contents:", contents);
+    lines = contents.split("\n")
+    if (lines[0] === "v1") {
+      prepareFileLoad()
+      loadv1(lines)
+      console.log("Loaded file from v1")
+      updateCanvas()
+      return
+    }
+    if (lines[0] === "v1.1") {
+      prepareFileLoad()
+      loadv1_1(lines)
+      console.log("Loaded file from v1.1")
+      updateCanvas()
+      return
+    }
+    if (lines[0] === "v1.1.1") {
+      prepareFileLoad()
+      loadv1_1_1(lines)
+      console.log("Loaded file from v1.1.1")
+      updateCanvas()
+      return
+    }
+    alert("Versión del archivo no soportada")
 }
