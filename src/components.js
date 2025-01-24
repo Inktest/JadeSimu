@@ -323,11 +323,15 @@ class Texto extends Component {
             new ComponentOptions([
                 new TextboxOption("Texto", "Texto", "text"),
                 new TextboxOption("Tamaño", "17", "size"),
+                new TextboxOption("Color", DEFAULT_COLOR, "col"),
             ]))}
 
             update() {
                 this.symbol.strokes[0].text = this.options.options[0].getValue()
                 this.symbol.strokes[0].size = isNaN(this.options.options[1].getValue())?17:Number.parseInt(this.options.options[1].getValue())
+                let colorT = this.options.options[2].getValue().replace(/#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})/, "").trim()==""?this.options.options[2].getValue():"#000"
+                this.options.options[2].setValue(colorT)
+                this.symbol.strokes[0].color = colorT
                 updateCanvas()
             }
 
