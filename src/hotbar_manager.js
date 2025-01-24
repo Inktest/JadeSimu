@@ -184,7 +184,7 @@ btn.onclick = () => {
     for (var i in wires) {
         componentsText += `${wires[i].start[0]}\u{001d}${wires[i].start[1]}\u{001d}Wre\u{001d}${wires[i].end[0]}\u{001d}${wires[i].end[1]}\n`
     }
-    downloadTextFile("file.jad", componentsText)
+    downloadTextFile(project_name?project_name+".jad":"jadeFile.jad", componentsText)
 }
 navbarDiv.appendChild(btn)
 
