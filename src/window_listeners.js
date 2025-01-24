@@ -25,7 +25,7 @@ function mousemoveEvent(event) {
     }
 
     
-    if (event.buttons === 1 && !selectedComponent) {
+    if (event.buttons === 1 && !selectedComponent && document.activeElement.nodeName.toLowerCase() !== 'input') {
         offsetX += event.movementX/dotSpace/scale
         offsetY += event.movementY/dotSpace/scale
         
