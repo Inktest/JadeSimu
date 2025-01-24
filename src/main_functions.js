@@ -1,5 +1,6 @@
 function unselectSelectedComponent() {
     if (selectedComponent) {
+        selectedComponent.roundPosition()
         selectedComponent.symbol.setColor(DEFAULT_COLOR)
         selectedComponent.update()
         selectedComponent = null

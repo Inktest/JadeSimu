@@ -775,8 +775,8 @@ for (let group of GROUP_LIST) {
              let btn2 = createImageButton(`imgs/components/${component.imageName}.png`)
             btn2.className = "navbarButton"
             btn2.onclick = () => {
-                let c = addComponent(component)
                 unselectSelectedComponent()
+                let c = addComponent(component)
                 selectComponent(c)
             
             }
