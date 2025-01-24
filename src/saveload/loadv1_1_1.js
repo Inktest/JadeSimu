@@ -1,6 +1,6 @@
 const loadv1_1_1 = (line) => {
 
-    const StrokeCollectionListv1_1 = [NONE_COLLECTION, BOBINA_SET_COLLECTION, BOBINA_RESET_COLLECTION, CONTACTO_NC_COLLECTION, CONTACTO_FS_COLLECTION, LED_DIODO_COLLECTION, FOTO_DIODO_COLLECTION, ZENER_DIODO_COLLECTION, SCHOTTKY_DIODO_COLLECTION, TUNEL_DIODO_COLLECTION, VARICAP_DIODO_COLLECTION, PULSADOR_COLLECTION, SETA_COLLECTION, FC_COLLECTION, INTERRUPTOR_COLLECTION, SENSOR_COLLECTION, TIRADOR_COLLECTION, LLAVE_COLLECTION, GENERAL_COLLECTION, PEDAL_COLLECTION, VOLANTE_COLLECTION, MANIVELA_COLLECTION, PALANCA_COLLECTION, LEVA_COLLECTION, RETARDO_ON_COLLECTION, RETARDO_OFF_COLLECTION, RETARDO_ONOFF_COLLECTION, RETARDO_ON_BOBINA_COLLECTION, RETARDO_OFF_BOBINA_COLLECTION, RETARDO_ONOFF_BOBINA_COLLECTION, REMANENCIA_BOBINA_COLLECTION, ENCLAVAMIENTO_BOBINA_COLLECTION, INTERMITENTE_BOBINA_COLLECTION, TEMP_TON_COLLECTION, IMPULSO_BOBINA_COLLECTION, RELE_TERMICO_ADD]
+    const StrokeCollectionListv1_1_1 = [NONE_COLLECTION, BOBINA_SET_COLLECTION, BOBINA_RESET_COLLECTION, CONTACTO_NC_COLLECTION, CONTACTO_FS_COLLECTION, LED_DIODO_COLLECTION, FOTO_DIODO_COLLECTION, ZENER_DIODO_COLLECTION, SCHOTTKY_DIODO_COLLECTION, TUNEL_DIODO_COLLECTION, VARICAP_DIODO_COLLECTION, PULSADOR_COLLECTION, SETA_COLLECTION, FC_COLLECTION, INTERRUPTOR_COLLECTION, SENSOR_COLLECTION, TIRADOR_COLLECTION, LLAVE_COLLECTION, GENERAL_COLLECTION, PEDAL_COLLECTION, VOLANTE_COLLECTION, MANIVELA_COLLECTION, PALANCA_COLLECTION, LEVA_COLLECTION, RETARDO_ON_COLLECTION, RETARDO_OFF_COLLECTION, RETARDO_ONOFF_COLLECTION, RETARDO_ON_BOBINA_COLLECTION, RETARDO_OFF_BOBINA_COLLECTION, RETARDO_ONOFF_BOBINA_COLLECTION, REMANENCIA_BOBINA_COLLECTION, ENCLAVAMIENTO_BOBINA_COLLECTION, INTERMITENTE_BOBINA_COLLECTION, TEMP_TON_COLLECTION, IMPULSO_BOBINA_COLLECTION, RELE_TERMICO_ADD, ACTUADOR_LINEAR_NO_AMORTIGUACION, ACTUADOR_LINEAR_AMORTIGUACION, ACTUADOR_SENSOR_FC]
 
     let abreviature, firstCoord, secondCoord, lines;
     
@@ -64,7 +64,7 @@ const loadv1_1_1 = (line) => {
         c.options.options[1].value = lines[1]
         c.options.options[2].value = lines[2]
         c.options.options[3].value = !lines[3]
-        c.options.options[4].value = StrokeCollectionListv1_1[lines[4]].clone().translate([-2,2])
+        c.options.options[4].value = StrokeCollectionListv1_1_1[lines[4]].clone().translate([-2,2])
         selectComponent(c)
     }
 
@@ -83,14 +83,14 @@ const loadv1_1_1 = (line) => {
     if (abreviature == "Lct") {
         c = addComponent(new ContactoLógico()).moveTo([firstCoord, secondCoord])
         c.options.options[0].value = lines[0]
-        c.options.options[1].value = StrokeCollectionListv1_1[lines[1]].clone()
+        c.options.options[1].value = StrokeCollectionListv1_1_1[lines[1]].clone()
         selectComponent(c)
     }
 
     if (abreviature == "Lbn") {
         c = addComponent(new BobinaLógica()).moveTo([firstCoord, secondCoord])
         c.options.options[0].value = lines[0]
-        c.options.options[1].value = StrokeCollectionListv1_1[lines[1]].clone()
+        c.options.options[1].value = StrokeCollectionListv1_1_1[lines[1]].clone()
         selectComponent(c)
     }
 
@@ -149,7 +149,7 @@ const loadv1_1_1 = (line) => {
         c.options.options[0].value = lines[0]
         c.options.options[1].value = lines[1]
         c.options.options[2].value = lines[2]
-        c.options.options[3].value = StrokeCollectionListv1_1[lines[3]].clone().translate([0,2])
+        c.options.options[3].value = StrokeCollectionListv1_1_1[lines[3]].clone().translate([0,2])
         selectComponent(c)
     }
 
@@ -168,7 +168,7 @@ const loadv1_1_1 = (line) => {
         c.options.options[1].value = lines[1]
         c.options.options[2].value = lines[2]
         c.options.options[3].value = lines[3]
-        c.options.options[4].value = StrokeCollectionListv1_1[lines[4]].clone().translate([-2,2])
+        c.options.options[4].value = StrokeCollectionListv1_1_1[lines[4]].clone().translate([-2,2])
         selectComponent(c)
     }
 
@@ -176,7 +176,7 @@ const loadv1_1_1 = (line) => {
         c = addComponent(new TemporizacionLogica()).moveTo([firstCoord, secondCoord])
         c.options.options[0].value = lines[0]
         c.options.options[1].value = lines[1]
-        c.options.options[2].value = StrokeCollectionListv1_1[lines[2]].clone()
+        c.options.options[2].value = StrokeCollectionListv1_1_1[lines[2]].clone()
         selectComponent(c)
     }
 
@@ -186,7 +186,7 @@ const loadv1_1_1 = (line) => {
         c.options.options[1].value = lines[1]
         c.options.options[2].value = lines[2]
         c.options.options[3].value = lines[3]
-        c.options.options[4].value = StrokeCollectionListv1_1[lines[4]].clone().translate([-2,2])
+        c.options.options[4].value = StrokeCollectionListv1_1_1[lines[4]].clone().translate([-2,2])
         selectComponent(c)
     }
 
@@ -196,7 +196,7 @@ const loadv1_1_1 = (line) => {
         c.options.options[1].value = lines[1]
         c.options.options[2].value = lines[2]
         c.options.options[3].value = lines[3] === "true"
-        c.options.options[4].value = StrokeCollectionListv1_1[lines[4]].clone().translate([-2,2])
+        c.options.options[4].value = StrokeCollectionListv1_1_1[lines[4]].clone().translate([-2,2])
         selectComponent(c)
     }
 
@@ -260,7 +260,7 @@ const loadv1_1_1 = (line) => {
         c.options.options[0].value = lines[0]
         c.options.options[1].value = lines[1]
         c.options.options[2].value = lines[2]
-        c.options.options[3].value = StrokeCollectionListv1_1[lines[3]].clone().translate([0, 2])
+        c.options.options[3].value = StrokeCollectionListv1_1_1[lines[3]].clone().translate([0, 2])
         selectComponent(c)
     }
 
@@ -278,6 +278,42 @@ const loadv1_1_1 = (line) => {
         c.options.options[0].value = lines[0]
         selectComponent(c)
     }
+
+    if (abreviature == "Nal") {
+        c = addComponent(new ActuadorLineal()).moveTo([firstCoord, secondCoord])
+        c.options.options[0].value = lines[0]
+        c.options.options[1].value = lines[1]
+        c.options.options[2].value = lines[2]
+        c.options.options[3].value = lines[3] === "true"
+        c.options.options[4].value = lines[4] === "true"
+        c.options.options[5].value = StrokeCollectionListv1_1_1[lines[5]].clone().translate([1, 0])
+        c.options.options[6].value = StrokeCollectionListv1_1_1[lines[6]].clone()
+        if (c.options.options[6].value.id === 38) c.options.options[6].value.translate([-1, -0.75])
+        selectComponent(c)
+    }
+
+    if (abreviature == "Nag") {
+        c = addComponent(new ActuadorGiratorio()).moveTo([firstCoord, secondCoord])
+        c.options.options[0].value = lines[0]
+        c.options.options[1].value = lines[1]
+        c.options.options[2].value = lines[2]
+        c.options.options[3].value = StrokeCollectionListv1_1_1[lines[3]].clone()
+        if (c.options.options[3].value.id === 38) c.options.options[3].value.translate([-1, -0.75])
+        selectComponent(c)
+    }
+
+    if (abreviature == "Npz") {
+        c = addComponent(new PinzaNeumatica()).moveTo([firstCoord, secondCoord])
+        c.options.options[0].value = lines[0]
+        c.options.options[1].value = lines[1]
+        c.options.options[2].value = lines[2]
+        c.options.options[3].value = lines[3] === "true"
+        c.options.options[4].value = StrokeCollectionListv1_1_1[lines[4]].clone()
+        if (c.options.options[4].value.id === 38) c.options.options[4].value.translate([-1, -0.75])
+        selectComponent(c)
+    }
+
+    // TODO: Add Neumatica
 
     if (abreviature == "Wre") {
         wires.push(new Line([firstCoord, secondCoord], [lines[0], lines[1]], 1, DEFAULT_COLOR))

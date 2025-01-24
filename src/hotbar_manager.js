@@ -69,15 +69,23 @@ const GROUP_LIST = [
         new MotorAC(),
         new Piloto(),
         new EightDisplay(),
+        new Vaiven(),
     ]),
     new ComponentGroup("Grafcet", "Grafcet", [
         new Grafcet(),
         new GrafcetTransicion(),
-        new Vaiven(),
         new FC(),
         new TemporizacionLogica(),
         new ContactoLógico(),
         new BobinaLógica()
+    ]),
+    new ComponentGroup("Neumática", "ActuadorLineal", [
+        new ActuadorLineal(),
+        new ActuadorGiratorio(),
+        new PinzaNeumatica()
+    ]),
+    new ComponentGroup("Autómatas", "S71215C", [
+        new S71215C()
     ])
 ]
 
@@ -115,7 +123,10 @@ const abreviatures = {
     "Condensador":"Cdr",
     "Bobina":"Bob",
     "Contacto Temporizado": "CTm",
-    "Continuación de Linea": "Arr"
+    "Continuación de Linea": "Arr",
+    "Actuador Lineal": "Nal",
+    "Actuador Giratorio": "Nag",
+    "Pinza Neumática": "Npz"
 }
 
 function stopSimulation() {
@@ -178,6 +189,7 @@ btn.onclick = () => {
 navbarDiv.appendChild(btn)
 
 function prepareFileLoad() {
+    unselectSelectedComponent()
     stopSimulation()
       components = []
       wires = []
@@ -208,18 +220,22 @@ btn.onclick = () => {
         prepareFileLoad()
         loadv1(lines)
         console.log("Loaded file from v1")
+        updateCanvas()
         return
       }
       if (lines[0] === "v1.1") {
         prepareFileLoad()
         loadv1_1(lines)
         console.log("Loaded file from v1.1")
+        updateCanvas()
         return
       }
       if (lines[0] === "v1.1.1") {
         prepareFileLoad()
         loadv1_1_1(lines)
         console.log("Loaded file from v1.1.1")
+        updateCanvas()
+        return
       }
       document.alert("Versión del archivo no soportada")
     };
@@ -257,7 +273,7 @@ btn.onclick = () => {
   
     
     pdf.addImage(imgData, 'JPEG', 0, 0);
-    pdf.save("jadePdf.pdf");
+    pdf.save(project_name?project_name+".pdf":"jadePdf.pdf");
 
     scale = prevScale
     offsetX = prevOffsetX
@@ -728,9 +744,9 @@ currHeight += 4*pluses + 9
 
 
 
-function addComponent(comp) {
+function addComponent(comp, copy) {
     let c = comp.clone().moveTo([cursorX-offsetX,cursorY-offsetY])
-
+    if (!copy) {
         if (c.name == "Etapa de Grafcet")  {
             let currGrafcetsNumbers = []
             for (let comp of components) {
@@ -747,7 +763,7 @@ function addComponent(comp) {
             currGrafcetStages.push(c)
         
         }
-        
+    }
     components.push(c)
     updateCanvas()
     return c

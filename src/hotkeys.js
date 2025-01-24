@@ -38,7 +38,7 @@ function handleQKeyPress(event) {
 
 function handleCKeyPress(event) {
     if (event.ctrlKey && selectedComponent) {
-    let c = addComponent(selectedComponent.clone())
+    let c = addComponent(selectedComponent.clone(), true)
         unselectSelectedComponent()
         selectComponent(c)
     }

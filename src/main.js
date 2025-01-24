@@ -43,7 +43,7 @@ var currGrafcetStages = []
 
 function updateCanvas(noUpdateRes) {
     if (!noUpdateRes) {
-        canvas.width = window.innerWidth
+    canvas.width = window.innerWidth
         canvas.height = window.innerHeight
     }
 

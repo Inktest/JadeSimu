@@ -29,6 +29,8 @@ class Condensador extends Component {
 
 }
 
+
+
 class Piloto extends Component {
     constructor(position) {
         super(position, "Señalización Óptica", new ComponentSymbol([
@@ -91,6 +93,226 @@ class Piloto extends Component {
                 return newobj
             }
 }
+
+class ActuadorLineal extends Component {
+    constructor(position) {
+        super(position, "Actuador Lineal", new ComponentSymbol([
+            //new RectangleArray([0, 0], [9, 4], 1, DEFAULT_COLOR),
+            new Line([0, 0], [0, 1.5], 1, DEFAULT_COLOR),
+            new Line([0, 2.5], [0,4], 1, DEFAULT_COLOR),
+            new Line([0, 0], [9, 0], 1, DEFAULT_COLOR),
+            new Line([0, 4], [9, 4], 1, DEFAULT_COLOR),
+            new Line([9, 4], [9, 2.5], 1, DEFAULT_COLOR),
+            new Line([9, 0], [9, 1.5], 1, DEFAULT_COLOR),
+
+            new Line([1,4], [1,5], 1, DEFAULT_COLOR),
+            new Line([8,4], [8,5], 1, DEFAULT_COLOR, true),
+        
+            new RectangleArray([3,1.5],[11,2.5], 1, DEFAULT_COLOR),
+            ACTUADOR_LINEAR_NO_AMORTIGUACION.clone().translate([1, 0]),
+        
+            new Line([3, 4], [4, 0], 1, DEFAULT_COLOR),
+            new Line([5, 4], [4, 0], 1, DEFAULT_COLOR),
+            new Line([5, 4], [6, 0], 1, DEFAULT_COLOR),
+            new Line([7, 4], [6, 0], 1, DEFAULT_COLOR),
+            new Line([7, 4], [8, 0], 1, DEFAULT_COLOR),
+            new Line([9, 4], [8, 0], 1, DEFAULT_COLOR),
+
+            new Line([0, 1.5], [0, 2.5], 1, DEFAULT_COLOR),
+            new RectangleArray([1,1.5],[-3, 2.5], 1, DEFAULT_COLOR, true),
+
+            NONE_COLLECTION.clone(),
+            NONE_COLLECTION.clone(),
+            NONE_COLLECTION.clone(),
+            
+            new Text([4, -2], 17, "a0", DEFAULT_COLOR, "right", 0, true),
+            new Text([8, -2], 17, "a1", DEFAULT_COLOR, "left", 0, true),
+            new Text([6, -3], 17, "a2", DEFAULT_COLOR, "center", 0, true)
+        ]),
+        HITBOX_ACTUADOR_LINEAR.clone(),
+            new ComponentOptions([
+                new TextboxOption("Sensor Cerrado", "a0", "s0"),
+                new TextboxOption("Sensor Abierto", "a1", "s1"),
+                new TextboxOption("Sensor Medio", "a2", "s2"),
+                new CheckboxOption("Doble Efecto", false, "dobleE"),
+                new CheckboxOption("Doble Vástago", false, "dobleV"),
+                new ImageSelectOption("Amortiguación",ACTUADOR_LINEAR_NO_AMORTIGUACION.clone().translate([1, 0]),ACTUADOR_LINEAR_COLLECTION),
+                new ImageSelectOption("Sensor",NONE_COLLECTION.clone(),ACTUADOR_LINEAR_SENSORES_COLLECTION)
+            ]))}
+
+            update() {
+                
+                this.symbol.strokes[7].hide = this.options.options[3].getValue()
+                this.symbol.strokes[16].hide = !this.options.options[4].getValue()
+                this.symbol.strokes[17].hide = !this.options.options[4].getValue()
+
+                this.symbol.strokes[9] = this.options.options[5].getValue()
+                this.symbol.strokes[18] = this.options.options[0].getValue().trim()!=""?this.options.options[6].getValue().clone().translate([4.5, -1]).setColor(DEFAULT_COLOR):NONE_COLLECTION.clone()
+                this.symbol.strokes[19] = this.options.options[1].getValue().trim()!=""?this.options.options[6].getValue().clone().translate([8.5, -1]).setColor(DEFAULT_COLOR):NONE_COLLECTION.clone()
+                this.symbol.strokes[20] = this.options.options[2].getValue().trim()!=""?this.options.options[6].getValue().clone().translate([6.5, -1.5]).setColor(DEFAULT_COLOR):NONE_COLLECTION.clone()
+        
+                this.symbol.strokes[10].hide = !this.options.options[3].getValue()
+                this.symbol.strokes[11].hide = !this.options.options[3].getValue()
+                this.symbol.strokes[12].hide = !this.options.options[3].getValue()
+                this.symbol.strokes[13].hide = !this.options.options[3].getValue()
+                this.symbol.strokes[14].hide = !this.options.options[3].getValue()
+                this.symbol.strokes[15].hide = !this.options.options[3].getValue()
+
+                this.symbol.strokes[21].hide = this.options.options[6].getValue().id != 0
+                this.symbol.strokes[22].hide = this.options.options[6].getValue().id != 0
+                this.symbol.strokes[23].hide = this.options.options[6].getValue().id != 0
+                this.symbol.strokes[21].text = this.options.options[0].getValue()
+                this.symbol.strokes[22].text = this.options.options[1].getValue()
+                this.symbol.strokes[23].text = this.options.options[2].getValue()
+
+                updateCanvas()
+            }
+
+            clone() {
+                let newobj = new ActuadorLineal(this.position)
+                newobj.name = this.name
+                newobj.symbol = this.symbol.clone()
+                newobj.hitbox = this.hitbox.clone()
+                newobj.options = this.options.clone()
+                return newobj
+            }
+}
+
+class ActuadorGiratorio extends Component {
+    constructor(position) {
+        super(position, "Actuador Giratorio", new ComponentSymbol([
+            //new RectangleArray([0, 0], [9, 4], 1, DEFAULT_COLOR),
+            new Line([-2, 3], [2, 3], 1, DEFAULT_COLOR),
+            new Arc([0, 3], 2, Math.PI, 0, 1, DEFAULT_COLOR),
+            new Line([-1, 3], [-1, 4], 1, DEFAULT_COLOR),
+            new Line([1, 3], [1, 4], 1, DEFAULT_COLOR),
+
+            new Line([0.75, 3], [1, 2.5], 1, DEFAULT_COLOR),
+            new Line([1.25, 3], [1, 2.5], 1, DEFAULT_COLOR),
+            new Line([-0.75, 3], [-1, 2.5], 1, DEFAULT_COLOR),
+            new Line([-1.25, 3], [-1, 2.5], 1, DEFAULT_COLOR),
+
+
+            NONE_COLLECTION.clone(),
+            NONE_COLLECTION.clone(),
+            NONE_COLLECTION.clone(),
+            
+            new Text([-3.25, 2], 17, "a0", DEFAULT_COLOR, "right", 0, true),
+            new Text([3.25, 2], 17, "a1", DEFAULT_COLOR, "left", 0, true),
+            new Text([0, -1], 17, "a2", DEFAULT_COLOR, "left", 0, true)
+        ]),
+        HITBOX_RELETERMICO.clone(),
+            new ComponentOptions([
+                new TextboxOption("Sensor Cerrado", "a0", "s0"),
+                new TextboxOption("Sensor Abierto", "a1", "s1"),
+                new TextboxOption("Sensor Medio", "a2", "s2"),
+                new ImageSelectOption("Sensor",NONE_COLLECTION.clone(),ACTUADOR_LINEAR_SENSORES_COLLECTION)
+            ]))}
+
+            update() {
+
+                this.symbol.strokes[8] = this.options.options[0].getValue().trim()!=""?this.options.options[3].getValue().clone().translate([-2, 2]).setColor(DEFAULT_COLOR):NONE_COLLECTION.clone()
+                this.symbol.strokes[9] = this.options.options[1].getValue().trim()!=""?this.options.options[3].getValue().clone().translate([3, 2]).setColor(DEFAULT_COLOR):NONE_COLLECTION.clone()
+                this.symbol.strokes[10] = this.options.options[1].getValue().trim()!=""?this.options.options[3].getValue().clone().translate([0.5, 0]).setColor(DEFAULT_COLOR):NONE_COLLECTION.clone()
+                
+                this.symbol.strokes[11].hide = this.options.options[3].getValue().id != 0
+                this.symbol.strokes[12].hide = this.options.options[3].getValue().id != 0
+                this.symbol.strokes[13].hide = this.options.options[3].getValue().id != 0
+                this.symbol.strokes[11].text = this.options.options[0].getValue()
+                this.symbol.strokes[12].text = this.options.options[1].getValue()
+                this.symbol.strokes[13].text = this.options.options[2].getValue()
+
+                updateCanvas()
+            }
+
+            clone() {
+                let newobj = new ActuadorGiratorio(this.position)
+                newobj.name = this.name
+                newobj.symbol = this.symbol.clone()
+                newobj.hitbox = this.hitbox.clone()
+                newobj.options = this.options.clone()
+                return newobj
+            }
+}
+
+class PinzaNeumatica extends Component {
+    constructor(position) {
+        super(position, "Pinza Neumática", new ComponentSymbol([
+            //new RectangleArray([0, 0], [9, 4], 1, DEFAULT_COLOR),
+            new RectangleArray([3,0],[9,4], 1, DEFAULT_COLOR),
+            new Line([7, 0], [7, 4], 1, DEFAULT_COLOR),
+            new Line([7,2],[2,2], 2, DEFAULT_COLOR),
+
+            new Line([9,0],[8.66,4], 1, DEFAULT_COLOR),
+            new Line([8.33,0],[8.66,4], 1, DEFAULT_COLOR),
+            new Line([8.33,0],[8,4], 1, DEFAULT_COLOR),
+            new Line([7.5,0],[8,4], 1, DEFAULT_COLOR),
+            new Line([7.5,0],[7,4], 1, DEFAULT_COLOR),
+            new Line([7.5,0],[7,4], 1, DEFAULT_COLOR),
+
+            new Line([8,4],[8,5], 1, DEFAULT_COLOR, true),
+            new Line([4,4],[4,5], 1, DEFAULT_COLOR),
+
+            new Line([0, 0.5],[2,0.5], 1, DEFAULT_COLOR),
+            new Line([0, 3.5],[2,3.5], 1, DEFAULT_COLOR),
+            new Line([2, 0.5],[2,3.5], 1, DEFAULT_COLOR),
+
+            new Line([2, 2],[0, 0], 1, DEFAULT_COLOR, true),
+            new Line([2, 2],[0, 4], 1, DEFAULT_COLOR, true),
+
+            NONE_COLLECTION.clone(),
+            NONE_COLLECTION.clone(),
+
+            
+           new Text([5, -1.5], 17, "a0", DEFAULT_COLOR, "right", 0, true),
+           new Text([10, -1.5], 17, "a1", DEFAULT_COLOR, "left", 0, true)
+        ]),
+        HITBOX_ACTUADOR_LINEAR.clone(),
+            new ComponentOptions([
+                new TextboxOption("Sensor Cerrado", "a0", "s0"),
+                new TextboxOption("Sensor Abierto", "a1", "s1"),
+                new CheckboxOption("Doble Efecto", false, "dobleE"),
+                new CheckboxOption("Pinza Rotativa", false, "rot"),
+                new ImageSelectOption("Sensor",NONE_COLLECTION.clone(),ACTUADOR_LINEAR_SENSORES_COLLECTION)
+                
+            ]))}
+
+            update() {
+
+                this.symbol.strokes[3].hide = !this.options.options[2].getValue()
+                this.symbol.strokes[4].hide = !this.options.options[2].getValue()
+                this.symbol.strokes[5].hide = !this.options.options[2].getValue()
+                this.symbol.strokes[6].hide = !this.options.options[2].getValue()
+                this.symbol.strokes[7].hide = !this.options.options[2].getValue()
+                this.symbol.strokes[8].hide = !this.options.options[2].getValue()
+                this.symbol.strokes[9].hide = this.options.options[2].getValue()
+
+                this.symbol.strokes[11].hide = !this.options.options[3].getValue()
+                this.symbol.strokes[12].hide = !this.options.options[3].getValue()
+                this.symbol.strokes[13].hide = !this.options.options[3].getValue()
+                this.symbol.strokes[14].hide = this.options.options[3].getValue()
+                this.symbol.strokes[15].hide = this.options.options[3].getValue()
+
+                this.symbol.strokes[16] = this.options.options[0].getValue().trim()!=""?this.options.options[4].getValue().clone().translate([6, -1]).setColor(DEFAULT_COLOR):NONE_COLLECTION.clone()
+                this.symbol.strokes[17] = this.options.options[1].getValue().trim()!=""?this.options.options[4].getValue().clone().translate([10, -1]).setColor(DEFAULT_COLOR):NONE_COLLECTION.clone()
+                this.symbol.strokes[18].hide = this.options.options[4].getValue().id != 0
+                this.symbol.strokes[19].hide = this.options.options[4].getValue().id != 0
+                this.symbol.strokes[18].text = this.options.options[0].getValue()
+                this.symbol.strokes[19].text = this.options.options[1].getValue()
+
+                updateCanvas()
+            }
+
+            clone() {
+                let newobj = new PinzaNeumatica(this.position)
+                newobj.name = this.name
+                newobj.symbol = this.symbol.clone()
+                newobj.hitbox = this.hitbox.clone()
+                newobj.options = this.options.clone()
+                return newobj
+            }
+}
+
 
 class Texto extends Component {
     constructor(position) {
@@ -1342,7 +1564,7 @@ class S71215C extends Component {
             //⇩
             new Text([3.5,4.5], 20, "⇩", DEFAULT_COLOR, "center"),
             new Arc([4,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
-            new Text([4,3.5], 12, "N", DEFAULT_COLOR, "center"),
+            new Text([4,3.5], 12, "N", DEFAULT_COLOR, "center"), // 10
             new Arc([5,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
             new Text([5,3.75], 20, "⏚", DEFAULT_COLOR, "center"),
             new Arc([6,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
@@ -1353,17 +1575,17 @@ class S71215C extends Component {
             new Text([7,3.5], 12, "M", DEFAULT_COLOR, "center"),
             new Arc([8,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
             new Text([8,3.5], 12, "1M", DEFAULT_COLOR, "center"),
-            new Arc([9,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Arc([9,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR), // 20
             new Text([9,3.5], 12, ".0", DEFAULT_COLOR, "center"),
             new Arc([10,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
             new Text([10,3.5], 12, ".1", DEFAULT_COLOR, "center"),
             new Arc([11,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
-            new Text([11,3.5], 12, ".2", DEFAULT_COLOR, "center"),
+            new Text([11,3.5], 12, ".2", DEFAULT_COLOR, "center"), //25
             new Arc([12,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
             new Text([12,3.5], 12, ".3", DEFAULT_COLOR, "center"),
             new Arc([13,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
             new Text([13,3.5], 12, ".4", DEFAULT_COLOR, "center"),
-            new Arc([14,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Arc([14,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR), // 30
             new Text([14,3.5], 12, ".5", DEFAULT_COLOR, "center"),
             new Arc([15,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
             new Text([15,3.5], 12, ".6", DEFAULT_COLOR, "center"),
@@ -1373,7 +1595,7 @@ class S71215C extends Component {
             new Text([17,3.5], 12, ".0", DEFAULT_COLOR, "center"),
             new Arc([18,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
             new Text([18,3.5], 12, ".1", DEFAULT_COLOR, "center"),
-            new Arc([19,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Arc([19,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR), // 40
             new Text([19,3.5], 12, ".2", DEFAULT_COLOR, "center"),
             new Arc([20,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
             new Text([20,3.5], 12, ".3", DEFAULT_COLOR, "center"),
@@ -1383,7 +1605,7 @@ class S71215C extends Component {
             new Text([22,3.5], 12, ".5", DEFAULT_COLOR, "center"),
             new Arc([24,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
             new Text([24,3.5], 12, "2M", DEFAULT_COLOR, "center"),
-            new Arc([25,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Arc([25,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR), // 50
             new Text([25,3.5], 12, ".0", DEFAULT_COLOR, "center"),
             new Arc([26,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
             new Text([26,3.5], 12, ".1", DEFAULT_COLOR, "center"),
@@ -1394,7 +1616,7 @@ class S71215C extends Component {
             new Arc([29,2], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
             new Text([29,3.5], 12, ".1", DEFAULT_COLOR, "center"),
 
-            new Arc([29,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Arc([29,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR), // 60
             new Text([29,23.5], 12, ".1", DEFAULT_COLOR, "center"),
             new Arc([28,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
             new Text([28,23.5], 12, ".0", DEFAULT_COLOR, "center"),
@@ -1404,7 +1626,7 @@ class S71215C extends Component {
             new Text([26,23.5], 12, ".6", DEFAULT_COLOR, "center"),
             new Arc([25,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
             new Text([25,23.5], 12, ".5", DEFAULT_COLOR, "center"),
-            new Arc([24,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Arc([24,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR), // 70
             new Text([24,23.5], 12, "2L", DEFAULT_COLOR, "center"),
             new Arc([23,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
             new Text([23,23.5], 12, ".4", DEFAULT_COLOR, "center"),
@@ -1414,7 +1636,7 @@ class S71215C extends Component {
             new Text([21,23.5], 12, ".2", DEFAULT_COLOR, "center"),
             new Arc([20,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
             new Text([20,23.5], 12, ".1", DEFAULT_COLOR, "center"),
-            new Arc([19,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
+            new Arc([19,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR), // 80
             new Text([19,23.5], 12, ".0", DEFAULT_COLOR, "center"),
             new Arc([18,25], 0.4, 0, 2*Math.PI,1,DEFAULT_COLOR),
             new Text([18,23.5], 12, "1L", DEFAULT_COLOR, "center"),
@@ -1426,7 +1648,7 @@ class S71215C extends Component {
             new Text([14,5.5], 12, "24VDC INPUTS", DEFAULT_COLOR, "center"),
             new Text([25,5.5], 12, "ANALOG", DEFAULT_COLOR, "center"),
             new Text([25,6], 12, "OUTPUTS", DEFAULT_COLOR, "center"),
-            new Text([28,5.5], 12, "ANALOG", DEFAULT_COLOR, "center"),
+            new Text([28,5.5], 12, "ANALOG", DEFAULT_COLOR, "center"), // 90
             new Text([28,6], 12, "INPUTS", DEFAULT_COLOR, "center"),
             new Text([8.5,4.5], 12, "DI a", DEFAULT_COLOR, "center"),
             new Text([17,4.5], 12, "DI b", DEFAULT_COLOR, "center"),
@@ -1438,7 +1660,7 @@ class S71215C extends Component {
 
             new Line([2.5,3.5],[2.5,5],1,DEFAULT_COLOR),
             new Line([4.5,3.5],[4.5,5],1,DEFAULT_COLOR),
-            new Line([2.5,5],[4.5,5],1,DEFAULT_COLOR),
+            new Line([2.5,5],[4.5,5],1,DEFAULT_COLOR), //100
             new Line([5.5,5],[22.5,5],1,DEFAULT_COLOR),
             new Line([5.5,3.5],[5.5,5],1,DEFAULT_COLOR),
             new Line([7.5,3.5],[7.5,5],1,DEFAULT_COLOR),
@@ -1449,7 +1671,7 @@ class S71215C extends Component {
             new Line([23.5,5],[29.5,5],1,DEFAULT_COLOR),
 
             new Text([-4,2], 12, "X10", DEFAULT_COLOR, "center").rotate90Deg(),
-            new Text([-4,23], 12, "X11", DEFAULT_COLOR, "center").rotate90Deg(),
+            new Text([-4,23], 12, "X11", DEFAULT_COLOR, "center").rotate90Deg(), // 110
             new Text([-23.5,17], 12, "X12", DEFAULT_COLOR, "center").rotate90Deg(),
             new Text([-8,30.5], 12, "X50", DEFAULT_COLOR, "right").rotate90Deg(),
 
@@ -1461,7 +1683,7 @@ class S71215C extends Component {
             new Arc([3,2], 1, -3*Math.PI/2, -Math.PI,1,DEFAULT_COLOR),
             new Arc([29,2], 1, 0, -3*Math.PI/2,1,DEFAULT_COLOR),
             new Arc([21.75,2], 1, 0, -3*Math.PI/2,1,DEFAULT_COLOR),
-            new Arc([24.25,2], 1, -3*Math.PI/2, -Math.PI,1,DEFAULT_COLOR),
+            new Arc([24.25,2], 1, -3*Math.PI/2, -Math.PI,1,DEFAULT_COLOR), // 120
             new Line([3,3],[21.75,3],1,DEFAULT_COLOR),
             new Line([22.75,0],[22.75,2],1,DEFAULT_COLOR),
             new Line([23.2,0],[23.2,2],1,DEFAULT_COLOR),
@@ -1472,7 +1694,7 @@ class S71215C extends Component {
             new Arc([29,25], 1, 3*Math.PI/2, 2*Math.PI,1,DEFAULT_COLOR),
             new Line([29,24],[18,24],1,DEFAULT_COLOR),
             new Line([30,25],[30,27],1,DEFAULT_COLOR),
-            new Line([17,25],[17,27],1,DEFAULT_COLOR),
+            new Line([17,25],[17,27],1,DEFAULT_COLOR), // 130
 
             new RectangleArray([1,9.75],[1.5,10.25],3,DEFAULT_COLOR),
             new RectangleArray([2,9.75],[2.5,10.25],3,DEFAULT_COLOR),
@@ -1484,7 +1706,7 @@ class S71215C extends Component {
             new RectangleArray([1,18.75],[1.5,19.25],3,DEFAULT_COLOR),
             new RectangleArray([4,18.75],[4.5,19.25],3,DEFAULT_COLOR),
             new Text([2.75,19], 12, "LINK", DEFAULT_COLOR, "center"),
-            new RectangleArray([1,19.75],[1.5,20.25],3,DEFAULT_COLOR),
+            new RectangleArray([1,19.75],[1.5,20.25],3,DEFAULT_COLOR), // 140
             new RectangleArray([4,19.75],[4.5,20.25],3,DEFAULT_COLOR),
             new Text([2.75,20], 12, "Rx/Tx", DEFAULT_COLOR, "center"),
 
@@ -1496,7 +1718,7 @@ class S71215C extends Component {
 
             new RectangleArray([31,9.75],[31.5,10.25],3,DEFAULT_COLOR),
             new RectangleArray([30,9.75],[30.5,10.25],3,DEFAULT_COLOR),
-            new RectangleArray([29,9.75],[29.5,10.25],3,DEFAULT_COLOR),
+            new RectangleArray([29,9.75],[29.5,10.25],3,DEFAULT_COLOR), // 150
             new RectangleArray([28,9.75],[28.5,10.25],3,DEFAULT_COLOR),
             new RectangleArray([27,9.75],[27.5,10.25],3,DEFAULT_COLOR),
             new RectangleArray([26,9.75],[26.5,10.25],3,DEFAULT_COLOR),
@@ -1607,12 +1829,15 @@ class S71215C extends Component {
 
             new Line([0,1.5],[1.75,1.5],2,DEFAULT_COLOR),
             ]),
-            HITBOX_RESISTOR.clone(),
+            HITBOX_1200.clone(),
             new ComponentOptions([
-                new TextboxOption("Temp", "0", "stage"),
+                /*new TextboxOption("MAC", "00-00-00-00-00-00", "mac"), // 146
+                new CheckboxOption("DC/X/X", false, "dcin"),
+                new CheckboxOption("X/X/DC", false, "dcout"),*/
             ]))}
 
             update() {
+                //this.symbol.strokes[146].text = "MAC ADDRESS " + this.options.options[0].getValue()
                 updateCanvas()
             }
 

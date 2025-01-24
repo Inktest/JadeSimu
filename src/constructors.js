@@ -69,10 +69,10 @@ class RectangleArray {
     }
     
     draw() {
-        new Line(this.corner1, [this.corner1[0], this.corner2[1]], this.width, this.color).draw()
-        new Line(this.corner1, [this.corner2[0], this.corner1[1]], this.width, this.color).draw()
-        new Line(this.corner2, [this.corner1[0], this.corner2[1]], this.width, this.color).draw()
-        new Line(this.corner2, [this.corner2[0], this.corner1[1]], this.width, this.color).draw()
+        new Line(this.corner1, [this.corner1[0], this.corner2[1]], this.width, this.color, this.hide).draw()
+        new Line(this.corner1, [this.corner2[0], this.corner1[1]], this.width, this.color, this.hide).draw()
+        new Line(this.corner2, [this.corner1[0], this.corner2[1]], this.width, this.color, this.hide).draw()
+        new Line(this.corner2, [this.corner2[0], this.corner1[1]], this.width, this.color, this.hide).draw()
     }
     
     rotate90Deg() {
@@ -220,11 +220,12 @@ class Text {
 }
 
 class StrokeCollection {
-    constructor(strokes, color, id) {
+    constructor(strokes, color, id, hide) {
         this.strokes = strokes
         this.color = color
         this.id = id
         this.rotation = 0
+        this.hide = hide
     }
 
     translate(pos) {
@@ -243,6 +244,7 @@ class StrokeCollection {
     }
 
     draw() {
+        if (this.hide) return
         this.strokes.forEach(s => {
             s.color = this.color
             s.draw()
@@ -255,6 +257,11 @@ class StrokeCollection {
         });
         this.rotation += 1
         this.rotation %= 4
+        return this
+    }
+
+    setColor(color) {
+        this.color = color
         return this
     }
 
