@@ -760,6 +760,7 @@ for (let i = 0; i < COMPONENTS_LIST.length; i++) {
         let c = addComponent(COMPONENTS_LIST[i])
         unselectSelectedComponent()
         selectComponent(c)
+
     
     }
 

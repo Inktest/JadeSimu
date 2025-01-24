@@ -9,8 +9,8 @@ function mouseupEvent(event) {
 
 function mousemoveEvent(event) {
     
-    if (document.activeElement.nodeName.toLocaleLowerCase() === 'input')
-        return
+    //if (document.activeElement.nodeName.toLocaleLowerCase() === 'input')
+    //    return
 
     cursorX = Math.round(event.pageX/dotSpace/scale)
     cursorY = Math.round(event.pageY/dotSpace/scale)
@@ -74,11 +74,26 @@ function mousedownEvent(event) {
     objOffsetY = event.pageY/dotSpace/scale-offsetY - component[0].position[1]
 }
 
-
+if ('ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0) {
+    canvas.addEventListener("touchend", (event) => {
+        mouseupEvent(event)
+     event.preventDefault();   
+    })
+    
+    canvas.addEventListener("touchmove", (event) => {
+        mousemoveEvent(event)
+     event.preventDefault();   
+    })
+    
+    canvas.addEventListener("touchstart", (event) => {
+        mousedownEvent(event)
+     event.preventDefault();   
+    });
+} else {
     window.addEventListener("mouseup", (event) => mouseupEvent(event))
     window.addEventListener("mousemove", (event) => mousemoveEvent(event))
     window.addEventListener("mousedown", (event) => mousedownEvent(event));
-
+}
 
 window.addEventListener("wheel", (event) => {
     scale += event.deltaY * -0.001
