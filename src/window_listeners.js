@@ -9,6 +9,8 @@ function mouseupEvent(event) {
 
 function mousemoveEvent(event) {
     
+    if (document.activeElement.nodeName.toLocaleLowerCase() === 'input')
+        return
 
     cursorX = Math.round(event.pageX/dotSpace/scale)
     cursorY = Math.round(event.pageY/dotSpace/scale)
