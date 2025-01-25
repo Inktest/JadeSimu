@@ -43,3 +43,17 @@ function handleCKeyPress(event) {
         selectComponent(c)
     }
 }
+
+function handleArrowKeyPress(event) {
+    if (!event.ctrlKey) return
+    for (let c of components) {
+        switch (event.key.toLowerCase().replace("arrow", "")) {
+            case "up": c.translate([0, -1]); break
+            case "down": c.translate([0, 1]); break
+            case "right": c.translate([1, 0]); break
+            case "left": c.translate([-1, 0]); break
+        }
+        updateCanvas()
+        saveComponents()
+    }
+}

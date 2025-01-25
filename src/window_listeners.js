@@ -111,6 +111,7 @@ window.addEventListener("keydown", (event) => {
         case "w": handleWKeyPress(event); break
         case "q": handleQKeyPress(event); break
         case "c": handleCKeyPress(event); break
+        case "arrowup": case "arrowdown": case "arrowleft": case "arrowright": handleArrowKeyPress(event); break
     }
 });
 
