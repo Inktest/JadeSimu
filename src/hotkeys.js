@@ -53,7 +53,15 @@ function handleArrowKeyPress(event) {
             case "right": c.translate([1, 0]); break
             case "left": c.translate([-1, 0]); break
         }
-        updateCanvas()
-        saveComponents()
     }
+    for (let w of wires) {
+        switch (event.key.toLowerCase().replace("arrow", "")) {
+            case "up": w.translate([0, -1]); break
+            case "down": w.translate([0, 1]); break
+            case "right": w.translate([1, 0]); break
+            case "left": w.translate([-1, 0]); break
+        }
+    }
+    updateCanvas()
+    saveComponents()
 }
