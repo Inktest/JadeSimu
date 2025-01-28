@@ -133,13 +133,15 @@ function stopSimulation() {
     simuActivated = false
 etapasDone = false
 for (var i in etapasList) {
-    etapasList[i].deactivate()
+    if (etapasList[i])
+        etapasList[i].deactivate()
 }
 for (var i in simuButtons) {
     navbarDiv.removeChild(navbarDiv.lastChild)
 }
 for (var i in vaivenesDerecha) {
-    vaivenesDerecha[i].roundPosition()
+    if (vaivenesDerecha)
+        vaivenesDerecha[i].roundPosition()
 }
 vaivenesDerecha = {}
 vaivenesIzquierda = {}
