@@ -140,7 +140,7 @@ for (var i in simuButtons) {
     navbarDiv.removeChild(navbarDiv.lastChild)
 }
 for (var i in vaivenesDerecha) {
-    if (vaivenesDerecha)
+    if (vaivenesDerecha[i])
         vaivenesDerecha[i].roundPosition()
 }
 vaivenesDerecha = {}
