@@ -3,14 +3,32 @@
 
 function mouseupEvent(event) {
     if (event.target !== canvas) return;
-    held = false
-    calculateHitboxMap()
+    
+    if (pressedShift && drawnArea) {
+        for (let i = Math.min(Math.floor(clickedX), Math.floor(selectedX)); i <= Math.max(Math.ceil(clickedX), Math.ceil(selectedX)); i++)
+            for (let j = Math.min(Math.floor(clickedY), Math.floor(selectedY)); j <= Math.max(Math.ceil(clickedY), Math.ceil(selectedY)); j++) {
+        let component = hitboxMap[[Math.floor(i-offsetX), Math.floor(j-offsetY)]]
+        if (!component) {
+            continue
+        }
+        for (let c of component)
+            selectComponent(c, true)
+        
+    } 
+    updateCanvas()     
+}
+held = false
+calculateHitboxMap()
+saveComponents()
+
 }
 
 function mousemoveEvent(event) {
     
     //if (document.activeElement.nodeName.toLocaleLowerCase() === 'input')
     //    return
+
+
 
     cursorX = Math.round(event.pageX/dotSpace/scale)
     cursorY = Math.round(event.pageY/dotSpace/scale)
@@ -25,11 +43,18 @@ function mousemoveEvent(event) {
     }
 
     
-    if (event.buttons === 1 && !selectedComponent && document.activeElement.nodeName.toLowerCase() !== 'input') {
+    if (event.buttons === 1 && selectedComponent.length == 0 && document.activeElement.nodeName.toLowerCase() !== 'input') {
+        if (pressedShift) {
+            updateCanvas()
+            selectedX = event.pageX/dotSpace/scale
+            selectedY = event.pageY/dotSpace/scale
+            drawnArea = true
+            new RectangleArray([clickedX, clickedY], [ selectedX, selectedY], 1, "#f00").draw()
+        } else {
         offsetX += event.movementX/dotSpace/scale
         offsetY += event.movementY/dotSpace/scale
-        
         updateCanvas()
+    }
         
     }
 
@@ -42,10 +67,16 @@ function mousemoveEvent(event) {
         let floorY = Math.floor(movedY)
 
         if (Math.abs(floorX) >= 1 || Math.abs(floorY) >= 1) {
+
+            if (selectedComponent.length > 0)
+                for (let c of selectedComponent)
+                    c.translate([floorX, floorY])
+
             movedX -= floorX
             movedY -= floorY
-            if (selectedComponent)
-                selectedComponent.moveTo([Math.floor(event.pageX/dotSpace/scale-offsetX-objOffsetX), Math.floor(event.pageY/dotSpace/scale-offsetY-objOffsetY)])
+            //if (selectedComponent.length > 0)
+            //    for (let c of selectedComponent)
+            //        c.moveTo([Math.floor(event.pageX/dotSpace/scale-offsetX-objOffsetX), Math.floor(event.pageY/dotSpace/scale-offsetY-objOffsetY)])
             updateCanvas()
         }
 
@@ -54,11 +85,23 @@ function mousemoveEvent(event) {
 objOffsetX = 0
 objOffsetY = 0
 
+clickedX = 0
+clickedY = 0
+selectedX = 0
+selectedY = 0
+pressedShift = false
+drawnArea = false
+
 function mousedownEvent(event) {
 
+drawnArea = false
+
+    clickedX = event.pageX/dotSpace/scale//-offsetX
+    clickedY = event.pageY/dotSpace/scale//-offsetY
+    pressedShift = event.shiftKey
     
     if (event.target !== canvas) return;
-        unselectSelectedComponent()
+    if (!event.shiftKey) unselectSelectedComponent()
     if (currWire != null && currWire.end != [0,0])
         wires.push(currWire)
     currWire = null
@@ -68,8 +111,11 @@ function mousedownEvent(event) {
             updateCanvas()
         return
     }
-    
-    selectComponent(component[0])
+    if (event.shiftKey)
+        for (let c of component)
+            selectComponent(c, true)
+    else 
+        selectComponent(component[0])
     objOffsetX = event.pageX/dotSpace/scale-offsetX - component[0].position[0]
     objOffsetY = event.pageY/dotSpace/scale-offsetY - component[0].position[1]
 }

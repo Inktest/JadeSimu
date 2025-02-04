@@ -61,7 +61,7 @@ class TextboxOption {
         textbox.autocomplete = "off"
         textbox.onchange = () => {
             this.value = this.getValue()
-            if (selectedComponent) selectedComponent.update()
+            if (selectedComponent.length == 1) selectedComponent[0].update()
         }
 
         div.appendChild(document.createTextNode(this.name + " "));
@@ -76,7 +76,10 @@ class TextboxOption {
     }
 
     getValue() {
-        return document.getElementById("opt-txt-" + this.id).value
+        let opt = document.getElementById("opt-txt-" + this.id)
+        if (opt)
+            return document.getElementById("opt-txt-" + this.id).value
+        return null
     }
 
     clone() {
@@ -102,7 +105,7 @@ class CheckboxOption {
         textbox.id = "opt-chk-" + this.id
         textbox.onchange = () => {
             this.value = this.getValue()
-            if (selectedComponent) selectedComponent.update()
+            if (selectedComponent.length == 1) selectedComponent[0].update()
         }
 
         div.appendChild(document.createTextNode(this.name + " "));
@@ -145,7 +148,7 @@ class ImageSelectOption {
                     this.value = b[1]
                 if (this.value.rotateTimes) this.value.rotateTimes(rotation)
                 if (this.value.color) this.value.color = SELECTED_COLOR
-                selectedComponent.update()
+                if (selectedComponent.length == 1) selectedComponent[0].update()
             }
             div.appendChild(btn)
             

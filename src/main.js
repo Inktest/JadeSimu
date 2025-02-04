@@ -29,7 +29,7 @@ var wires = []
 var currWire
 var components = []
 
-var selectedComponent
+var selectedComponent = []
 var held
 
 var movedX = 0
@@ -55,7 +55,9 @@ context.fillRect(0, 0, canvas.width, canvas.height)
   drawWires()
   drawBox()
 
-  if (selectedComponent) drawComponent(selectedComponent)
+  if (selectedComponent.length > 0) 
+    for (let c of selectedComponent)
+        drawComponent(c)
 if (!simuActivated)
     convertDiagramToNodes()
 

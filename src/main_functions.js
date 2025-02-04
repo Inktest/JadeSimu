@@ -1,10 +1,12 @@
 function unselectSelectedComponent() {
-    if (selectedComponent) {
-        selectedComponent.roundPosition()
-        selectedComponent.symbol.setColor(DEFAULT_COLOR)
-        selectedComponent.update()
-        selectedComponent = null
-            }
+        for (let c of selectedComponent) {
+        c.roundPosition()
+        c.symbol.setColor(DEFAULT_COLOR)
+        if (selectedComponent.length == 1)
+             c.update()
+    }
+    selectedComponent = []
+
         clearOptions()
         saveComponents()
 }
@@ -12,7 +14,7 @@ function unselectSelectedComponent() {
 function spawnObjectAtCursor(obj) {
     unselectSelectedComponent()
     components.push(obj)
-    selectedComponent = obj
+    selectedComponent = [obj]
     selectedComponent.options.addOptions()
     obj.symbol.setColor(SELECTED_COLOR)
     held = true
@@ -20,25 +22,39 @@ function spawnObjectAtCursor(obj) {
 }
 
 function deleteSelectedObject() {
-    if (!selectedComponent) return
-    let index = components.findIndex(c => c === selectedComponent)
+    if (selectedComponent.length == 0) return
+
+    for (let comp of selectedComponent) {
+
+    let index = components.findIndex(c => c === comp)
     if (index === -1) return
 
-    let grafIndex = currGrafcetStages.findIndex(c => c === selectComponent)
+    let grafIndex = currGrafcetStages.findIndex(c => c === comp)
     if (grafIndex !== -1) currGrafcetStages.splice(grafIndex, 1)
 
+        components.splice(index, 1)
+    }
     unselectSelectedComponent()
-    components.splice(index, 1)
+    saveComponents()
     updateCanvas()
     calculateHitboxMap()
-    saveComponents()
 }
 
-function selectComponent(obj) {
+function selectComponent(obj, add) {
     if (simuActivated) return
+    if (!add) unselectSelectedComponent()
     obj.symbol.setColor(SELECTED_COLOR)
-    selectedComponent = obj
-    selectedComponent.options.addOptions()
+    if (add) {
+        let index = selectedComponent.findIndex(c => c === obj)
+        if (index === -1) 
+        selectedComponent.push(obj)
+        clearOptions()
+        if (selectedComponent.length == 1)
+            selectedComponent[0].options.addOptions()
+    } else {
+        selectedComponent = [obj]
+        selectedComponent[0].options.addOptions()
+    }
     held = true
     movedX = 0
     movedY = 0
@@ -57,8 +73,9 @@ function calculateHitboxMap() {
 }
 
 function rotateSelectedObject() {
-    if (!selectedComponent) return
-    selectedComponent.rotate90Deg()
+    if (selectedComponent.length == 0) return
+    for (let c of selectedComponent)
+    c.rotate90Deg()
     updateCanvas()
     calculateHitboxMap()
 }

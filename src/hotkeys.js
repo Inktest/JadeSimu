@@ -37,10 +37,12 @@ function handleQKeyPress(event) {
 }
 
 function handleCKeyPress(event) {
-    if (event.ctrlKey && selectedComponent) {
-    let c = addComponent(selectedComponent.clone(), true)
+    if (event.ctrlKey && selectedComponent.length == 1) {
+        for (let comp of selectedComponent) {
+    let c = addComponent(comp.clone(), true)
         unselectSelectedComponent()
         selectComponent(c)
+    }
     }
 }
 
