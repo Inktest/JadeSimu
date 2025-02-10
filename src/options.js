@@ -59,9 +59,10 @@ class TextboxOption {
         textbox.value = this.value
         textbox.id = "opt-txt-" + this.id
         textbox.autocomplete = "off"
-        textbox.onchange = () => {
+        textbox.oninput = () => {
             this.value = this.getValue()
-            if (selectedComponent.length == 1) selectedComponent[0].update()
+            if (selectedComponent.length == 1) 
+                selectedComponent[0].update()
         }
 
         div.appendChild(document.createTextNode(this.name + " "));
