@@ -220,7 +220,7 @@ class Text {
 
             context.fillText(newText, 0, 0);
 
-            let xOffset = 0;
+            let xOffset = -1;
             lastIndex = 0;
             
             for (let match of matches) {
