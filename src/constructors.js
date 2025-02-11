@@ -193,16 +193,60 @@ class Text {
 
     draw() {
         if (!this.hide) return
-        context.fillStyle = this.color
+        context.fillStyle = this.color;
+        context.save();
+        context.translate(this.position[0] * dotSpace * scale, this.position[1] * dotSpace * scale);
+        context.rotate(this.rotation);
+        context.textBaseline = "middle";
+        context.textAlign = this.align;
+        context.font = `${this.size * scale}px Arial`;
         
-        context.save()
-        context.translate(this.position[0]*dotSpace*scale, this.position[1]*dotSpace*scale)
-        context.rotate(this.rotation)
-        context.textBaseline = "middle"
-        context.textAlign = this.align
-        context.font = `${this.size*scale}px Arial`
-        context.fillText(this.text, 0,0)
-        context.restore()
+        this.text = "" + this.text; 
+        
+        if (this.text !== "") {
+        
+            let regex = /_(\(.*?\))|_([^+\*\n]*)/g;
+            let matches = [];
+            let match;
+            let newText = "";
+            let lastIndex = 0;
+
+            while ((match = regex.exec(this.text)) !== null) {
+                matches.push(match);
+                newText += this.text.substring(lastIndex, match.index) + match[0].replace("_", "")
+                lastIndex = regex.lastIndex;
+            }
+            newText += this.text.substring(lastIndex); 
+
+            context.fillText(newText, 0, 0);
+
+            let xOffset = 0;
+            lastIndex = 0;
+            
+            for (let match of matches) {
+                let beforeText = newText.substring(0, match.index - xOffset);
+                let overlinedText = match[0].replace("_", "");
+        
+                let beforeWidth = context.measureText(beforeText).width;
+                let overlineWidth = context.measureText(overlinedText).width;
+        
+                let xStart = beforeWidth;
+                let yOverline = -this.size * scale * 0.6;
+        
+                context.beginPath();
+                context.moveTo(xStart, yOverline);
+                context.lineTo(xStart + overlineWidth, yOverline);
+                context.stroke();
+        
+                xOffset++;
+            }
+        }
+        
+        context.restore();
+        
+
+context.restore();
+
     }
 
     rotate90Deg() {
