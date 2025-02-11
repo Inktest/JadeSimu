@@ -205,7 +205,7 @@ class Text {
         
         if (this.text !== "") {
         
-            let regex = /_(\(.*?\))|_([^+\*\n]*)/g;
+            let regex = /(^|[^a-zA-Z0-9])_(\(.*?\))|(^|[^a-zA-Z0-9])_([^+\*\n]*)/g;
             let matches = [];
             let match;
             let newText = "";
