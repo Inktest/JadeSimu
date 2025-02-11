@@ -228,7 +228,7 @@ class Text {
                 let overlinedText = match[0].replace("_", "");
         
                 let beforeWidth = context.measureText(beforeText).width;
-                let overlineWidth = context.measureText(overlinedText).width;
+                let overlineWidth = context.measureText(overlinedText).width - 7;
         
                 let xStart = beforeWidth;
                 let yOverline = -this.size * scale * 0.6;
