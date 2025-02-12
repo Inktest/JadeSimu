@@ -31,7 +31,6 @@ const COMPONENTS_LIST = [
     //new BobinaLógica(),
     //new S71215C(),
     //new S7SM1223(),
-    new WireComponent()
 ]
 
 class ComponentGroup {
@@ -366,7 +365,6 @@ btn.onclick = () => {
     optionsDiv.style = `height: 135px; visibility: visible`;
 
         addTextToOptionsDiv("W > Añadir Cable")
-        addTextToOptionsDiv("Q > Borrar Cable")
         addTextToOptionsDiv("Supr > Borrar Componente")
         addTextToOptionsDiv("Ctrl C > Clonar Componente")
         addTextToOptionsDiv("Ctrl Flecha > Mover Todo")
