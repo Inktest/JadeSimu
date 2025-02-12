@@ -359,13 +359,14 @@ btn.onclick = () => {
    nameDiv.className = "nameDiv";
    nameDiv.innerHTML = "Información";
    optionsDiv.appendChild(nameDiv);
-    optionsDiv.style = `height: 115px; visibility: visible`;
+    optionsDiv.style = `height: 135px; visibility: visible`;
 
         addTextToOptionsDiv("W > Añadir Cable")
         addTextToOptionsDiv("Q > Borrar Cable")
         addTextToOptionsDiv("Supr > Borrar Componente")
         addTextToOptionsDiv("Ctrl C > Clonar Componente")
         addTextToOptionsDiv("Ctrl Flecha > Mover Todo")
+        addTextToOptionsDiv("Shift Click > Seleccionar")
 
 
 }
