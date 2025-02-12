@@ -201,11 +201,11 @@ class Text {
         context.textAlign = this.align;
         context.font = `${this.size * scale}px Arial`;
         
-        this.text = "" + this.text; 
+        this.text = " " + this.text; 
         
         if (this.text !== "") {
         
-            let regex = /(^|[^a-zA-Z0-9])_(\(.*?\))|(^|[^a-zA-Z0-9])_([^+\*\n]*)/g;
+            let regex = /(^|[\ \+\*])_(\(.*?\))|(^|[\ \+\*])_([^+\*\n]*)/g;
             let matches = [];
             let match;
             let newText = "";
