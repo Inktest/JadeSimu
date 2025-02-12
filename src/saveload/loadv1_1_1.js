@@ -9,6 +9,9 @@ const loadv1_1_1 = (line) => {
     project_name = boxData[1]
     project_name_size = boxData[2]
     project_author = boxData[3]
+    page_height = boxData[4]?boxData[4]:1240
+    page_width = boxData[5]?boxData[5]:1748
+
 
     for (let i = 1; i < line.length-1; i++) {
         currLine = line[i].split(`\u{001d}`)

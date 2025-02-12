@@ -87,64 +87,40 @@ function drawBoxLine(x1, y1, x2, y2) {
 }
 
 function drawBox() {
-    if (page_vertical) {
-        drawBoxLine(3, 1, 3, 86)
-        drawBoxLine(3, 1, 61, 1)
-        drawBoxLine(61, 86, 61, 1)
-        drawBoxLine(61, 86, 3, 86)
 
-        drawBoxLine(22, 82, 61, 82)
-        drawBoxLine(22, 82, 22, 86)
-        drawBoxLine(37, 82, 37, 86)
+    rel_height = page_vertical?page_width:page_height
+    rel_width = page_vertical?page_height:page_width
 
-        drawBoxLine(37, 83.5, 61, 83.5)
-    } else {
-   drawBoxLine(1, 3, 1, 61)
-   drawBoxLine(1, 3, 86, 3)
-   drawBoxLine(86, 3, 86, 61)
-   drawBoxLine(1, 61, 86, 61)
+   drawBoxLine(1, 3, 1, Math.floor(rel_height/20)-2)
+   drawBoxLine(1, 3, Math.floor(rel_width/20)-2, 3)
+   drawBoxLine(Math.floor(rel_width/20)-2, 3, Math.floor(rel_width/20)-2, Math.floor(rel_height/20)-2)
+   drawBoxLine(1, Math.floor(rel_height/20)-2, Math.floor(rel_width/20)-2, Math.floor(rel_height/20)-2)
 
-   drawBoxLine(55, 57, 86, 57)
-   drawBoxLine(70, 57, 70, 61)
-   drawBoxLine(55, 57, 55, 61)
-   drawBoxLine(70, 58.5, 86, 58.5)
-}
+   drawBoxLine(Math.floor(rel_width/20)-31,  Math.floor(rel_height/20)-6, Math.floor(rel_width/20)-2,  Math.floor(rel_height/20)-6)
+   drawBoxLine(Math.floor(rel_width/20)-16, Math.floor(rel_height/20)-6, Math.floor(rel_width/20)-16, Math.floor(rel_height/20)-2)
+   drawBoxLine(Math.floor(rel_width/20)-31,  Math.floor(rel_height/20)-6, Math.floor(rel_width/20)-31, Math.floor(rel_height/20)-2)
+   drawBoxLine(Math.floor(rel_width/20)-16,  Math.floor(rel_height/20)-4.5, Math.floor(rel_width/20)-2,  Math.floor(rel_height/20)-4.5)
+
 
    context.fillStyle = BOX_COLOR
         
 
         context.textBaseline = "middle"
         context.textAlign = "left"
-        if (page_vertical) {
             context.font = `${40*scale}px Arial`
-        context.fillText("JadeSimu", (27+offsetX)*dotSpace*scale,(84+offsetY)*dotSpace*scale)
+        context.fillText("JadeSimu", (Math.floor(rel_width/20)-26+offsetX)*dotSpace*scale,(Math.floor(rel_height/20)-3.5+offsetY)*dotSpace*scale)
 
         context.font = `${project_name_size*scale}px Arial`
-        context.fillText(project_name, (38+offsetX)*dotSpace*scale,(84.75+offsetY)*dotSpace*scale)
+        context.fillText(project_name, (Math.floor(rel_width/20)-15+offsetX)*dotSpace*scale,(Math.floor(rel_height/20)-3.25+offsetY)*dotSpace*scale)
 
         context.font = `${17*scale}px Arial`
-        context.fillText(project_author, (38+offsetX)*dotSpace*scale,(82.75+offsetY)*dotSpace*scale)
+        context.fillText(project_author, (Math.floor(rel_width/20)-15+offsetX)*dotSpace*scale,(Math.floor(rel_height/20)-5.25+offsetY)*dotSpace*scale)
 
 
         img = new Image()
         img.src = 'imgs/logo_outline.png'
-        context.drawImage(img, (22+offsetX)*dotSpace*scale, (81.5+offsetY)*dotSpace*scale, 100*scale, 100*scale)
-        }
-        else {
-        context.font = `${40*scale}px Arial`
-        context.fillText("JadeSimu", (60+offsetX)*dotSpace*scale,(59+offsetY)*dotSpace*scale)
+        context.drawImage(img, (Math.floor(rel_width/20)-31+offsetX)*dotSpace*scale, (Math.floor(rel_height/20)-6.5+offsetY)*dotSpace*scale, 100*scale, 100*scale)
 
-        context.font = `${project_name_size*scale}px Arial`
-        context.fillText(project_name, (71+offsetX)*dotSpace*scale,(59.75+offsetY)*dotSpace*scale)
-
-        context.font = `${17*scale}px Arial`
-        context.fillText(project_author, (71+offsetX)*dotSpace*scale,(57.75+offsetY)*dotSpace*scale)
-
-
-        img = new Image()
-        img.src = 'imgs/logo_outline.png'
-        context.drawImage(img, (55+offsetX)*dotSpace*scale, (56.5+offsetY)*dotSpace*scale, 100*scale, 100*scale)
-    }
 }
 
 function drawWires() {

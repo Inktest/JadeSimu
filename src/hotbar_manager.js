@@ -169,7 +169,7 @@ btn.onclick = () => {
 navbarDiv.appendChild(btn)
 
 function getSaveText() {
-    let componentsText = `v1.1.1\n${page_vertical}\u{001d}${project_name}\u{001d}${project_name_size}\u{001d}${project_author}\n`
+    let componentsText = `v1.1.1\n${page_vertical}\u{001d}${project_name}\u{001d}${project_name_size}\u{001d}${project_author}\u{001d}${page_height}\u{001d}${page_width}\n`
     for (var i in components) {
         componentsText += `${components[i].position[0]}\u{001d}${components[i].position[1]}\u{001d}${abreviatures[components[i].name]}`
         for (option of components[i].options.options) {
@@ -255,10 +255,12 @@ btn.onclick = () => {
 
     updateCanvas(true)
 
+    relationConstant = 0.56179775280898876404494382022472
+
     var imgData = canvas.toDataURL("image/jpeg", 1.0);
-    let pdfHeight = page_vertical?980:700
-    let pdfWidth = page_vertical?700:980
-    var pdf = new jsPDF( pdfHeight, "px", pdfWidth);
+    let pdfHeight = page_vertical?page_width:page_height
+    let pdfWidth = page_vertical?page_height:page_width
+    var pdf = new jsPDF( pdfHeight*relationConstant, "px", pdfWidth*relationConstant);
   
     
     pdf.addImage(imgData, 'JPEG', 0, 0);
@@ -333,10 +335,10 @@ btn.onclick = () => {
    nameDiv.className = "nameDiv";
    nameDiv.innerHTML = "Opciones";
    optionsDiv.appendChild(nameDiv);
-    optionsDiv.style = `height: 105px; visibility: visible`;
+    optionsDiv.style = `height: 155px; visibility: visible`;
 
-    //addTextboxToOptionsDiv("height", "Altura", page_height, () => {})
-    //addTextboxToOptionsDiv("width", "Anchura", page_width, () => {})
+    addTextboxToOptionsDiv("height", "Altura", page_height, 50, (height) => {page_height = isNaN(parseInt(height))?page_height:parseInt(height)})
+    addTextboxToOptionsDiv("width", "Anchura", page_width, 50, (width) => {page_width = isNaN(parseInt(width))?page_width:parseInt(width)})
 
     addTextboxToOptionsDiv("name", "Proyecto", project_name, 100, (name) => {project_name = name})
     addTextboxToOptionsDiv("nameSize", "Tamaño Texto", project_name_size, 25, (name) => {project_name_size = name})
