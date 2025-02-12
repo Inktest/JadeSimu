@@ -491,7 +491,7 @@ class Arrow extends Component {
 
             new Text([1, 0.5], 17, "X0", DEFAULT_COLOR, "left")
             ]),
-            HITBOX_RESISTOR.clone(),
+            new ComponentHitbox(getHitboxFromCorners([-1,0], [0, 0])),
             new ComponentOptions([
                 new TextboxOption("Texto", "X0", "txt"),
             ]))}
@@ -755,6 +755,39 @@ class Fusible extends Component {
 
             clone() {
                 let newobj = new Fusible(this.position)
+                newobj.name = this.name
+                newobj.symbol = this.symbol.clone()
+                newobj.hitbox = this.hitbox.clone()
+                newobj.options = this.options.clone()
+                return newobj
+            }
+}
+
+class WireComponent extends Component {
+    constructor(position) {
+        super(position, "Cable", new ComponentSymbol([
+            new Line([0,0],[0,1],1,DEFAULT_COLOR),
+            ]),
+            new ComponentHitbox(getHitboxFromCorners([-1,0], [0, 0])),
+            new ComponentOptions([
+                new TextboxOption("Altura", "1", "height"),
+                new TextboxOption("Anchura", "0", "width"),
+            ]))}
+
+            update() {
+                this.symbol.strokes[0].end = [
+                    parseInt(this.options.options[1].getValue()),
+                    parseInt(this.options.options[0].getValue())
+                ]
+                this.hitbox = new ComponentHitbox(getHitboxFromCorners(
+                [Math.min(this.symbol.strokes[0].start[0]-1, this.symbol.strokes[0].end[0]),Math.min(this.symbol.strokes[0].start[1], this.symbol.strokes[0].end[1])-1],
+                [Math.max(this.symbol.strokes[0].start[0], this.symbol.strokes[0].end[0]),Math.max(this.symbol.strokes[0].start[1], this.symbol.strokes[0].end[1])]
+            ))
+                updateCanvas()
+            }
+
+            clone() {
+                let newobj = new WireComponent(this.position)
                 newobj.name = this.name
                 newobj.symbol = this.symbol.clone()
                 newobj.hitbox = this.hitbox.clone()

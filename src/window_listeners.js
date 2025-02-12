@@ -102,8 +102,16 @@ drawnArea = false
     
     if (event.target !== canvas) return;
     if (!event.shiftKey) unselectSelectedComponent()
-    if (currWire != null && currWire.end != [0,0])
-        wires.push(currWire)
+    if (currWire != null && currWire.end != [0,0]) {
+        //wires.push(currWire)
+        let cW = new WireComponent(currWire.start)
+        cW.options.options[0].setValue(currWire.start[1] - currWire.end[1])
+        cW.options.options[1].setValue(currWire.start[0] - currWire.end[0])
+        let c = addComponent(cW)
+        selectComponent(c)
+        unselectSelectedComponent()
+        c.position = currWire.end
+    }
     currWire = null
     let component = hitboxMap[[Math.floor(event.pageX/dotSpace/scale-offsetX), Math.floor(event.pageY/dotSpace/scale-offsetY)]]
     if (!component) {

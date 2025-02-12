@@ -30,7 +30,8 @@ const COMPONENTS_LIST = [
     //new ContactoLógico(),
     //new BobinaLógica(),
     //new S71215C(),
-    //new S7SM1223()
+    //new S7SM1223(),
+    new WireComponent()
 ]
 
 class ComponentGroup {
@@ -126,7 +127,8 @@ const abreviatures = {
     "Continuación de Linea": "Arr",
     "Actuador Lineal": "Nal",
     "Actuador Giratorio": "Nag",
-    "Pinza Neumática": "Npz"
+    "Pinza Neumática": "Npz",
+    "Cable": "Wr2"
 }
 
 function stopSimulation() {
