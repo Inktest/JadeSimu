@@ -315,6 +315,14 @@ function addCheckboxToOptionsDiv(id, optionName, value, optionFunction) {
     optionsDiv.appendChild(div);
 }
 
+function addTextToOptionsDiv(text) {
+    let optionsDiv = document.getElementById("optionsDiv");
+
+    let div = document.createElement("div")
+    div.appendChild(document.createTextNode(text + " "));
+    optionsDiv.appendChild(div);
+}
+
 btn = createImageButton(`imgs/settings.png`)
 btn.className = "navbarButton"
 btn.title = "Opciones"
@@ -337,6 +345,28 @@ btn.onclick = () => {
 /*var project_name = "Proyecto 1"
 var project_name_size = 35
 var project_author = "Pablo Espinar"*/
+
+}
+navbarDiv.appendChild(btn)
+
+btn = createImageButton(`imgs/info.png`)
+btn.className = "navbarButton"
+btn.title = "Información"
+btn.onclick = () => {
+   unselectSelectedComponent()
+   let optionsDiv = document.getElementById("optionsDiv");
+   let nameDiv = document.createElement("div");
+   nameDiv.className = "nameDiv";
+   nameDiv.innerHTML = "Información";
+   optionsDiv.appendChild(nameDiv);
+    optionsDiv.style = `height: 115px; visibility: visible`;
+
+        addTextToOptionsDiv("W > Añadir Cable")
+        addTextToOptionsDiv("Q > Borrar Cable")
+        addTextToOptionsDiv("Supr > Borrar Componente")
+        addTextToOptionsDiv("Ctrl C > Clonar Componente")
+        addTextToOptionsDiv("Ctrl Flecha > Mover Todo")
+
 
 }
 navbarDiv.appendChild(btn)
