@@ -153,6 +153,7 @@ let navbarDiv = document.getElementById("navbarDiv")
 let groupDiv = document.getElementById("navbarDiv2")
 let btn = createImageButton(`imgs/new.png`)
 btn.className = "navbarButton"
+btn.title = "Nuevo Proyecto"
 btn.onclick = () => {
     stopSimulation()
     components = []
@@ -191,6 +192,7 @@ function getSaveText() {
 
 btn = createImageButton(`imgs/save.png`)
 btn.className = "navbarButton"
+btn.title = "Guardar Proyecto"
 btn.onclick = () => {
     downloadTextFile(project_name?project_name+".jad":"jadeFile.jad", getSaveText())
 }
@@ -210,6 +212,7 @@ function prepareFileLoad() {
 
 btn = createImageButton(`imgs/load.png`)
 btn.className = "navbarButton"
+btn.title = "Abrir Proyecto"
 btn.onclick = () => {
 
   const input = document.createElement('input');
@@ -235,6 +238,7 @@ navbarDiv.appendChild(btn)
 
 btn = createImageButton(`imgs/print.png`)
 btn.className = "navbarButton"
+btn.title = "Imprimir"
 btn.onclick = () => {
 
     //const { jsPDF } = window.jspdf;
@@ -313,6 +317,7 @@ function addCheckboxToOptionsDiv(id, optionName, value, optionFunction) {
 
 btn = createImageButton(`imgs/settings.png`)
 btn.className = "navbarButton"
+btn.title = "Opciones"
 btn.onclick = () => {
    unselectSelectedComponent()
    let optionsDiv = document.getElementById("optionsDiv");
@@ -346,6 +351,7 @@ var temporizadores = {}
 
 /*btn = createImageButton(`imgs/simulate.png`)
 btn.className = "navbarButton"
+btn.title = "Simular"
 btn.onclick = () => {
     if (!simuActivated) {
     etapasDone = false
@@ -419,6 +425,7 @@ var marcasMap = {}
 
 btn = createImageButton(`imgs/tia.png`)
 btn.className = "navbarButton"
+btn.title = "Pasar a Contactos"
 btn.onclick = () => {
 
     let grafcetSCLCodeEtapaCero = "IF"
@@ -758,6 +765,7 @@ for (let i = 0; i < COMPONENTS_LIST.length; i++) {
 
     let btn = createImageButton(`imgs/components/${COMPONENTS_LIST[i].imageName}.png`)
     btn.className = "navbarButton"
+    btn.title = COMPONENTS_LIST[i].name
     btn.onclick = () => {
         let c = addComponent(COMPONENTS_LIST[i])
         unselectSelectedComponent()
@@ -777,6 +785,7 @@ for (let group of GROUP_LIST) {
         for (let component of group.elements) {
              let btn2 = createImageButton(`imgs/components/${component.imageName}.png`)
             btn2.className = "navbarButton"
+            btn2.title = component.name
             btn2.onclick = () => {
                 let c = addComponent(component)
                 unselectSelectedComponent()
