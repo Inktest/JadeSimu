@@ -91,10 +91,10 @@ function drawBox() {
     rel_height = page_vertical?page_width:page_height
     rel_width = page_vertical?page_height:page_width
 
-   drawBoxLine(1, 3, 1, Math.floor(rel_height/20)-2)
-   drawBoxLine(1, 3, Math.floor(rel_width/20)-2, 3)
-   drawBoxLine(Math.floor(rel_width/20)-2, 3, Math.floor(rel_width/20)-2, Math.floor(rel_height/20)-2)
-   drawBoxLine(1, Math.floor(rel_height/20)-2, Math.floor(rel_width/20)-2, Math.floor(rel_height/20)-2)
+   drawBoxLine(page_vertical?3:1, page_vertical?1:3, page_vertical?3:1, Math.floor(rel_height/20)-2)
+   drawBoxLine(page_vertical?3:1, page_vertical?1:3, Math.floor(rel_width/20)-2, page_vertical?1:3)
+   drawBoxLine(Math.floor(rel_width/20)-2, page_vertical?1:3, Math.floor(rel_width/20)-2, Math.floor(rel_height/20)-2)
+   drawBoxLine(page_vertical?3:1, Math.floor(rel_height/20)-2, Math.floor(rel_width/20)-2, Math.floor(rel_height/20)-2)
 
    drawBoxLine(Math.floor(rel_width/20)-31,  Math.floor(rel_height/20)-6, Math.floor(rel_width/20)-2,  Math.floor(rel_height/20)-6)
    drawBoxLine(Math.floor(rel_width/20)-16, Math.floor(rel_height/20)-6, Math.floor(rel_width/20)-16, Math.floor(rel_height/20)-2)
