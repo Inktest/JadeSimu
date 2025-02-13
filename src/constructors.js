@@ -201,7 +201,8 @@ class Text {
         context.textAlign = this.align;
         context.font = `${this.size * scale}px Arial`;
         
-        this.text = " " + this.text; 
+        this.text = "" + this.text; 
+        if (this.text.startsWith("_")) this.text = " " + this.text
         
         if (this.text !== "") {
         
