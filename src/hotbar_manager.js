@@ -33,6 +33,9 @@ const COMPONENTS_LIST = [
     //new S7SM1223(),
 ]
 
+let dirHandle;
+let currFile;
+
 class ComponentGroup {
     constructor(name, imageName, elements) {
         this.name = name
@@ -165,6 +168,7 @@ btn.onclick = () => {
     project_name_size = "35"
     updateCanvas()
     saveComponents()
+    currFile = ""
 }
 
 navbarDiv.appendChild(btn)
@@ -194,7 +198,14 @@ function getSaveText() {
 btn = createImageButton(`imgs/save.png`)
 btn.className = "navbarButton"
 btn.title = "Guardar Proyecto"
-btn.onclick = () => {
+btn.onclick = async () => {
+    if (dirHandle) {
+        fileHandle = await dirHandle.getFileHandle(currFile?currFile:prompt("Nombre del Archivo")+".jad", {create: true})
+        writable = await fileHandle.createWritable()
+        await writable.write(getSaveText())
+        await writable.close()
+        return
+    }
     downloadTextFile(project_name?project_name+".jad":"jadeFile.jad", getSaveText())
 }
 navbarDiv.appendChild(btn)
@@ -216,26 +227,98 @@ btn.className = "navbarButton"
 btn.title = "Abrir Proyecto"
 btn.onclick = () => {
 
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = '.jad,.jade';
 
-  input.onchange = function(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(event) {
-      loadFromFileText(event.target.result)
-      saveComponents()
-    };
-    reader.readAsText(file);
-  };
-  
-  input.click();
+ groupDiv.innerHTML = ''
+             let btn2 = createImageButton(`imgs/fromFolder.png`)
+            btn2.className = "navbarButton"
+            btn2.title = "Abrir Proyecto desde Archivo"
+            btn2.onclick = () => {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.jad,.jade';
+
+                input.onchange = function(e) {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                    loadFromFileText(event.target.result)
+                    saveComponents()
+                    dirHandle = null
+                    };
+                    reader.readAsText(file);
+                };
+                
+                input.click();
+            
+            }
+            navbarDiv2.appendChild(btn2)
+
+            btn2 = createImageButton(`imgs/load.png`)
+            btn2.className = "navbarButton"
+            btn2.title = "Abrir Carpeta"
+            btn2.onclick = async () => {
+                if (!dirHandle) {
+                try {
+                    dirHandle = await window.showDirectoryPicker();
+                } catch (err) {
+                    console.error("Error opening folder:", err);
+                    return
+                }
+
+            }
+
+            unselectSelectedComponent()
+            let optionsDiv = document.getElementById("optionsDiv");
+            let nameDiv = document.createElement("div");
+            nameDiv.className = "nameDiv";
+            nameDiv.innerHTML = "Archivos";
+            optionsDiv.appendChild(nameDiv);
+    
+
+             let id = 0
+
+             sortedValues = []
+             for await (const entry of dirHandle.values()) {
+                sortedValues.push(entry)
+             }
+
+             sortedValues = sortedValues.sort((a, b) => 
+                a.name.localeCompare(b.name)
+            );
+             for await (const entry of sortedValues) {
+                if (entry.kind === "file" && (entry.name.endsWith(".jad") || entry.name.endsWith(".jade"))) {
+                addClickableToOptionsDiv("file"+id, entry.name, async () => {
+                    currFile = entry.name
+                    fileHandle = await dirHandle.getFileHandle(entry.name)
+                    file = await fileHandle.getFile()
+                    loadFromFileText(await file.text())
+                    saveComponents()
+                })
+                id++
+            }
+            optionsDiv.style = `height: ${25+25*id}px; visibility: visible`;
+            }
+         
+           
+
+            }
+            navbarDiv2.appendChild(btn2)
+
+            btn2 = createImageButton(`imgs/cancel.png`)
+            btn2.className = "navbarButton"
+            btn2.title = "Cerrar Carpeta"
+            btn2.onclick = async () => {
+               dirHandle = null
+               clearOptions()
+            }
+            navbarDiv2.appendChild(btn2)
+
 
 }
-
 navbarDiv.appendChild(btn)
+
+
 
 btn = createImageButton(`imgs/print.png`)
 btn.className = "navbarButton"
@@ -314,6 +397,23 @@ function addCheckboxToOptionsDiv(id, optionName, value, optionFunction) {
 
     div.appendChild(document.createTextNode(optionName + " "));
     div.appendChild(textbox)
+
+    optionsDiv.appendChild(div);
+}
+
+function addClickableToOptionsDiv(id, optionName, optionFunction) {
+    let optionsDiv = document.getElementById("optionsDiv");
+
+    let div = document.createElement("div")
+    div.onclick = optionFunction
+    if (optionName == currFile) 
+        div.style += ";cursor: pointer;;color:rgb(0, 91, 8);"
+    else
+    div.style += ";cursor: pointer;;color:rgb(75, 168, 83);"
+
+//div.style += ";cursor: pointer;"
+
+    div.appendChild(document.createTextNode(optionName + " "));
 
     optionsDiv.appendChild(div);
 }
