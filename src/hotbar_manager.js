@@ -206,7 +206,9 @@ btn.className = "navbarButton"
 btn.title = "Guardar Proyecto"
 btn.onclick = async () => {
     if (dirHandle) {
-        fileHandle = await dirHandle.getFileHandle(currFile?currFile:prompt("Nombre del Archivo")+".jad", {create: true})
+        let prompt = currFile?currFile:prompt("Nombre del Archivo")
+        if (!prompt) return
+        fileHandle = await dirHandle.getFileHandle(prompt+".jad", {create: true})
         writable = await fileHandle.createWritable()
         await writable.write(getSaveText())
         await writable.close()
