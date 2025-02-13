@@ -11,6 +11,7 @@ const loadv1_1_1 = (line) => {
     project_author = boxData[3]
     page_height = boxData[4]?parseInt(boxData[4]):1240
     page_width = boxData[5]?parseInt(boxData[5]):1748
+    page_margin = boxData[6]?parseInt(boxData[6]):3
 
 
     for (let i = 1; i < line.length-1; i++) {

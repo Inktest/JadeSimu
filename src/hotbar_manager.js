@@ -163,6 +163,12 @@ btn.onclick = () => {
     components = []
     wires = []
     currGrafcetStages = []
+
+    page_width = 1748
+    page_height = 1240
+    page_margin = 3
+    page_vertical = false
+
     project_author = "Pablo Espinar"
     project_name = "Proyecto 1"
     project_name_size = "35"
@@ -174,7 +180,7 @@ btn.onclick = () => {
 navbarDiv.appendChild(btn)
 
 function getSaveText() {
-    let componentsText = `v1.1.1\n${page_vertical}\u{001d}${project_name}\u{001d}${project_name_size}\u{001d}${project_author}\u{001d}${page_height}\u{001d}${page_width}\n`
+    let componentsText = `v1.1.1\n${page_vertical}\u{001d}${project_name}\u{001d}${project_name_size}\u{001d}${project_author}\u{001d}${page_height}\u{001d}${page_width}\u{001d}${page_margin}\n`
     for (var i in components) {
         componentsText += `${components[i].position[0]}\u{001d}${components[i].position[1]}\u{001d}${abreviatures[components[i].name]}`
         for (option of components[i].options.options) {
@@ -436,10 +442,11 @@ btn.onclick = () => {
    nameDiv.className = "nameDiv";
    nameDiv.innerHTML = "Opciones";
    optionsDiv.appendChild(nameDiv);
-    optionsDiv.style = `height: 155px; visibility: visible`;
+    optionsDiv.style = `height: 175px; visibility: visible`;
 
     addTextboxToOptionsDiv("height", "Altura", page_height, 50, (height) => {page_height = isNaN(parseInt(height))?page_height:parseInt(height)})
     addTextboxToOptionsDiv("width", "Anchura", page_width, 50, (width) => {page_width = isNaN(parseInt(width))?page_width:parseInt(width)})
+    addTextboxToOptionsDiv("margin", "Margen", page_margin, 50, (val) => {page_margin = isNaN(parseInt(val))?page_margin:parseInt(val)})
 
     addTextboxToOptionsDiv("name", "Proyecto", project_name, 100, (name) => {project_name = name})
     addTextboxToOptionsDiv("nameSize", "Tamaño Texto", project_name_size, 25, (name) => {project_name_size = name})
