@@ -322,6 +322,7 @@ const loadv1_1_1 = (line) => {
         c = addComponent(new WireComponent()).moveTo([firstCoord, secondCoord])
         c.options.options[0].value = lines[0]
         c.options.options[1].value = lines[1]
+        c.options.options[2].value = lines[2] === "true"
         selectComponent(c)
     }
 

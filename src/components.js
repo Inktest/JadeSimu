@@ -767,11 +767,13 @@ class WireComponent extends Component {
     constructor(position) {
         super(position, "Cable", new ComponentSymbol([
             new Line([0,0],[0,1],1,DEFAULT_COLOR),
+            new Line([0,0.2],[0,1.2],1,DEFAULT_COLOR),
             ]),
             new ComponentHitbox(getHitboxFromCorners([-1,0], [0, 0])),
             new ComponentOptions([
                 new TextboxOption("Altura", "1", "height"),
                 new TextboxOption("Anchura", "0", "width"),
+                new CheckboxOption("Doble línea", false, "dl")
             ]))}
 
             update() {
@@ -779,6 +781,13 @@ class WireComponent extends Component {
                     parseInt(this.options.options[1].getValue()),
                     parseInt(this.options.options[0].getValue())
                 ]
+
+                this.symbol.strokes[1].end = [
+                    parseInt(this.options.options[1].getValue()),
+                    parseInt(this.options.options[0].getValue())+0.2
+                ]
+
+                this.symbol.strokes[1].hide = this.options.options[2].getValue()
                 this.hitbox = new ComponentHitbox(getHitboxFromCorners(
                 [Math.min(this.symbol.strokes[0].start[0]-1, this.symbol.strokes[0].end[0]),Math.min(this.symbol.strokes[0].start[1], this.symbol.strokes[0].end[1])-1],
                 [Math.max(this.symbol.strokes[0].start[0], this.symbol.strokes[0].end[0]),Math.max(this.symbol.strokes[0].start[1], this.symbol.strokes[0].end[1])]
