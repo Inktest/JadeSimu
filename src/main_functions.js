@@ -58,7 +58,7 @@ function selectComponent(obj, add) {
     held = true
     movedX = 0
     movedY = 0
-    updateCanvas()
+    if (!add) updateCanvas()
 }
 
 function calculateHitboxMap() {
