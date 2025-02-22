@@ -37,13 +37,17 @@ function handleQKeyPress(event) {
 }
 
 function handleCKeyPress(event) {
-    if (event.ctrlKey && selectedComponent.length == 1) {
-        for (let comp of selectedComponent) {
-    let c = addComponent(comp.clone(), true)
+    selectedComponentCopy = selectedComponent
+    if (event.ctrlKey) {
         unselectSelectedComponent()
-        selectComponent(c)
+        for (let comp of selectedComponentCopy) {
+            let coord = comp.position
+    let c = addComponent(comp.clone(), true)
+    c.position = coord
+        selectComponent(c, true)
     }
     }
+    updateCanvas()
 }
 
 function handleArrowKeyPress(event) {
