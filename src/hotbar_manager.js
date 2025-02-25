@@ -702,7 +702,7 @@ btn.onclick = () => {
 };
 
 
-navbarDiv.appendChild(btn)
+// navbarDiv.appendChild(btn)
 
 function calculateContactMatrix(currEtapa, index) {
 
