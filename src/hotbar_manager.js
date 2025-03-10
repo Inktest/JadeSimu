@@ -135,21 +135,11 @@ const abreviatures = {
 
 function stopSimulation() {
     simuActivated = false
-etapasDone = false
-for (var i in etapasList) {
-    if (etapasList[i])
-        etapasList[i].deactivate()
-}
-for (var i in simuButtons) {
-    navbarDiv.removeChild(navbarDiv.lastChild)
-}
-for (var i in vaivenesDerecha) {
-    if (vaivenesDerecha[i])
-        vaivenesDerecha[i].roundPosition()
-}
-vaivenesDerecha = {}
-vaivenesIzquierda = {}
-simuButtons = []
+    let savedData = localStorage.getItem('components')
+    if (savedData)
+        loadFromFileText(savedData)
+
+
 updateCanvas()
 }
 
@@ -206,21 +196,20 @@ btn.className = "navbarButton"
 btn.title = "Guardar Proyecto"
 btn.onclick = async () => {
     if (dirHandle) {
-        let promptN = currFile?currFile:prompt("Nombre del Archivo")
+        let promptN = currFile?currFile:(prompt("Nombre del Archivo")+".jad")
         if (!promptN) return
-        fileHandle = await dirHandle.getFileHandle(promptN+".jad", {create: true})
+        fileHandle = await dirHandle.getFileHandle(promptN, {create: true})
         writable = await fileHandle.createWritable()
         await writable.write(getSaveText())
         await writable.close()
         return
     }
-    downloadTextFile(project_name?project_name+".jad":"jadeFile.jad", getSaveText())
+    downloadTextFile(project_name?project_name:"jadeFile.jad", getSaveText())
 }
 navbarDiv.appendChild(btn)
 
 function prepareFileLoad() {
     unselectSelectedComponent()
-    stopSimulation()
       components = []
       wires = []
       currGrafcetStages = []
@@ -491,73 +480,23 @@ var vaivenesDerecha = {}
 var vaivenesIzquierda = {}
 var temporizadores = {}
 
-/*btn = createImageButton(`imgs/simulate.png`)
+btn = createImageButton(`imgs/simulate.png`)
 btn.className = "navbarButton"
 btn.title = "Simular"
 btn.onclick = () => {
     if (!simuActivated) {
-    etapasDone = false
     simuActivated = true
-    unselectSelectedComponent()
-    convertDiagramToNodes()
-
-    contactsList = []
-    vaivenesDerecha = {}
-    vaivenesIzquierda = {}
-    fcPositions = {}
-    temporizadores = {}
-
-    for (let i = 0; i < components.length; i++) {
-        if (components[i].name == "Transición de Grafcet") {
-            Array.from(new Set(components[i].options.options[0].value.match(/[a-zA-Z0-9-]+\d* /g))).forEach(variable => {
-                if (!contactsList.includes(variable))
-                    contactsList.push(variable)
-            });
-
-    }
-        if (components[i].name == "Vaivén") {
-            vaivenesDerecha[components[i].options.options[0].value] = components[i]
-            vaivenesIzquierda[components[i].options.options[1].value] = components[i]
-        }
-
-        if (components[i].name == "Final de Carrera") {
-            fcPositions[components[i].position] = components[i]
-        }
-
-        if (components[i].name == "Temporizador") {
-            temporizadores[components[i].options.options[0].value] = components[i]
-        }
-    }
-    let newbtn;
-    for (let i in contactsList) {
-        newbtn = null;
-        if (isNaN(contactsList[i])) {
-        console.log(contactsList[i]);
-        newbtn = createImageButton(``, contactsList[i]);
-        newbtn.className = "navbarButton";
-        (function(btn, index) {
-            btn.onclick = () => {
-                activatedTrans[contactsList[index]] = !activatedTrans[contactsList[index]];
-                btn.style.backgroundColor = BTN_COLOR
-                if (activatedTrans[contactsList[index]])
-                btn.style.backgroundColor = "#0f0";
-                step();
-            };
-        })(newbtn, i);
-        navbarDiv.appendChild(newbtn);
-        simuButtons.push(newbtn);
-    }
-    }
-    
-    checkFCActivated()
+    saveComponents()
+    convertComponentsToNodes()  
+        runThroughNodes()
 
     return
 }
-stopSimulation()
+    stopSimulation()
 }
 
 
-navbarDiv.appendChild(btn)*/
+//navbarDiv.appendChild(btn)
 
 
 

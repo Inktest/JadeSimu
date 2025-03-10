@@ -1,7 +1,7 @@
-function unselectSelectedComponent() {
+function unselectSelectedComponent(noColorUpdate) {
         for (let c of selectedComponent) {
         c.roundPosition()
-        c.symbol.setColor(DEFAULT_COLOR)
+        if (!noColorUpdate) c.symbol.setColor(DEFAULT_COLOR)
         if (selectedComponent.length == 1)
              c.update()
     }
@@ -40,17 +40,20 @@ function deleteSelectedObject() {
     calculateHitboxMap()
 }
 
-function selectComponent(obj, add) {
-    if (simuActivated) return
+function selectComponent(obj, add, noColorUpdate) {
+    //if (simuActivated) return
     if (!add) unselectSelectedComponent()
-    obj.symbol.setColor(SELECTED_COLOR)
+    if (!noColorUpdate) obj.symbol.setColor(SELECTED_COLOR)
     if (add) {
         let index = selectedComponent.findIndex(c => c === obj)
         if (index === -1) 
         selectedComponent.push(obj)
         clearOptions()
-        if (selectedComponent.length == 1)
+        if (selectedComponent.length == 1) {
             selectedComponent[0].options.addOptions()
+        } else {
+            new MultipleComponents().options.addOptions()
+        }
     } else {
         selectedComponent = [obj]
         selectedComponent[0].options.addOptions()

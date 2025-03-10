@@ -18,7 +18,6 @@ function mouseupEvent(event) {
     updateCanvas()     
 }
 held = false
-calculateHitboxMap()
 saveComponents()
 
 }
@@ -93,40 +92,59 @@ pressedShift = false
 drawnArea = false
 
 function mousedownEvent(event) {
+    drawnArea = false;
 
-drawnArea = false
+    clickedX = event.pageX / dotSpace / scale;
+    clickedY = event.pageY / dotSpace / scale;
+    pressedShift = event.shiftKey;
 
-    clickedX = event.pageX/dotSpace/scale//-offsetX
-    clickedY = event.pageY/dotSpace/scale//-offsetY
-    pressedShift = event.shiftKey
-    
     if (event.target !== canvas) return;
-    if (!event.shiftKey) unselectSelectedComponent()
-    if (currWire != null && currWire.end != [0,0]) {
-        //wires.push(currWire)
-        let cW = new WireComponent(currWire.start)
-        cW.options.options[0].setValue(currWire.start[1] - currWire.end[1])
-        cW.options.options[1].setValue(currWire.start[0] - currWire.end[0])
-        let c = addComponent(cW)
-        selectComponent(c)
-        unselectSelectedComponent()
-        c.position = currWire.end
+    if (!event.shiftKey) unselectSelectedComponent();
+
+    if (currWire != null && currWire.end != [0, 0]) {
+        let cW = new WireComponent(currWire.start);
+        cW.options.options[0].setValue(currWire.start[1] - currWire.end[1]);
+        cW.options.options[1].setValue(currWire.start[0] - currWire.end[0]);
+        let c = addComponent(cW);
+        selectComponent(c);
+        unselectSelectedComponent();
+        c.position = currWire.end;
     }
-    currWire = null
-    let component = hitboxMap[[Math.floor(event.pageX/dotSpace/scale-offsetX), Math.floor(event.pageY/dotSpace/scale-offsetY)]]
+    currWire = null;
+
+    calculateHitboxMap()
+
+    let component = hitboxMap[
+        [Math.floor(event.pageX / dotSpace / scale - offsetX), Math.floor(event.pageY / dotSpace / scale - offsetY)]
+    ];
+
     if (!component) {
-        if (!simuActivated)
-            updateCanvas()
+        if (!simuActivated) updateCanvas();
+        return;
+    }
+
+    if (simuActivated) {
+        for (let c of component) {
+            if (c.simuCanClick)
+                for (let comp of components)
+                    if (comp.getCompName && comp.getCompName() === c.getCompName())
+                        comp.toggleState()
+        }
+        runThroughNodes()
+        updateCanvas()
         return
     }
-    if (event.shiftKey)
-        for (let c of component)
-            selectComponent(c, true)
-    else 
-        selectComponent(component[0])
-    objOffsetX = event.pageX/dotSpace/scale-offsetX - component[0].position[0]
-    objOffsetY = event.pageY/dotSpace/scale-offsetY - component[0].position[1]
+
+    if (event.shiftKey) {
+        for (let c of component) selectComponent(c, true);
+    } else {
+        selectComponent(component[0]);
+    }
+
+    objOffsetX = event.pageX / dotSpace / scale - offsetX - component[0].position[0];
+    objOffsetY = event.pageY / dotSpace / scale - offsetY - component[0].position[1];
 }
+
 
 if ('ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0) {
     canvas.addEventListener("touchend", (event) => {

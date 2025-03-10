@@ -1,6 +1,10 @@
 const canvas = document.getElementById('cadeCanvas')
 const context = canvas.getContext('2d')
 
+/*setInterval(() => {
+    if (simuActivated) runThroughNodes()
+}, 500)*/
+
 var page_width = 1748
 var page_height = 1240
 var page_margin = 3
@@ -137,6 +141,11 @@ function drawComponents() {
 }
 
 function drawComponent(component) {
+
+    /*if (component.inouts.length > 0) {
+        for (let inout of component.inouts)
+        new Arc(inout,0.25,0,2*Math.PI,1,"#0f0").translate(component.position).translate([offsetX, offsetY]).draw()
+    }*/
 
     for (let i = 0; i < component.symbol.strokes.length; i++) {
     component.symbol.strokes[i].clone().translate(component.position).translate([offsetX, offsetY]).draw()

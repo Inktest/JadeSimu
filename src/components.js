@@ -29,6 +29,30 @@ class Condensador extends Component {
 
 }
 
+class MultipleComponents extends Component {
+    constructor(position) {
+        super(position, "Múltiple Componentes", new ComponentSymbol([
+                ]),
+                
+                HITBOX_LOWER_SQUARE.clone(),
+                new ComponentOptions([
+                ])
+                )}
+
+                update() {
+                }
+                
+                clone() {
+                    let newobj = new MultipleComponents(this.position)
+                    newobj.name = this.name
+                    newobj.symbol = this.symbol.clone()
+                    newobj.hitbox = this.hitbox.clone()
+                    newobj.options = this.options.clone()
+                    return newobj
+                }
+
+}
+
 
 
 class Piloto extends Component {
@@ -36,7 +60,7 @@ class Piloto extends Component {
         super(position, "Señalización Óptica", new ComponentSymbol([
             new Line([0,0],[0,1],1,DEFAULT_COLOR),
             new Line([0,3],[0,4],1,DEFAULT_COLOR),
-            new Arc([0,2],1,0,2*Math.PI,1,DEFAULT_COLOR),
+            new Arc([0,2],1,0,2*Math.PI,1,DEFAULT_COLOR, false, false),
             new Line([0.7,1.3],[-0.7,2.7],1,DEFAULT_COLOR),
             new Line([-0.7,1.3],[0.7,2.7],1,DEFAULT_COLOR),
 
@@ -68,7 +92,11 @@ class Piloto extends Component {
                     ["imgs/colors/C9.png", "C9"],
                     
                 ])
-            ]))}
+            ]), 0, [[0, 0], [0, 4]]
+        );
+
+        this.flange = false
+    }
 
             update() {
                 this.symbol.strokes[10].text = this.options.options[0].getValue()
@@ -91,6 +119,56 @@ class Piloto extends Component {
                 newobj.hitbox = this.hitbox.clone()
                 newobj.options = this.options.clone()
                 return newobj
+            }
+
+            getPropagationInouts(entryIndex) {
+                return []
+            }
+        
+            simulate() {
+                let keyA1 = `${this.inouts[0][0] + this.position[0]},${this.inouts[0][1] + this.position[1]}`;
+                let keyA2 = `${this.inouts[1][0] + this.position[0]},${this.inouts[1][1] + this.position[1]}`;
+        
+                let lineTypeA1 = (typeof nodeVoltages !== 'undefined' && nodeVoltages[keyA1] !== undefined) ? nodeVoltages[keyA1] : "N";  // Default to Neutral if not found
+                let lineTypeA2 = (typeof nodeVoltages !== 'undefined' && nodeVoltages[keyA2] !== undefined) ? nodeVoltages[keyA2] : "N";  // Default to Neutral if not found
+        
+                let isActivated = (lineTypeA1.voltage === "L" && lineTypeA2.voltage === "N") || (lineTypeA1.voltage === "N" && lineTypeA2.voltage === "L")
+        
+                this.symbol.strokes[2].filled = isActivated
+                this.symbol.strokes[2].filledColor = "#0a0"
+                
+                if (this.flange && !isActivated) {
+                    this.flange = false
+                    for (let comp of components)
+                        if (comp.getCompName && comp.getCompName() === this.symbol.strokes[7].text)
+                            comp.toggleState()
+                    }
+                    
+                    
+                    // Check if one side is "L" and the other is "N"
+                    if (isActivated && !this.flange) {
+                        this.flange = true
+                        for (let comp of components)
+                            if (comp.getCompName && comp.getCompName() === this.symbol.strokes[7].text)
+                                comp.toggleState()
+                        } 
+        
+                        this.symbol.setColor("#000")              
+                        if (isActivated ) {
+                            this.symbol.setColor("#f00")
+                            switch (this.options.options[4].value) {
+                                case "C1": this.symbol.strokes[2].filledColor = ("#940"); break;
+                                case "C2": this.symbol.strokes[2].filledColor = ("#d00"); break;
+                                case "C3": this.symbol.strokes[2].filledColor = ("#fa0"); break;
+                                case "C4": this.symbol.strokes[2].filledColor = ("#ff0"); break;
+                                case "C5": this.symbol.strokes[2].filledColor = ("#0a0"); break;
+                                case "C6": this.symbol.strokes[2].filledColor = ("#00a"); break;
+                                case "C7": this.symbol.strokes[2].filledColor = ("#a0a"); break;
+                                case "C8": this.symbol.strokes[2].filledColor = ("#ccc"); break;
+                                case "C9": this.symbol.strokes[2].filledColor = ("#eee"); break;
+                            }
+                            if (this.options.options[3].value && (Date.now() % 1000) < 500) this.symbol.strokes[2].filledColor = ("#fff");
+                        }
             }
 }
 
@@ -774,7 +852,9 @@ class WireComponent extends Component {
                 new TextboxOption("Altura", "1", "height"),
                 new TextboxOption("Anchura", "0", "width"),
                 new CheckboxOption("Doble línea", false, "dl")
-            ]))}
+            ]),0,
+            [[0,0],[0,1]]
+        )}
 
             update() {
                 this.symbol.strokes[0].end = [
@@ -786,6 +866,8 @@ class WireComponent extends Component {
                     parseInt(this.options.options[1].getValue()),
                     parseInt(this.options.options[0].getValue())+0.2
                 ]
+
+                this.inouts = [this.symbol.strokes[0].start, this.symbol.strokes[0].end]
 
                 this.symbol.strokes[1].hide = this.options.options[2].getValue()
                 this.hitbox = new ComponentHitbox(getHitboxFromCorners(
@@ -1160,42 +1242,85 @@ class Diodo extends Component {
 class Bobina extends Component {
     constructor(position) {
         super(position, "Bobina", new ComponentSymbol([
-            new Line([0,0],[0,1],1,DEFAULT_COLOR),
-            new Line([-1,1], [1,1],1,DEFAULT_COLOR),
-            new Line([1,1],[1,2],1,DEFAULT_COLOR),
-            new Line([-1,1],[-1,2],1,DEFAULT_COLOR),
-            new Line([-1,2],[1,2],1,DEFAULT_COLOR),
-            new Line([0,2],[0,3],1,DEFAULT_COLOR),
-            NONE_COLLECTION.clone().translate([0,2]),
-            new Text([-1.5,1.5], 17, "-Q", DEFAULT_COLOR, "right"),
-            new Text([0.25,0.5], 17, "A1", DEFAULT_COLOR, "left"),
-            new Text([0.25,2.66], 17, "A2", DEFAULT_COLOR, "left")
-            ]),
-            HITBOX_BOBINA.clone(),
+            new Line([0, 0], [0, 1], 1, DEFAULT_COLOR),
+            new Line([-1, 1], [1, 1], 1, DEFAULT_COLOR),
+            new Line([1, 1], [1, 2], 1, DEFAULT_COLOR),
+            new Line([-1, 1], [-1, 2], 1, DEFAULT_COLOR),
+            new Line([-1, 2], [1, 2], 1, DEFAULT_COLOR),
+            new Line([0, 2], [0, 3], 1, DEFAULT_COLOR),
+            NONE_COLLECTION.clone().translate([0, 2]),
+            new Text([-1.5, 1.5], 17, "-Q", DEFAULT_COLOR, "right"),
+            new Text([0.25, 0.5], 17, "A1", DEFAULT_COLOR, "left"),
+            new Text([0.25, 2.66], 17, "A2", DEFAULT_COLOR, "left")
+        ]), HITBOX_BOBINA.clone(),
             new ComponentOptions([
                 new TextboxOption("Nombre", "-Q", "name"),
                 new TextboxOption("Conexión 1", "A1", "con1"),
                 new TextboxOption("Conexión 2", "A2", "con2"),
-                new ImageSelectOption("Tipo",  NONE_COLLECTION.clone().translate([0,2]), BOBINA_COLLECTION)
-            ]))}
+                new ImageSelectOption("Tipo", NONE_COLLECTION.clone().translate([0, 2]), BOBINA_COLLECTION)
+            ]), 0, [[0, 0], [0, 3]]
+        );
 
-            update() {
-                this.symbol.strokes[7].text = this.options.options[0].getValue()
-                this.symbol.strokes[8].text = this.options.options[1].getValue()
-                this.symbol.strokes[9].text = this.options.options[2].getValue()
-                this.symbol.strokes[6] = this.options.options[3].getValue()
-                updateCanvas()
-            }
+        this.flange = false
 
-            clone() {
-                let newobj = new Bobina(this.position)
-                newobj.name = this.name
-                newobj.symbol = this.symbol.clone()
-                newobj.hitbox = this.hitbox.clone()
-                newobj.options = this.options.clone()
-                return newobj
+    }
+
+    update() {
+        this.symbol.strokes[7].text = this.options.options[0].getValue();
+        this.symbol.strokes[8].text = this.options.options[1].getValue();
+        this.symbol.strokes[9].text = this.options.options[2].getValue();
+        this.symbol.strokes[6] = this.options.options[3].getValue();
+        updateCanvas();
+    }
+
+    clone() {
+        let newobj = new Bobina(this.position);
+        newobj.name = this.name;
+        newobj.symbol = this.symbol.clone();
+        newobj.hitbox = this.hitbox.clone();
+        newobj.options = this.options.clone();
+        return newobj;
+    }
+
+    getPropagationInouts(entryIndex) {
+        return []
+    }
+
+    simulate() {
+        let keyA1 = `${this.inouts[0][0] + this.position[0]},${this.inouts[0][1] + this.position[1]}`;
+        let keyA2 = `${this.inouts[1][0] + this.position[0]},${this.inouts[1][1] + this.position[1]}`;
+
+        let lineTypeA1 = (typeof nodeVoltages !== 'undefined' && nodeVoltages[keyA1] !== undefined) ? nodeVoltages[keyA1] : "N";  // Default to Neutral if not found
+        let lineTypeA2 = (typeof nodeVoltages !== 'undefined' && nodeVoltages[keyA2] !== undefined) ? nodeVoltages[keyA2] : "N";  // Default to Neutral if not found
+
+        console.log(lineTypeA1.voltage, "A1", lineTypeA2.voltage, "A2");
+        let isActivated = (lineTypeA1.voltage === "L" && lineTypeA2.voltage === "N") || (lineTypeA1.voltage === "N" && lineTypeA2.voltage === "L")
+
+        
+        if (this.flange && !isActivated) {
+            this.flange = false
+            for (let comp of components)
+                if (comp.getCompName && comp.getCompName() === this.symbol.strokes[7].text)
+                    comp.toggleState()
             }
+            
+            
+            // Check if one side is "L" and the other is "N"
+            if (isActivated && !this.flange) {
+                this.flange = true
+                for (let comp of components)
+                    if (comp.getCompName && comp.getCompName() === this.symbol.strokes[7].text)
+                        comp.toggleState()
+                } 
+
+                this.symbol.setColor("#000")
+                if (isActivated)
+                    this.symbol.setColor("#f00")
+    }
+
 }
+
+
 
 class Diferencial extends Component {
     constructor(position) {
@@ -1282,7 +1407,12 @@ class Contactor extends Component {
                 new TextboxOption("Conexión 1", "13", "con1"),
                 new TextboxOption("Conexión 2", "14", "con2"),
                 new CheckboxOption("NC?", false, "nc")
-            ]))}
+            ]),0,
+            [[0,0],[0,4]]
+        )
+
+
+}
 
             update() {
                 this.symbol.strokes[5].text = this.options.options[0].getValue()
@@ -1299,7 +1429,25 @@ class Contactor extends Component {
                 newobj.symbol = this.symbol.clone()
                 newobj.hitbox = this.hitbox.clone()
                 newobj.options = this.options.clone()
+                newobj.inouts = this.inouts
                 return newobj
+            }
+            
+            getCompName() {
+                return this.symbol.strokes[5].text
+            }
+
+            getPropagationInouts(entryIndex) {
+                if (this.symbol.strokes[4].hide) {
+                    return this.inouts.map((_, idx) => idx).filter(idx => idx !== entryIndex);
+                }
+                return [];
+            }
+        
+            toggleState() {
+                selectComponent(this, false, true)
+                document.getElementById("opt-chk-nc").checked = !this.symbol.strokes[4].hide
+                unselectSelectedComponent(true)
             }
 }
 
@@ -1312,7 +1460,6 @@ class Pulsador extends Component {
             new Line([0,3],[-1,1],1,DEFAULT_COLOR),
             new Line([0,3],[0.9,0.9],1,DEFAULT_COLOR, true),
             new Line([0,1],[1,1],1,DEFAULT_COLOR, true),
-
             new Line([0,2],[0.5,2],1,DEFAULT_COLOR, true),
             new Line([-0.5,2],[-1,2], DEFAULT_COLOR),
             new Line([-1.5,2],[-2,2], DEFAULT_COLOR),
@@ -1320,38 +1467,60 @@ class Pulsador extends Component {
             new Text([-3.25,2], 17, "-S", DEFAULT_COLOR, "right"),
             new Text([0.25,0.5], 17, "13", DEFAULT_COLOR, "left"),
             new Text([0.25,3.5], 17, "14", DEFAULT_COLOR, "left")
-            ]),
-            HITBOX_BUTTON.clone(),
-            new ComponentOptions([
-                new TextboxOption("Nombre", "-S", "name"),
-                new TextboxOption("Conexión 1", "13", "con1"),
-                new TextboxOption("Conexión 2", "14", "con2"),
-                new CheckboxOption("NC?", false, "nc"),
-                new ImageSelectOption("Tipo",PULSADOR_COLLECTION.clone().translate([-2,2]),ICO_COLLECTION)
-            ]))}
+        ]),
+        HITBOX_BUTTON.clone(),
+        new ComponentOptions([
+            new TextboxOption("Nombre", "-S", "name"),
+            new TextboxOption("Conexión 1", "13", "con1"),
+            new TextboxOption("Conexión 2", "14", "con2"),
+            new CheckboxOption("NC?", false, "nc"),
+            new ImageSelectOption("Tipo",PULSADOR_COLLECTION.clone().translate([-2,2]),ICO_COLLECTION)
+        ]), 0, [[0,0],[0,4]]);
 
-            update() {
-                this.symbol.strokes[9].text = this.options.options[0].getValue()
-                this.symbol.strokes[10].text = this.options.options[1].getValue()
-                this.symbol.strokes[11].text = this.options.options[2].getValue()
-                this.symbol.strokes[2].hide = !this.options.options[3].getValue()
-                this.symbol.strokes[3].hide = this.options.options[3].getValue()
-                this.symbol.strokes[4].hide = this.options.options[3].getValue()
-                this.symbol.strokes[5].hide = this.options.options[3].getValue()
+        this.simuCanClick = true
 
-                this.symbol.strokes[8] = this.options.options[4].getValue()
-                updateCanvas()
-            }
+    }
 
-            clone() {
-                let newobj = new Pulsador(this.position)
-                newobj.name = this.name
-                newobj.symbol = this.symbol.clone()
-                newobj.hitbox = this.hitbox.clone()
-                newobj.options = this.options.clone()
-                return newobj
-            }
+    update() {
+        this.symbol.strokes[9].text = this.options.options[0].getValue();
+        this.symbol.strokes[10].text = this.options.options[1].getValue();
+        this.symbol.strokes[11].text = this.options.options[2].getValue();
+        this.symbol.strokes[2].hide = !this.options.options[3].getValue();
+        this.symbol.strokes[3].hide = this.options.options[3].getValue();
+        this.symbol.strokes[4].hide = this.options.options[3].getValue();
+        this.symbol.strokes[5].hide = this.options.options[3].getValue();
+        this.symbol.strokes[8] = this.options.options[4].getValue();
+        updateCanvas();
+    }
+
+    clone() {
+        let newobj = new Pulsador(this.position);
+        newobj.name = this.name;
+        newobj.symbol = this.symbol.clone();
+        newobj.hitbox = this.hitbox.clone();
+        newobj.options = this.options.clone();
+        newobj.inouts = this.inouts;
+        return newobj;
+    }
+
+    getCompName() {
+        return this.symbol.strokes[9].text
+    }
+
+    getPropagationInouts(entryIndex) {
+        if (this.symbol.strokes[4].hide) {
+            return this.inouts.map((_, idx) => idx).filter(idx => idx !== entryIndex);
+        }
+        return [];
+    }
+
+    toggleState() {
+        selectComponent(this)
+        document.getElementById("opt-chk-nc").checked = !this.symbol.strokes[3].hide
+        unselectSelectedComponent()
+    }
 }
+
 
 class ContactoTemporizado extends Component {
     constructor(position) {
@@ -1392,6 +1561,10 @@ class ContactoTemporizado extends Component {
 
                 this.symbol.strokes[9] = this.options.options[4].getValue()
                 updateCanvas()
+            }
+
+            getCompName() {
+                return this.options.options[0].getValue()
             }
 
             clone() {
@@ -1495,8 +1668,8 @@ class PulsadorConmutado extends Component {
     constructor(position) {
         super(position, "Contacto Pulsador Conmutado", new ComponentSymbol([
             new Line([0,0],[0,1],1,DEFAULT_COLOR),
-            new Line([-0.8,3.2],[0,1],1,DEFAULT_COLOR),
-            new Line([-0.5,3],[-1,3], DEFAULT_COLOR),
+            new Line([-0.8,3.2],[0,1],1,DEFAULT_COLOR), // This will toggle
+            new Line([-0.5,3],[-1,3], 1, DEFAULT_COLOR),
             new Line([-1,3],[-1,4], DEFAULT_COLOR),
             new Line([0.5,3],[1,3], DEFAULT_COLOR),
             new Line([1,3],[1,4], DEFAULT_COLOR),
@@ -1508,34 +1681,60 @@ class PulsadorConmutado extends Component {
             new Text([0.25,0.5], 17, "11", DEFAULT_COLOR, "left"),
             new Text([-0.75,3.75], 17, "12", DEFAULT_COLOR, "left"),
             new Text([1.25,3.75], 17, "14", DEFAULT_COLOR, "left")
-            ]),
-            HITBOX_BUTTON.clone(),
-            new ComponentOptions([
-                new TextboxOption("Nombre", "-S", "name"),
-                new TextboxOption("Conexión 1", "11", "con1"),
-                new TextboxOption("Conexión 2", "12", "con2"),
-                new TextboxOption("Conexión 3", "14", "con3"),
-                new ImageSelectOption("Tipo",PULSADOR_COLLECTION.clone().translate([-2,2]),ICO_COLLECTION)
-            ]))}
+        ]),
+        HITBOX_BUTTON.clone(),
+        new ComponentOptions([
+            new TextboxOption("Nombre", "-S", "name"),
+            new TextboxOption("Conexión 1", "11", "con1"),
+            new TextboxOption("Conexión 2", "12", "con2"),
+            new TextboxOption("Conexión 3", "14", "con3"),
+            new ImageSelectOption("Tipo", PULSADOR_COLLECTION.clone().translate([-2,2]), ICO_COLLECTION)
+        ]), 0, [[0,0], [-1,4], [1,4]]);
 
-            update() {
-                this.symbol.strokes[9].text = this.options.options[0].getValue()
-                this.symbol.strokes[10].text = this.options.options[1].getValue()
-                this.symbol.strokes[11].text = this.options.options[2].getValue()
-                this.symbol.strokes[12].text = this.options.options[3].getValue()
-                this.symbol.strokes[8] = this.options.options[4].getValue()
-                updateCanvas()
-            }
+        this.isOn = false; // Default state
+        this.simuCanClick = true
+    }
 
-            clone() {
-                let newobj = new PulsadorConmutado(this.position)
-                newobj.name = this.name
-                newobj.symbol = this.symbol.clone()
-                newobj.hitbox = this.hitbox.clone()
-                newobj.options = this.options.clone()
-                return newobj
-            }
+    update() {
+        this.symbol.strokes[9].text = this.options.options[0].getValue();
+        this.symbol.strokes[10].text = this.options.options[1].getValue();
+        this.symbol.strokes[11].text = this.options.options[2].getValue();
+        this.symbol.strokes[12].text = this.options.options[3].getValue();
+        this.symbol.strokes[8] = this.options.options[4].getValue();
+        updateCanvas();
+    }
+
+    clone() {
+        let newobj = new PulsadorConmutado(this.position);
+        newobj.name = this.name;
+        newobj.symbol = this.symbol.clone();
+        newobj.hitbox = this.hitbox.clone();
+        newobj.options = this.options.clone();
+        newobj.isOn = this.isOn;
+        return newobj;
+    }
+
+    getCompName() {
+        return this.symbol.strokes[9].text
+    }
+
+    getPropagationInouts(entryIndex) {
+        // Switches between [0,1] and [0,2] properly
+        return this.isOn ? [0, 2].filter(idx => idx !== entryIndex) : [0, 1].filter(idx => idx !== entryIndex);
+    }
+
+    toggleState() {
+        selectComponent(this);
+        this.isOn = !this.isOn;
+        
+        // Change visual representation without altering this.inouts structure
+        this.symbol.strokes[1].start = this.isOn ? [0.8,3.2] : [-0.8,3.2];
+        
+        unselectSelectedComponent();
+    }
 }
+
+
 
 class Fuente extends Component {
     constructor(position) {
@@ -1549,7 +1748,9 @@ class Fuente extends Component {
             new ComponentOptions([
                 new TextboxOption("Tipo", "L", "type"),
                 new TextboxOption("Nombre", "-X", "name"),
-            ]))}
+            ]),0,
+            [[0,0]]
+        )}
 
             update() {
                 this.symbol.strokes[2].text = this.options.options[0].getValue()

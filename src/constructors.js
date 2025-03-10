@@ -85,7 +85,7 @@ class RectangleArray {
 }
 
 class Arc {
-    constructor(center, radius, sAngle, eAngle, width, color, hide) {
+    constructor(center, radius, sAngle, eAngle, width, color, hide, filled, filledColor) {
         this.center = center
         this.radius = radius
         this.sAngle = sAngle
@@ -93,6 +93,8 @@ class Arc {
         this.width = width
         this.color = color
         this.hide = !hide
+        this.filled = filled
+        this.filledColor = filledColor || DEFAULT_COLOR
     }
     
     translate(pos) {
@@ -101,7 +103,7 @@ class Arc {
     }
 
     clone() {
-        return new Arc(this.center, this.radius, this.sAngle, this.eAngle, this.width, this.color, !this.hide)
+        return new Arc(this.center, this.radius, this.sAngle, this.eAngle, this.width, this.color, !this.hide, this.filled, this.filledColor)
     }
     
     draw() {
@@ -111,6 +113,8 @@ class Arc {
         context.beginPath()
         context.arc(this.center[0]*dotSpace*scale,this.center[1]*dotSpace*scale,this.radius*dotSpace*scale, this.sAngle, this.eAngle)
         context.lineWidth = this.width
+        context.fillStyle = this.filledColor;
+        if (this.filled) context.fill()
         context.stroke()
     }
 
@@ -321,7 +325,7 @@ class StrokeCollection {
 }
 
 class Component {
-    constructor(position, name, symbol, hitbox, options, rotation) {
+    constructor(position, name, symbol, hitbox, options, rotation, inouts) {
         this.position = position
         this.name = name
         this.imageName = this.constructor.name
@@ -330,6 +334,7 @@ class Component {
         this.options = options
         this.options.name = name
         this.rotation = rotation || 0
+        this.inouts = inouts || []
     }
     rotate90Deg() {
         this.symbol.rotate90Deg()
@@ -355,6 +360,10 @@ class Component {
 
     getEffectiveHitbox() {
         return this.hitbox.getEffectiveHitbox(this.position)
+    }
+
+    getPropagationInouts(entryIndex) {
+        return this.inouts.map((_, idx) => idx).filter(idx => idx !== entryIndex);
     }
 }
 

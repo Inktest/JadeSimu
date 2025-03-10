@@ -67,7 +67,7 @@ const loadv1_1_1 = (line) => {
         c.options.options[0].value = lines[0]
         c.options.options[1].value = lines[1]
         c.options.options[2].value = lines[2]
-        c.options.options[3].value = !lines[3]
+        c.options.options[3].value = lines[3] === "true"
         c.options.options[4].value = StrokeCollectionListv1_1_1[lines[4]].clone().translate([-2,2])
         selectComponent(c)
     }
