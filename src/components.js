@@ -40,6 +40,7 @@ class MultipleComponents extends Component {
                 )}
 
                 update() {
+                    updateCanvas()
                 }
                 
                 clone() {
