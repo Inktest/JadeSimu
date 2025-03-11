@@ -196,13 +196,19 @@ btn.className = "navbarButton"
 btn.title = "Guardar Proyecto"
 btn.onclick = async () => {
     if (dirHandle) {
-        let promptN = currFile?currFile:(prompt("Nombre del Archivo")+".jad")
-        if (!promptN) return
-        fileHandle = await dirHandle.getFileHandle(promptN, {create: true})
-        writable = await fileHandle.createWritable()
-        await writable.write(getSaveText())
-        await writable.close()
-        return
+        try {
+            let promptN = currFile ? currFile : (prompt("Nombre del Archivo") + ".jad");
+            if (!promptN) return;
+        
+            fileHandle = await dirHandle.getFileHandle(promptN, { create: true });
+            writable = await fileHandle.createWritable();
+            await writable.write(getSaveText());
+            await writable.close();
+            return
+        } catch (error) {
+            alert("Error: No se pudo guardar el archivo en la carpeta, guardando en descargas");
+        }
+        
     }
     saveName = project_name;
     if (project_name.endsWith(".tar"))
