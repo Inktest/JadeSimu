@@ -204,6 +204,10 @@ btn.onclick = async () => {
         await writable.close()
         return
     }
+    saveName = project_name;
+    if (project_name.endsWith(".tar"))
+        saveName = project_name.slice(0, -4);
+    
     downloadTextFile(project_name?project_name:"jadeFile.jad", getSaveText())
 }
 navbarDiv.appendChild(btn)
