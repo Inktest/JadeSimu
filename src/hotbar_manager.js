@@ -204,6 +204,7 @@ btn.onclick = async () => {
             writable = await fileHandle.createWritable();
             await writable.write(getSaveText());
             await writable.close();
+            currFile = promptN
             return
         } catch (error) {
             alert("Error: No se pudo guardar el archivo en la carpeta, guardando en descargas");
