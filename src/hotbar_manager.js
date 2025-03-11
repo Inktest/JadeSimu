@@ -210,11 +210,9 @@ btn.onclick = async () => {
         }
         
     }
-    saveName = project_name;
-    if (project_name.endsWith(".tar"))
-        saveName = project_name.slice(0, -4);
+
     
-    downloadTextFile(project_name?project_name:"jadeFile.jad", getSaveText())
+    downloadTextFile(project_name?project_name+".jad":"jadeFile.jad", getSaveText())
 }
 navbarDiv.appendChild(btn)
 
