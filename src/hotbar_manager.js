@@ -530,7 +530,9 @@ for (let c of components) {
 
 // Function to extract prefix, number, and suffix
 function extractParts(str) {
-    let match = str.match(/^([A-Z]*)(\d+)([a-z]*)$/i); // Match [Letter Prefix][Number][Suffix]
+    let match
+    if (match)
+     match = str.match(/^([A-Z]*)(\d+)([a-z]*)$/i); // Match [Letter Prefix][Number][Suffix]
     return match ? { prefix: match[1] || "", num: parseInt(match[2]), suffix: match[3] || "" } : null;
 }
 
