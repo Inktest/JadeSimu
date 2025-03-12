@@ -407,6 +407,25 @@ function addCheckboxToOptionsDiv(id, optionName, value, optionFunction) {
     optionsDiv.appendChild(div);
 }
 
+function addButtonTextToOptionsDiv(id, optionName, value, optionFunction) {
+    let optionsDiv = document.getElementById("optionsDiv");
+
+    let div = document.createElement("div")
+    let textbox = document.createElement('input')
+    textbox.className = "opt-button"
+    textbox.type = 'button'
+    textbox.id = "opt-btn-" + id
+    textbox.value = "#"
+    textbox.onclick = () => {
+        optionFunction()
+    }
+
+    div.appendChild(textbox)
+    div.appendChild(document.createTextNode(" " + optionName));
+
+    optionsDiv.appendChild(div);
+}
+
 function addClickableToOptionsDiv(id, optionName, optionFunction) {
     let optionsDiv = document.getElementById("optionsDiv");
 
@@ -476,6 +495,88 @@ btn.onclick = () => {
         addTextToOptionsDiv("Ctrl C > Clonar Componente")
         addTextToOptionsDiv("Ctrl Flecha > Mover Todo")
         addTextToOptionsDiv("Shift Click > Seleccionar")
+
+
+}
+navbarDiv.appendChild(btn)
+
+btn = createImageButton(`imgs/other.png`)
+btn.className = "navbarButton"
+btn.title = "Otros"
+btn.onclick = () => {
+   unselectSelectedComponent()
+   let optionsDiv = document.getElementById("optionsDiv");
+   let nameDiv = document.createElement("div");
+   nameDiv.className = "nameDiv";
+   nameDiv.innerHTML = "Otros";
+   optionsDiv.appendChild(nameDiv);
+    optionsDiv.style = `height: 135px; visibility: visible`;
+
+        addButtonTextToOptionsDiv("uno", "Reorganizar Etapas", "tres", () => {
+            let numEtapasNum = [];
+let numEtapasAlpha = [];
+
+// Separate numeric and alphanumeric values
+for (let c of components) {
+    let val = c.options.options[0].value;
+    if (c.name == "Etapa de Grafcet") {
+        if (/^\d*$/.test(val)) {
+            numEtapasNum.push(val); // Starts with a number → Numeric group
+        } else {
+            numEtapasAlpha.push(val); // Starts with a letter → Alphanumeric group
+        }
+    }
+}
+
+// Function to extract prefix, number, and suffix
+function extractParts(str) {
+    let match = str.match(/^([A-Z]*)(\d+)([a-z]*)$/i); // Match [Letter Prefix][Number][Suffix]
+    return match ? { prefix: match[1] || "", num: parseInt(match[2]), suffix: match[3] || "" } : null;
+}
+
+// Process numeric values (renumbered sequentially, preserving suffixes)
+let uniqueSortedNum = [...new Set(numEtapasNum)]
+    .map(extractParts)
+    .sort((a, b) => a.num - b.num);
+
+let mappingNum = new Map();
+uniqueSortedNum.forEach((val, index) => mappingNum.set(`${val.num}${val.suffix}`, `${index}${val.suffix}`));
+
+// Process alphanumeric values (sorted and renumbered within groups)
+let groupedAlpha = new Map();
+numEtapasAlpha.forEach(val => {
+    let parts = extractParts(val);
+    if (!groupedAlpha.has(parts.prefix)) {
+        groupedAlpha.set(parts.prefix, []);
+    }
+    groupedAlpha.get(parts.prefix).push(parts);
+});
+
+// Sort and remap each alphanumeric group separately
+let mappingAlpha = new Map();
+groupedAlpha.forEach((values, prefix) => {
+    values.sort((a, b) => a.num - b.num); // Sort by number
+    values.forEach((val, index) => {
+        mappingAlpha.set(`${val.prefix}${val.num}${val.suffix}`, `${val.prefix}${index}${val.suffix}`);
+    });
+});
+
+// Apply mappings
+for (let c of components) {
+    let val = c.options.options[0].value;
+    if (c.name == "Etapa de Grafcet") {
+        if (mappingNum.has(val)) {
+            c.options.options[0].value = mappingNum.get(val);
+        } else if (mappingAlpha.has(val)) {
+            c.options.options[0].value = mappingAlpha.get(val);
+        }
+        c.symbol.strokes[11].text = c.options.options[0].value;
+    }
+}
+updateCanvas();
+
+        })
+      
 
 
 }
