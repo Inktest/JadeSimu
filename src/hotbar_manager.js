@@ -578,6 +578,58 @@ for (let c of components) {
 updateCanvas();
 
         })
+
+        addButtonTextToOptionsDiv("dos", "Incrementar Etapas", "tres", () => {
+            let numEtapasNum = [];
+            let numEtapasAlpha = [];
+        
+            // Separate numeric and alphanumeric values
+            for (let c of components) {
+                let val = c.options.options[0].value;
+                if (c.name == "Etapa de Grafcet") {
+                    if (/^\d+$/.test(val)) {
+                        numEtapasNum.push(val); // Pure numeric values
+                    } else {
+                        numEtapasAlpha.push(val); // Alphanumeric values
+                    }
+                }
+            }
+        
+            // Function to extract prefix, number, and suffix
+            function extractParts(str) {
+                let match = str.match(/^([A-Z]*)(\d+)([a-z]*)$/i); // Match [Prefix][Number][Suffix]
+                return match ? { prefix: match[1] || "", num: parseInt(match[2]), suffix: match[3] || "" } : null;
+            }
+        
+            // Increment all numeric values
+            let mappingNum = new Map();
+            numEtapasNum.forEach(val => {
+                let parts = extractParts(val);
+                mappingNum.set(val, `${parts.num + 1}${parts.suffix}`);
+            });
+        
+            // Increment all alphanumeric values
+            let mappingAlpha = new Map();
+            numEtapasAlpha.forEach(val => {
+                let parts = extractParts(val);
+                mappingAlpha.set(val, `${parts.prefix}${parts.num + 1}${parts.suffix}`);
+            });
+        
+            // Apply mappings
+            for (let c of components) {
+                let val = c.options.options[0].value;
+                if (c.name == "Etapa de Grafcet") {
+                    if (mappingNum.has(val)) {
+                        c.options.options[0].value = mappingNum.get(val);
+                    } else if (mappingAlpha.has(val)) {
+                        c.options.options[0].value = mappingAlpha.get(val);
+                    }
+                    c.symbol.strokes[11].text = c.options.options[0].value;
+                }
+            }
+            updateCanvas();
+        });
+        
       
 
 
