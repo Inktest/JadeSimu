@@ -543,11 +543,17 @@ class Grafcet extends Component {
                 this.symbol.strokes[11].text = this.options.options[0].getValue()
                 this.symbol.strokes[12].text = this.options.options[1].getValue()
 
+                function isEtapaZero(str) {
+                    return str.match(/^([A-Za-z]*)(0)([A-Za-z]*)$/i) != null
+                }
+
+                let isZero = isEtapaZero(this.options.options[0].getValue())
+
                 this.symbol.strokes[2].hide = this.options.options[1].getValue().trim() != ""
-                this.symbol.strokes[7].hide = this.options.options[0].getValue().startsWith(0)
-                this.symbol.strokes[8].hide = this.options.options[0].getValue().startsWith(0)
-                this.symbol.strokes[9].hide = this.options.options[0].getValue().startsWith(0)
-                this.symbol.strokes[10].hide = this.options.options[0].getValue().startsWith(0)
+                this.symbol.strokes[7].hide = isZero
+                this.symbol.strokes[8].hide = isZero
+                this.symbol.strokes[9].hide = isZero
+                this.symbol.strokes[10].hide = isZero
                 updateCanvas()
             }
 

@@ -531,7 +531,7 @@ for (let c of components) {
 // Function to extract prefix, number, and suffix
 function extractParts(str) {
     let match
-    match = str.match(/^([A-Z]*)(\d+)([a-z]*)$/i); // Match [Letter Prefix][Number][Suffix]
+    match = str.match(/^([A-Za-z]*)(\d+)([A-Za-z]*)$/i); // Match [Letter Prefix][Number][Suffix]
     return match ? { prefix: match[1] || "", num: parseInt(match[2]), suffix: match[3] || "" } : null;
 }
 
@@ -599,7 +599,7 @@ updateCanvas();
         
             // Function to extract prefix, number, and suffix
             function extractParts(str) {
-                let match = str.match(/^([A-Z]*)(\d+)([a-z]*)$/i); // Match [Prefix][Number][Suffix]
+                let match = str.match(/^([A-Za-z]*)(\d+)([A-Za-z]*)$/i); // Match [Prefix][Number][Suffix]
                 return match ? { prefix: match[1] || "", num: parseInt(match[2]), suffix: match[3] || "" } : null;
             }
         
@@ -1036,6 +1036,7 @@ for (let group of GROUP_LIST) {
             btn2.onclick = () => {
                 let c = addComponent(component)
                 unselectSelectedComponent()
+                c.roundPosition()
                 selectComponent(c)
             
             }
