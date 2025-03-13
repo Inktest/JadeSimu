@@ -531,15 +531,17 @@ for (let c of components) {
 // Function to extract prefix, number, and suffix
 function extractParts(str) {
     let match
-    if (match)
-     match = str.match(/^([A-Z]*)(\d+)([a-z]*)$/i); // Match [Letter Prefix][Number][Suffix]
+    match = str.match(/^([A-Z]*)(\d+)([a-z]*)$/i); // Match [Letter Prefix][Number][Suffix]
     return match ? { prefix: match[1] || "", num: parseInt(match[2]), suffix: match[3] || "" } : null;
 }
 
 // Process numeric values (renumbered sequentially, preserving suffixes)
+
 let uniqueSortedNum = [...new Set(numEtapasNum)]
     .map(extractParts)
-    .sort((a, b) => a.num - b.num);
+    .sort((a, b) => {
+        a.num - b.num
+        });
 
 let mappingNum = new Map();
 uniqueSortedNum.forEach((val, index) => mappingNum.set(`${val.num}${val.suffix}`, `${index}${val.suffix}`));
