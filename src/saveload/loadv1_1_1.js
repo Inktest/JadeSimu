@@ -86,7 +86,7 @@ const loadv1_1_1 = (line) => {
     }
 
     if (abreviature == "Lct") {
-        c = addComponent(new ContactoLógico()).moveTo([firstCoord, secondCoord])
+        c = addComponent(new ContactoLogico()).moveTo([firstCoord, secondCoord])
         c.options.options[0].value = lines[0]
         c.options.options[1].value = StrokeCollectionListv1_1_1[lines[1]].clone()
         selectComponent(c)
