@@ -81,7 +81,7 @@ const loadv1_1 = (line) => {
     }
 
     if (abreviature == "Lbn") {
-        c = addComponent(new BobinaLógica()).moveTo([firstCoord, secondCoord])
+        c = addComponent(new BobinaLogica()).moveTo([firstCoord, secondCoord])
         c.options.options[0].value = lines[0]
         c.options.options[1].value = StrokeCollectionListv1_1[lines[1]].clone()
         selectComponent(c)
