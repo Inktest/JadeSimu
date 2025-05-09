@@ -27,7 +27,7 @@ const COMPONENTS_LIST = [
     //new Vaiven(),
     //new FC(),
     //new TemporizacionLogica(),
-    //new ContactoLógico(),
+    //new ContactoLogico(),
     //new BobinaLógica(),
     //new S71215C(),
     //new S7SM1223(),
@@ -79,7 +79,7 @@ const GROUP_LIST = [
         new GrafcetTransicion(),
         new FC(),
         new TemporizacionLogica(),
-        new ContactoLógico(),
+        new ContactoLogico(),
         new BobinaLógica()
     ]),
     new ComponentGroup("Neumática", "ActuadorLineal", [
@@ -100,7 +100,7 @@ const abreviatures = {
     "Vaivén": "Vvn",
     "Final de Carrera": "Vfc",
     "Temporizador": "Ton",
-    "Contacto Lógico": "Lct",
+    "Contacto Logico": "Lct",
     "Bobina Lógica": "Lbn",
     "Alimentación": "Vcc",
     "Contacto Pulsador": "Swt",
@@ -696,7 +696,7 @@ btn.onclick = () => {
             marcasMap[marca].push(currEtapa.etapa.options.options[0].value)
         }
         
-        let c = addComponent(new ContactoLógico()).moveTo([2 + 3*(i+1), 5]);
+        let c = addComponent(new ContactoLogico()).moveTo([2 + 3*(i+1), 5]);
         c.options.options[0].value = i;
         c.options.options[1].value = CONTACTO_NC_COLLECTION;
         grafcetSCLCodeEtapaCero += ` NOT "Etapa ${i}" AND`
@@ -756,7 +756,7 @@ btn.onclick = () => {
  let currMarcaTemp = 0
 
     for (let [marca, etapasMarca] of Object.entries(marcasMap)) {
-    c = addComponent(new ContactoLógico()).moveTo([5, currHeight + 5])
+    c = addComponent(new ContactoLogico()).moveTo([5, currHeight + 5])
     c.options.options[0].value = etapasMarca[0];
     c.options.options[1].value = NONE_COLLECTION;
     selectComponent(c);
@@ -791,7 +791,7 @@ btn.onclick = () => {
     
  for (let i = 0; i < etapasMarca.length; i++) {
             currHeight += 4
-            c = addComponent(new ContactoLógico()).moveTo([5, currHeight])
+            c = addComponent(new ContactoLogico()).moveTo([5, currHeight])
             c.options.options[0].value = etapasMarca[i];
             c.options.options[1].value = NONE_COLLECTION;
             selectComponent(c);
@@ -900,7 +900,7 @@ function calculateContactMatrix(currEtapa, index) {
             } else {
                 
                 lastContactPos = [5 + 3*k, 5 + 4*l + currHeight]
-                let c = addComponent(new ContactoLógico()).moveTo(lastContactPos);
+                let c = addComponent(new ContactoLogico()).moveTo(lastContactPos);
 
                 if (mat[k][l].startsWith("+")) {
                     let tmp = mat[k][l].split("")
@@ -947,7 +947,7 @@ function calculateContactMatrix(currEtapa, index) {
 wires.push(new Line([7 + 3*currMatX, 6 + currHeight], [7 + 3*currMatX, 6 + 4*pluses + currHeight], 1, DEFAULT_COLOR, false))
 for (var i in sets) {
     lastContactPos = [lastContactPos[0]+3, lastContactPos[1]]
-let c = addComponent(new ContactoLógico()).moveTo(lastContactPos);
+let c = addComponent(new ContactoLogico()).moveTo(lastContactPos);
                 c.options.options[0].value = sets[i].etapa.options.options[0].value;
                 c.options.options[1].value = NONE_COLLECTION;
                 selectComponent(c);
