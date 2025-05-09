@@ -597,7 +597,7 @@ class Arrow extends Component {
             }
 }
 
-class ContactoLógico extends Component {
+class ContactoLogico extends Component {
     constructor(position) {
         super(position, "Contacto", new ComponentSymbol([
             new Line([-2,1],[-.5,1],1,DEFAULT_COLOR),
@@ -622,7 +622,7 @@ class ContactoLógico extends Component {
             }
 
             clone() {
-                let newobj = new ContactoLógico(this.position)
+                let newobj = new ContactoLogico(this.position)
                 newobj.name = this.name
                 newobj.symbol = this.symbol.clone()
                 newobj.hitbox = this.hitbox.clone()
