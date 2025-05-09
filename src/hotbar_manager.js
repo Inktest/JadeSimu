@@ -28,7 +28,7 @@ const COMPONENTS_LIST = [
     //new FC(),
     //new TemporizacionLogica(),
     //new ContactoLogico(),
-    //new BobinaLógica(),
+    //new BobinaLogica(),
     //new S71215C(),
     //new S7SM1223(),
 ]
@@ -80,7 +80,7 @@ const GROUP_LIST = [
         new FC(),
         new TemporizacionLogica(),
         new ContactoLogico(),
-        new BobinaLógica()
+        new BobinaLogica()
     ]),
     new ComponentGroup("Neumática", "ActuadorLineal", [
         new ActuadorLineal(),
@@ -101,7 +101,7 @@ const abreviatures = {
     "Final de Carrera": "Vfc",
     "Temporizador": "Ton",
     "Contacto Logico": "Lct",
-    "Bobina Lógica": "Lbn",
+    "Bobina Logica": "Lbn",
     "Alimentación": "Vcc",
     "Contacto Pulsador": "Swt",
     "S7 1200 1215C": "S75",
@@ -745,7 +745,7 @@ btn.onclick = () => {
 
     console.log(grafcetSCLCodeEtapaCero + "\n\n" + grafcetSCLCodeFaseEtapas)
 
-    let c2 = addComponent(new BobinaLógica()).moveTo([3*(i+2)-1, 5]);
+    let c2 = addComponent(new BobinaLogica()).moveTo([3*(i+2)-1, 5]);
     c2.options.options[0].value = "0";
     c2.options.options[1].value = BOBINA_SET_COLLECTION;
     selectComponent(c2);
@@ -772,7 +772,7 @@ btn.onclick = () => {
     } else {
 
 
-    c = addComponent(new BobinaLógica()).moveTo([9, currHeight + 5])
+    c = addComponent(new BobinaLogica()).moveTo([9, currHeight + 5])
     c.options.options[1].value = NONE_COLLECTION;
     if (marca.replace(/[ ]*?\:\=[ ]*?1[ ]*?/, "") !== marca) {
         c.options.options[1].value = BOBINA_SET_COLLECTION;
@@ -954,7 +954,7 @@ let c = addComponent(new ContactoLogico()).moveTo(lastContactPos);
                 unselectSelectedComponent(c);
             }
             lastContactPos = [lastContactPos[0]+3, lastContactPos[1]]
-            c = addComponent(new BobinaLógica().clone()).moveTo(lastContactPos);
+            c = addComponent(new BobinaLogica().clone()).moveTo(lastContactPos);
                             c.options.options[0].value = currEtapa.etapa.options.options[0].value;
                             c.options.options[1].value = BOBINA_SET_COLLECTION;
                             selectComponent(c);
@@ -966,7 +966,7 @@ for (var i in sets) {
         currHeight += 4
     }
     wires.push(new Line([lastContactPos[0]-2, lastContactPos[1]+1], [lastContactPos[0]-2, lastContactPos[1]-3], 1, DEFAULT_COLOR, false))
-c = addComponent(new BobinaLógica().clone()).moveTo(lastContactPos);
+c = addComponent(new BobinaLogica().clone()).moveTo(lastContactPos);
                             c.options.options[0].value = sets[i].etapa.options.options[0].value;
                             c.options.options[1].value = BOBINA_RESET_COLLECTION;
                             selectComponent(c);
