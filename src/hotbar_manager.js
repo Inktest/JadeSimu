@@ -26,8 +26,8 @@ const GROUP_LIST = [
         getComponentFromJadeFile("components/fuente-a.a"),
         getComponentFromJadeFile("components/transformador.a")
     ]),
-    new ComponentGroup("Protecciones", "Diferencial", [
-        new Diferencial(),
+    new ComponentGroup("Protecciones", "ReleTermico", [
+        //new Diferencial(),
         getComponentFromJadeFile("components/rele-t.a"),
         getComponentFromJadeFile("components/diodo.a"),
         getComponentFromJadeFile("components/condensador.a")

@@ -63,6 +63,10 @@ const loadv2 = async (line) => {
     let c = await getComponentFromJadeFile(abreviaturesLookup[abreviature])
     c = await addComponent(c)
     c.moveTo([firstCoord,secondCoord])
+    console.log(rotation)
+    for (let r = 0; r < rotation; r++) {
+        c.rotate90Deg()
+    }
     j = 0
     let symbolI = 0
     for (let opt of c.options.options) {

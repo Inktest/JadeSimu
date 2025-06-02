@@ -142,10 +142,10 @@ function drawComponents() {
 
 function drawComponent(comp) {
 
-    if (comp.inouts.length > 0) {
+    /*if (comp.inouts.length > 0) {
         for (let inout of comp.inouts)
         new Arc(inout,0.25,0,2*Math.PI,1,"#0f0").translate(comp.position).translate([offsetX, offsetY]).draw()
-    }
+    }*/
 
     for (let i = 0; i < comp.symbol.strokes.length; i++) {
     comp.symbol.strokes[i].clone().translate(comp.position).translate([offsetX, offsetY]).draw()
