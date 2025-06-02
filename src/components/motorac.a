@@ -1,0 +1,64 @@
+V2.0c
+Motor de Corriente Alterna
+MotorAC
+mCA
+
+L 0 0 0 1 1 D
+L 2 0 1 1.25 1 D
+L -2 0 -1 1.25 1 D
+A 0 3 2 0 6.28 1 D
+A 0 3 2.2 -0.9 -0.1 1 D
+L 3 1 1.9 1.9 1 D
+L 3 1 3 0 1 D
+T 0 2 17 D center M
+T -0.5 3.5 17 D center 3
+
+A 0.5 3.6 0.25 0 3.14 1 D
+A 1 3.5 0.25 3.14 0 1 D
+
+LH 0 6 0 5 1 D
+LH 2 6 1 4.75 1 D
+LH -2 6 -1 4.75 1 D 
+
+T -2.25 3 17 D right -M
+T -1.25 .5 12 D left U1
+T 0.15 0.5 12 D left V1
+T 2 0.5 12 W1 D left
+T 3.25 .5 12 PE D left
+
+TH -1.25 5.5 12 D left W2
+TH .15 5.5 12 D left U2
+TH 2 5.5 12 D left V2
+
+H -2 0 1 5
+
+X name Nombre \ -M
+X con1 Conexión 1 \ U1
+X con2 Conexión 2 \ V1
+X con3 Conexión 3 \ W1
+X con4 Conexión 4 \ W2
+X con5 Conexión 5 \ V2
+X con6 Conexión 6 \ U2
+X conpe Conexión PE \ PE
+C f mono Monofásico?
+C f yd YD?
+
+UT 14 0
+UT 15 1
+UT 16 2
+UTC 17 8 2 3
+UT 18 7
+UT 19 4
+UT 20 5
+UTC 21 8 5 6
+
+UTCN 8 8 1 3
+UNH 0 8
+UNH 16 8
+
+UHYN 11 9 8
+UH 12 9
+UH 13 9
+UH 19 9
+UHYN 20 9
+UH 21 9

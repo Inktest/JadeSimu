@@ -1,0 +1,20 @@
+V2.0c
+Alimentación
+Fuente
+Vcc
+
+L 0 0 0 -.6 1 D
+A 0 -1 .4 0 6.28 1 D
+T 0 -2 17 D center L
+T -.75 -1 17 D right -X
+
+I 0 0
+H -1 -2 0 -1
+
+X type Tipo \ L
+X name Nombre \ -X
+
+UT 2 0
+UT 3 1
+
+VS 0 2

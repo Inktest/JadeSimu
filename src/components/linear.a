@@ -1,0 +1,66 @@
+V2.0c
+Actuador Lineal
+ActuadorLineal
+Lct
+
+L 0 0 0 1.5 1 D
+L 0 2.5 0 4 1 D
+L 0 0 9 0 1 D
+L 0 4 9 4 1 D
+L 9 4 9 2.5 1 D
+L 9 0 9 1.5 1 D
+
+L 1 4 1 5 1 D
+LH 8 4 8 5 1 D
+R 1 1.5 -3 2.5 1 D
+
+S 37 1 0
+
+L 3 4 4 0 1 D
+L 5 4 4 0 1 D
+L 5 4 6 0 1 D
+L 7 4 6 0 1 D
+L 7 4 8 0 1 D
+L 9 4 8 0 1 D
+
+L 0 1.5 0 2.5 1 D
+RH 1 1.5 -3 2.5 1 D
+
+S 0 0 0
+S 0 0 0
+
+TH 4 -2 17 D right a0
+TH 8 -2 17 D left a1
+TH 6 -3 17 D center a2
+
+H 0 0 8 3
+X s0 Sensor Cerrado \ a0
+X s1 Sensor Abierto \ a1
+X s2 Sensor Medio \ a2
+C f dobleE Doble Efecto
+C f dobleV Doble Vástago
+G 37 1 0 Alc Amortiguación
+G 0 0 0 AcS Sensor
+
+UH 7 3
+UNH 16 4
+UNH 17 4
+
+US 9 5
+USNV 18 0 6 4.5 -1
+USNV 19 1 6 8.5 -1
+USNV 20 2 6 6.5 -1.5
+
+UNH 10 3
+UNH 11 3
+UNH 12 3
+UNH 13 3
+UNH 14 3
+UNH 15 3
+
+UH 21 6
+UH 22 6
+UH 23 6
+UT 21 0
+UT 22 1
+UT 23 1

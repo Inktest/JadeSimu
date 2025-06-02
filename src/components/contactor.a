@@ -1,0 +1,36 @@
+V2.0c
+Contactor
+Contactor
+Ctr
+
+L 0 0 0 1 1 D
+L 0 3 0 4 1 D
+LH 0 3 0.9 0.9 1 D
+L 0 3 -1 1 1 D
+LH 0 1 1 1 1 D
+T -1.25 2 17 D right -K
+T 0.25 0.5 17 D left 13
+T 0.25 3.5 17 D left 14
+
+X name Nombre \ -K
+X con1 Conexión 1 \ 13
+X con2 Conexión 2 \ 14
+C f nc NC?
+
+H -1 0 1 3
+
+I 0 0
+I 0 4
+
+UT 5 0
+UT 6 1
+UT 7 2
+UH 2 3
+UNH 3 3
+UH 4 3
+
+AP 5        
+IA 4
+TCH 4 nc
+ICA 2 0 1 2
+        

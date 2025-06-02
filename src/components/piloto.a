@@ -1,0 +1,51 @@
+V2.0c
+Señalización Óptica
+Piloto
+Opt
+
+L 0 0 0 1 1 D
+L 0 3 0 4 1 D
+A 0 2 1 0 6.28 1 D
+L .7 1.3 -.7 2.7 1 D
+L -.7 1.3 0.7 2.7 1 D
+
+LH 1.5 1 1.71 1 D
+LH 1.75 1 1.75 0.75 1 D
+LH 1.75 0.75 2 0.75 1 D
+LH 2 0.75 2 1 1 D
+LH 2 1 2.25 1 1 D
+T -1.25 2 17 D right -H
+T 0.25 0.5 17 D left X1
+T 0.25 3.5 17 D left X2
+T 2.5 2 17 D right C5
+
+H -1 0 1 4
+
+X name Nombre \ -H
+X con1 Conexión 1 \ X1
+X con2 Conexión 2 \ X2
+C f pulse Pulsante?
+GS C5 Pil Color
+
+I 0 0
+I 0 4
+
+UT 10 0
+UT 11 1
+UT 12 2
+UT 13 4
+
+UH 5 3
+UH 6 3
+UH 7 3
+UH 8 3
+UH 9 3
+
+M
+MRB 0 1 L L1 L2 L3 N
+MRB 0 1 + -
+MPFA 2 0a0
+MAC f00
+MAFS 4 2 C1 940 C2 d00 C3 fa0 C4 ff0 C5 0a0 C6 00a C7 a0a C8 ccc C9 eee
+MATF 3 2 2 fff
+

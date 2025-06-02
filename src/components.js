@@ -890,6 +890,7 @@ class WireComponent extends Component {
                 newobj.symbol = this.symbol.clone()
                 newobj.hitbox = this.hitbox.clone()
                 newobj.options = this.options.clone()
+                newobj.inouts = this.inouts
                 return newobj
             }
 }
@@ -1300,7 +1301,6 @@ class Bobina extends Component {
         let lineTypeA1 = (typeof nodeVoltages !== 'undefined' && nodeVoltages[keyA1] !== undefined) ? nodeVoltages[keyA1] : "N";  // Default to Neutral if not found
         let lineTypeA2 = (typeof nodeVoltages !== 'undefined' && nodeVoltages[keyA2] !== undefined) ? nodeVoltages[keyA2] : "N";  // Default to Neutral if not found
 
-        console.log(lineTypeA1.voltage, "A1", lineTypeA2.voltage, "A2");
         let isActivated = (lineTypeA1.voltage === "L" && lineTypeA2.voltage === "N") || (lineTypeA1.voltage === "N" && lineTypeA2.voltage === "L")
 
         

@@ -15,7 +15,7 @@ const CONTACTO_FS_COLLECTION = new StrokeCollection([
 ], DEFAULT_COLOR,4)
 
 const BOBINA_SET_COLLECTION = new StrokeCollection([
-    new Text([0, 1], 25, "S", DEFAULT_COLOR, "center", false),
+    new Text([0, 1], 25, "S", DEFAULT_COLOR, "center"),
 ], DEFAULT_COLOR,1)
 
 const BOBINA_RESET_COLLECTION = new StrokeCollection([

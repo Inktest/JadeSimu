@@ -21,7 +21,7 @@ const loadv1_1_1 = (line) => {
         abreviature = currLine[2]
         currLine.splice(0, 3)
         lines = currLine
-    console.log({abv: abreviature, c1: firstCoord, c2: secondCoord, line: lines})
+    // console.log({abv: abreviature, c1: firstCoord, c2: secondCoord, line: lines})
     let c
     if (abreviature == "Get") {
         c = addComponent(new Grafcet()).moveTo([firstCoord, secondCoord])
@@ -319,7 +319,9 @@ const loadv1_1_1 = (line) => {
     }
 
     if (abreviature == "Wr2") {
-        c = addComponent(new WireComponent()).moveTo([firstCoord, secondCoord])
+        c = addComponent(new WireComponent())
+        console.log(c)
+        c.moveTo([firstCoord, secondCoord])
         c.options.options[0].value = lines[0]
         c.options.options[1].value = lines[1]
         c.options.options[2].value = lines[2] === "true"

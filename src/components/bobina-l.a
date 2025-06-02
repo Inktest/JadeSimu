@@ -1,0 +1,28 @@
+V2.0c
+Bobina Lógica
+BobinaLógica
+Lbn
+
+L -2 1 -1 1 1 D
+A 0 1 1 1.87 4.41 1 D
+A 0 1 1 5.01 1.25 1 D
+L 1 1 2 1 1 D
+S 0 0 0
+T 0 -1 17 D center Q1
+
+H -2 0 2 1
+I -2 1
+I 2 1
+
+X name Nombre \ Q1
+G 0 0 0 Log Tipo
+
+US 4 1
+UT 5 0
+
+M
+MRBC 0 1 1 0 + -
+MRBCS 0 1 1 1 S + -
+MRBCS 0 1 1 2 R + -
+MAC f00
+AP 5

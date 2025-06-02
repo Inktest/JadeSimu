@@ -48,6 +48,7 @@ class TextboxOption {
         this.name = name
         this.value = value
         this.id = id
+        this.idName = "txt"
     }
 
     getDiv() {
@@ -94,6 +95,7 @@ class CheckboxOption {
         this.name = name
         this.value = value
         this.id = id
+        this.idName = "chk"
     }
 
     getDiv() {
@@ -132,6 +134,7 @@ class ImageSelectOption {
         this.value = value
         this.buttons = buttons
         this.height = 30
+        this.idName = "img"
     }
 
     getDiv() {

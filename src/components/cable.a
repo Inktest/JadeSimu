@@ -1,0 +1,24 @@
+V2.0c
+Cable
+WireComponent
+Wr2
+
+L 0 0 0 1 1 D
+L 0 .2 0 1.2 1 D
+
+H -1 0 0 0
+
+X height Altura \ 1
+X width Anchura \ 0
+C f dl Doble línea
+
+I 0 0
+I 0 1
+
+USE 0 1 0 0 0
+USE 1 1 0 0 .2
+
+UISE 0
+
+UH 1 2
+UHBSE 0

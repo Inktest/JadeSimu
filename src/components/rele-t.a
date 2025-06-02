@@ -1,0 +1,55 @@
+V2.0c
+Relé Térmico
+ReleTermico
+Ter
+
+L 0 0 0 1 1 D
+L 1 0 1 1 1 D
+L -1 0 -1 1 1 D
+L 0 3 0 4 1 D
+L 1 3 1 4 1 D
+L -1 3 -1 4 1 D
+L 2 1 -1.66 1 1 D
+L 2 1 2 3 1 D
+L -1.66 1 -1.66 3 1 D
+L 2 3 -1.66 3 1 D
+
+S 35 0 0
+S 35 -1 0
+S 35 -2 0
+
+T -2.25 2 17 D right -F
+T -.75 .5 17 D left 1
+T .25 .5 17 D left 2
+T 1.25 .5 17 D left 3
+T -.75 3.5 17 D left 4
+T .25 3.5 17 D left 5
+T 1.25 3.5 17 D left 6
+
+H -2 0 1 3
+
+X name Nombre \ -F
+X con1 Conexión 1 \ 1
+X con2 Conexión 2 \ 2
+X con3 Conexión 3 \ 3
+X con4 Conexión 4 \ 4
+X con5 Conexión 5 \ 5
+X con6 Conexión 6 \ 6
+
+UT 13 0
+UT 14 1
+UT 15 2
+UT 16 3
+UT 17 4
+UT 18 5
+UT 19 6
+
+I -1 0
+I 0 0
+I 1 0
+I -1 4
+I 0 4
+I 1 4
+
+M
+MRTI 0 1 2 3 4 5 L L1 L2 L3 N

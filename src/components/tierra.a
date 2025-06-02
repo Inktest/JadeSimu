@@ -1,0 +1,14 @@
+V2.0c
+Toma de Tierra
+Tierra
+Gnd
+
+L 0 0 0 1 1 D
+L 1 1 -1 1 D
+L .75 1.33 -.75 1.33 1 L
+L .5 1.66 -.5 1.66 1 D
+
+H -1 0 0 1
+I 0 0
+
+VT 0 PE

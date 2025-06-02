@@ -1,84 +1,31 @@
 const loadv1 = (lines) => {
-    for (let i = 0; i < lines.length-1; i++) {
-        let coordRegex = /[0-9]*/
-        let abrRegex = /.../
-        let match = lines[i].match(coordRegex)
-        let firstCoord = Number.parseInt(match[0])
-        lines[i] = lines[i].replace(coordRegex, '')
+    const resultLines = ["v2","false\u001d\u001d35\u001d\u001d1240\u001d1748\u001d3"];
 
-        let abreviature = lines[i].match(abrRegex)[0]
-        lines[i] = lines[i].replace(abrRegex, '')
+    for (let i = 0; i < lines.length; i++) {
+        let line = lines[i];
 
-        match = lines[i].match(coordRegex)
-        let secondCoord = Number.parseInt(match[0])
-        lines[i] = lines[i].replace(coordRegex, '')
-        lines[i] = lines[i].replace(' ', '')
+        // Match lines like: 20Get17 0 or 23Vvn9 DERECHA
+        const match = line.match(/^(\d+)([A-Za-z]{3})(\d+)\s?(.*)?$/);
+        if (!match) continue;
 
-        console.log({abv: abreviature, c1: firstCoord, c2: secondCoord, line: lines[i]})
-        let c
-        if (abreviature == "Get") {
-            c = addComponent(new Grafcet()).moveTo([firstCoord, secondCoord])
-            c.options.options[0].value = lines[i]
-            c.options.options[1].value = lines[++i]
-            selectComponent(c)
+        const [, x, abbr, y, param1] = match;
+        const xPos = x;
+        const yPos = y;
+
+        // Component conversion
+        if (abbr === "Get" || abbr === "Vvn" || abbr === "txt") {
+            const secondParam = lines[++i];
+            resultLines.push(`${xPos}\u001d${yPos}\u001d${abbr}\u001d${param1}\u001d${secondParam}`);
+        } else if (abbr === "Wre") {
+
+            const points = param1.split(",");
+            resultLines.push(`${xPos}\u001d${yPos}\u001dWr2\u001d${parseFloat(yPos) - parseFloat(points[1])}\u001d${parseFloat(xPos) - parseFloat(points[0])}\u001df`);
+        } else if (param1) {
+            resultLines.push(`${xPos}\u001d${yPos}\u001d${abbr}\u001d${param1}`);
+        } else {
+            resultLines.push(`${xPos}\u001d${yPos}\u001d${abbr}`);
         }
+    }
 
-        if (abreviature == "Gtr") {
-            c = addComponent(new GrafcetTransicion()).moveTo([firstCoord, secondCoord])
-            c.options.options[0].value = lines[i]
-            selectComponent(c)
-        }
-
-        if (abreviature == "Vvn") {
-            c = addComponent(new Vaiven()).moveTo([firstCoord, secondCoord])
-            c.options.options[0].value = lines[i]
-            c.options.options[1].value = lines[++i]
-            selectComponent(c)
-        }
-
-        if (abreviature == "Vfc") {
-            c = addComponent(new FC()).moveTo([firstCoord, secondCoord])
-            c.options.options[0].value = lines[i]
-            selectComponent(c)
-        }
-
-        if (abreviature == "Ton") {
-            c = addComponent(new TemporizacionLogica()).moveTo([firstCoord, secondCoord])
-            c.options.options[0].value = lines[i]
-            selectComponent(c)
-        }
-
-        if (abreviature == "Vcc") {
-            c = addComponent(new Fuente()).moveTo([firstCoord, secondCoord])
-            c.options.options[0].value = lines[i]
-            selectComponent(c)
-        }
-
-        if (abreviature == "Swt") {
-            c = addComponent(new Pulsador()).moveTo([firstCoord, secondCoord])
-            c.options.options[0].value = lines[i]
-            selectComponent(c)
-        }
-
-        if (abreviature == "S75") {
-            c = addComponent(new S71215C()).moveTo([firstCoord, secondCoord])
-            selectComponent(c)
-        }
-
-        if (abreviature == "txt") {
-            c = addComponent(new Texto()).moveTo([firstCoord, secondCoord])
-            c.options.options[0].value = lines[i]
-            c.options.options[1].value = lines[++i]
-            selectComponent(c)
-        }
-
-        if (abreviature == "Wre") {
-            wires.push(new Line([firstCoord, secondCoord], lines[i].split(","), 1, DEFAULT_COLOR))
-        }
-        
-        updateCanvas()
-        convertDiagramToNodes()
-        unselectSelectedComponent()
-        held = false;
-      }
-}
+    loadv2(resultLines.join("\n"));
+};

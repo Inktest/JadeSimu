@@ -1,0 +1,58 @@
+V2.0c
+Fuente de Alimentación
+FuenteAlimentacion
+Alm
+
+LH 0 0 0 1 1 D
+L -1 0 -1 1 1 D
+L 1 0 1 1 1 D
+L -2 1 2 1 1 D
+L -2 1 -2 5 1 D
+L 2 5 -2 5 1 D
+L 2 5 2 1 1 D
+L -1 5 -1 6 1 D
+L 1 5 1 6 1 D
+L 2 1 -2 5 1 D
+
+A -0.5 2 .25 0 3.14 1 D
+A -1 2 .25 3.14 0 1 D
+L .25 3.5 1.5 3.5 1 D
+L .25 4 .5 4 1 D
+L .75 4 1 4 1 D
+L 1.25 4 1.5 4 1 D
+T -1 4.75 17 D center +
+T 1 4.75 17 D center -
+
+T -2.25 2 17 D right
+T -.75 .5 17 D left 1
+TH .25 .5 17 D left 2
+T 1.25 .5 17 D left 2
+T -.75 5.5 17 D left 3
+T 1.25 5.5 17 D left 4
+
+H -2 0 1 5
+X name Nombre \ -V
+X con1 Conexión 1 \ 1
+X con2 Conexión 2 \ 2
+X con3 Conexión 3 \ 3
+X con4 Conexión 4 \ 4
+X con5 Conexión 5 \ 5
+C f tri Trifásico?
+
+UT 18 0
+UT 19 1
+UTC 20 6 2 1
+UTC 21 6 3 2
+UTC 22 6 4 3
+UTC 23 6 5 4
+
+UH 0 6
+UH 20 6
+
+VBINC 2 + 0 1 L L1 L2 L3 N
+VBINC 3 - 0 1 L L1 L2 L3 N
+
+I -1 0
+I 1 0
+I -1 6
+I 1 6
