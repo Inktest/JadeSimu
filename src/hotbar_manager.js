@@ -34,6 +34,7 @@ const GROUP_LIST = [
     ]),
     new ComponentGroup("Contactos", "Contactor", [
         getComponentFromJadeFile("components/contactor.a"),
+        getComponentFromJadeFile("components/contactofuerza.a"),
         getComponentFromJadeFile("components/conmutador.a"),
         getComponentFromJadeFile("components/pulsador.a"),
         getComponentFromJadeFile("components/conmutador-p.a"),
@@ -43,6 +44,7 @@ const GROUP_LIST = [
     ]),
     new ComponentGroup("Actuadores", "Bobina", [
         getComponentFromJadeFile("components/bobina.a"),
+        getComponentFromJadeFile("components/electrov.a"),
         getComponentFromJadeFile("components/motorac.a"),
         getComponentFromJadeFile("components/piloto.a"),
         getComponentFromJadeFile("components/7seg.a"),
@@ -977,7 +979,7 @@ function addComponent(comp, copy) {
             while (currGrafcetsNumbers.indexOf(grafVal) != -1) {
                 grafVal++
             }
-            c.symbol.strokes[11].text = grafVal
+            c.symbol.strokes[6].text = grafVal
             c.options.options[0].setValue(grafVal)
             currGrafcetStages.push(c)
         

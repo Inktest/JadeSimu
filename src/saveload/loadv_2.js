@@ -20,7 +20,7 @@ const loadv2 = async (line) => {
         "Bob": "components/bobina.a",
         "txt": "components/text.a",
         "Arr": "components/arrow.a",
-        "Ctr": "components/contator.a",
+        "Ctr": "components/contactor.a",
         "Get": "components/etapa.a",
         "Gtr": "components/transicion.a",
         "Vvn": "components/vaiven.a",
@@ -32,7 +32,9 @@ const loadv2 = async (line) => {
         "Ton": "components/temp-l.a",
         "mCA": "components/motorac.a",
         "CTm": "components/contacto-t.a",
-        "CCT": "components/conmutador-t.a"
+        "CCT": "components/conmutador-t.a",
+        "CtF": "components/contactofuerza.a",
+        "BoV": "components/electrov.a"
     }
 
     // CCT

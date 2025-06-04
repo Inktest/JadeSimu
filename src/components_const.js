@@ -1,10 +1,5 @@
-async function getComponentFromJadeFile(file) {
-    let component;
-
-    await fetch(file)
-        .then((res) => res.text())
-        .then((text) => {
-            if (!text.startsWith("V2.0c")) return "Not valid";
+async function getComponentFromJadeText(text) {
+if (!text.startsWith("V2.0c")) return "Not valid";
 
             let lines = text.split("\n");
             lines = lines.map((line) => line.replace("\r", ""))
@@ -720,7 +715,17 @@ async function getComponentFromJadeFile(file) {
             };            
             c.flange = false
 
-            component = c;
+            return c
+ 
+}
+
+async function getComponentFromJadeFile(file) {
+    let component;
+
+    await fetch(file)
+        .then((res) => res.text())
+        .then((text) => {
+            component = getComponentFromJadeText(text)
         });
     return component;
 }
