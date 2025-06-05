@@ -38,6 +38,72 @@ if (!text.startsWith("V2.0c")) return "Not valid";
                         );
                         break;
 
+                        case "D":
+    x1 = parseFloat(line[1]);
+    y1 = parseFloat(line[2]);
+    x2 = parseFloat(line[3]);
+    y2 = parseFloat(line[4]);
+    dashLength = parseFloat(line[5]);
+    width = parseFloat(line[6]);
+
+    dx = x2 - x1;
+    dy = y2 - y1;
+    totalLength = Math.sqrt(dx * dx + dy * dy);
+    ux = dx / totalLength;
+    uy = dy / totalLength;
+
+    progress = 0;
+    draw = true;
+
+    while (progress < totalLength) {
+        if (draw) {
+            startX = x1 + ux * progress;
+            startY = y1 + uy * progress;
+            endX = x1 + ux * Math.min(progress + dashLength, totalLength);
+            endY = y1 + uy * Math.min(progress + dashLength, totalLength);
+
+            symbolArray.push(new Line([startX, startY], [endX, endY], width, DEFAULT_COLOR));
+        }
+        progress += dashLength;
+        draw = !draw;
+    }
+    break;
+
+    case "DH":
+    x1 = parseFloat(line[1]);
+    y1 = parseFloat(line[2]);
+    x2 = parseFloat(line[3]);
+    y2 = parseFloat(line[4]);
+    dashLength = parseFloat(line[5]);
+    width = parseFloat(line[6]);
+
+    dx = x2 - x1;
+    dy = y2 - y1;
+    totalLength = Math.sqrt(dx * dx + dy * dy);
+    ux = dx / totalLength;
+    uy = dy / totalLength;
+
+    progress = 0;
+    draw = true;
+
+    while (progress < totalLength) {
+        if (draw) {
+            startX = x1 + ux * progress;
+            startY = y1 + uy * progress;
+            endX = x1 + ux * Math.min(progress + dashLength, totalLength);
+            endY = y1 + uy * Math.min(progress + dashLength, totalLength);
+
+            symbolArray.push(new Line([startX, startY], [endX, endY], width, DEFAULT_COLOR, true));
+        }
+        progress += dashLength;
+        draw = !draw;
+    }
+    break;
+
+
+    
+
+
                         case "LH":
                         symbolArray.push(
                             new Line(
@@ -82,6 +148,20 @@ if (!text.startsWith("V2.0c")) return "Not valid";
                                 parseFloat(line[5]),
                                 parseFloat(line[6]),
                                 DEFAULT_COLOR
+                            )
+                        )
+                    break
+
+                     case "AH":
+                        symbolArray.push(
+                            new Arc(
+                                [parseFloat(line[1]), parseFloat(line[2])],
+                                parseFloat(line[3]),
+                                parseFloat(line[4]),
+                                parseFloat(line[5]),
+                                parseFloat(line[6]),
+                                DEFAULT_COLOR,
+                                true
                             )
                         )
                     break

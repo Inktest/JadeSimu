@@ -34,7 +34,8 @@ const loadv2 = async (line) => {
         "CTm": "components/contacto-t.a",
         "CCT": "components/conmutador-t.a",
         "CtF": "components/contactofuerza.a",
-        "BoV": "components/electrov.a"
+        "BoV": "components/electrov.a",
+        "VvE": "components/valvextrg.a"
     }
 
     // CCT

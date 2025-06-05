@@ -157,6 +157,7 @@
       </div>
       <div class="symbolHelpBtns">
         <button onclick="insertSymbol('L x1 y1 x2 y2 a')">+ Línea</button>
+        <button onclick="insertSymbol('L x1 y1 x2 y2 l a')">+ Discontinua</button>
         <button onclick="insertSymbol('A cx cy r aI aF a')">+ Arco</button>
         <button onclick="insertSymbol('T x y t D c txt')">+ Texto</button>
         <button onclick="insertSymbol('R x1 y1 x2 y2 a')">+ Rectángulo</button>
@@ -219,7 +220,8 @@
         L: 'L x1 y1 x2 y2 anchura → Línea',
         A: 'A cx cy r anguloInicio anguloFinal anchura  → Arco',
         T: 'T x y tamaño D centrado texto → Texto',
-        R: 'R x1 y1 x2 y2 anchura → Rectángulo'
+        R: 'R x1 y1 x2 y2 anchura → Rectángulo',
+        D: "D x1 y1 x2 y2 longitud anchura → Línea Discontinua"
       };
       const type = line.trim().split(" ")[0];
       document.getElementById("symbolHelpText").textContent = help[type] || "Formato no reconocido.";
