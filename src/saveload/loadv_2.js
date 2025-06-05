@@ -35,7 +35,8 @@ const loadv2 = async (line) => {
         "CCT": "components/conmutador-t.a",
         "CtF": "components/contactofuerza.a",
         "BoV": "components/electrov.a",
-        "VvE": "components/valvextrg.a"
+        "VvE": "components/valvextrg.a",
+        "UdM": "components/ud-man.a"
     }
 
     // CCT
@@ -81,7 +82,9 @@ const loadv2 = async (line) => {
             opt.value = lines[j] === "true"
             break
             case "img": 
-            opt.value = StrokeCollectionList[lines[j]].clone().translate(c.symbolOffsets[symbolI])
+            opt.value = lines[j]
+            if (StrokeCollectionList[lines[j]])
+                opt.value = StrokeCollectionList[lines[j]].clone().translate(c.symbolOffsets[symbolI])
             symbolI++
             break
         }

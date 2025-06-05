@@ -166,6 +166,37 @@ if (!text.startsWith("V2.0c")) return "Not valid";
                         )
                     break
 
+                     case "AF":
+                        symbolArray.push(
+                            new Arc(
+                                [parseFloat(line[1]), parseFloat(line[2])],
+                                parseFloat(line[3]),
+                                parseFloat(line[4]),
+                                parseFloat(line[5]),
+                                parseFloat(line[6]),
+                                DEFAULT_COLOR,
+                                false,
+                                true
+                            )
+                        )
+                    break
+
+                     case "AFH":
+                        symbolArray.push(
+                            new Arc(
+                                [parseFloat(line[1]), parseFloat(line[2])],
+                                parseFloat(line[3]),
+                                parseFloat(line[4]),
+                                parseFloat(line[5]),
+                                parseFloat(line[6]),
+                                DEFAULT_COLOR,
+                                true,
+                                true
+                            )
+                        )
+                    break
+
+
                     case "T":
                         symbolArray.push(
                             new Text(

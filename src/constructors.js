@@ -76,9 +76,8 @@ class RectangleArray {
     }
     
     rotate90Deg() {
-        let temp = corner1
-        this.corner1 = corner2
-        this.corner2 = temp
+        this.corner1 = [this.corner1[1], -this.corner1[0]]
+        this.corner2 = [this.corner2[1], -this.corner2[0]]
         
         return this;
     }

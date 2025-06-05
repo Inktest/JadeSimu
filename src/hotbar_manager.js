@@ -62,7 +62,8 @@ const GROUP_LIST = [
        getComponentFromJadeFile("components/linear.a"),
        getComponentFromJadeFile("components/girat.a"),
         getComponentFromJadeFile("components/pinza.a"),
-        getComponentFromJadeFile("components/valvextrg.a")
+        getComponentFromJadeFile("components/valvextrg.a"),
+        getComponentFromJadeFile("components/ud-man.a")
     ]),
     new ComponentGroup("Autómatas", "S71215C", [
         getComponentFromJadeFile("components/s7-1215C.a")
