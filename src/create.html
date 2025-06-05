@@ -10,37 +10,28 @@
       padding: 0;
       overflow: hidden;
     }
-
     canvas {
       display: block;
     }
-
-    .componentOptionsDiv {
+    .componentOptionsDiv, .componentOptionsDiv2 {
       position: absolute;
       width: 260px;
       background: #f5f5f5;
-      top: 60px;
-      right: 10px;
       border-radius: 10px;
       border: 3px solid #2e2a24;
       padding: 10px;
       box-sizing: border-box;
       font-family: sans-serif;
+      z-index: 10;
     }
-  .componentOptionsDiv2 {
-    position: absolute;
-    width: 260px;
-    background: #f5f5f5;
-    top: 60px;
-    left: 10px;
-    border-radius: 10px;
-    border: 3px solid #2e2a24;
-    padding: 10px;
-    box-sizing: border-box;
-    font-family: sans-serif;
-    z-index: 10;
-  }
-
+    .componentOptionsDiv {
+      top: 60px;
+      right: 10px;
+    }
+    .componentOptionsDiv2 {
+      top: 60px;
+      left: 10px;
+    }
     .updateButton {
       width: 100%;
       padding: 8px;
@@ -52,22 +43,18 @@
       cursor: pointer;
       font-weight: bold;
     }
-
     .updateButton:hover {
       background-color: #21618C;
     }
-
     .sidebarSection {
       margin-bottom: 15px;
       border-bottom: 1px solid #ccc;
       padding-bottom: 10px;
     }
-
     .sidebarSection h4 {
       margin: 0 0 8px 0;
       font-size: 14px;
     }
-
     .codeEditorContainer {
       display: flex;
       width: 100%;
@@ -78,7 +65,6 @@
       font-family: monospace;
       font-size: 13px;
     }
-
     .lineNumbers {
       background: #eee;
       color: #666;
@@ -93,7 +79,6 @@
       font-size: 13px;
       padding-top: 2px;
     }
-
     .codeTextarea {
       flex: 1;
       border: none;
@@ -110,71 +95,50 @@
       padding-left: 5px;
       padding-top: 2px;
     }
-
-    input[type="text"] {
+    input[type="text"], input[type="number"] {
       width: 100%;
       padding: 5px;
       font-size: 14px;
       box-sizing: border-box;
     }
-
-    .miscRow {
-      margin-top: 10px;
-    }
-
+    .miscRow { margin-top: 10px; }
     .hitboxRow {
       display: flex;
       flex-wrap: wrap;
       gap: 5px;
       margin-top: 5px;
     }
-
-    .hitboxRow input {
-      width: 48px;
+    .hitboxRow input { width: 48px; }
+    .navbarDiv, .navbarDiv2, .versionDiv {
+      position: absolute;
+      width: 100%;
+    }
+    .navbarDiv { height: 55px; background: #f5f5f5; top: 0px; border: 3px solid #2e2a24; }
+    .navbarDiv2 { height: 50px; top: 30px; left: 3px; }
+    .versionDiv { height: 50px; top: 2px; pointer-events: none; }
+    .helpBox {
+      font-size: 12px;
+      background: #fffbe6;
+      border: 1px solid #cfc580;
       padding: 5px;
-      font-size: 13px;
+      margin-top: 5px;
     }
-
-    .navbarDiv {
-      position: absolute;
-      width: 100%;
-      height: 55px;
-      background: #f5f5f5;
-      top: 0px;
-      border: 3px solid #2e2a24;
-    }
-
-    .navbarDiv2 {
-      position: absolute;
-      width: 100%;
-      height: 50px;
-      top: 30px;
-      left: 3px;
-    }
-
-    .versionDiv {
-      position: absolute;
-      width: 100%;
-      height: 50px;
-      top: 2px;
-      pointer-events: none;
+    .symbolHelpBtns button {
+      width: 49%;
+      margin-bottom: 4px;
+      font-size: 12px;
     }
   </style>
 </head>
 <body>
-
-  <div class="navbarDiv" id="navbarDiv"></div>
-  <div class="navbarDiv2" id="navbarDiv2"></div>
-  <div class="versionDiv" id="versionDiv">
-    <div style="text-align: right; font-size: 10px; padding-right: 5px; border-top: 50px;">v1.1.5c</div>
-  </div>
+  <div class="navbarDiv"></div>
+  <div class="navbarDiv2"></div>
+  <div class="versionDiv"><div style="text-align: right; font-size: 10px; padding-right: 5px;">v1.1.5c</div></div>
   <canvas id="cadeCanvas"></canvas>
 
-  <!-- Sidebar -->
   <div class="componentOptionsDiv2" id="optionsDivSimu" style="visibility: hidden;"></div>
-  <div class="componentOptionsDiv" id="optionsDiv" style="visibility: visible;">
-
-<div style="display: flex; gap: 5px; margin-bottom: 10px;">
+  <div class="componentOptionsDiv" id="optionsDiv">
+    <div style="display: flex; gap: 5px; margin-bottom: 10px;">
       <button class="updateButton" onclick="drawHitbox()">Hitbox</button>
       <button class="updateButton" onclick="updateComponent()">Actualizar</button>
     </div>
@@ -191,12 +155,19 @@
         <pre class="lineNumbers" id="symbolLineNumbers">1.</pre>
         <textarea class="codeTextarea" id="symbolTextarea" placeholder="Enter symbol code here..."></textarea>
       </div>
+      <div class="symbolHelpBtns">
+        <button onclick="insertSymbol('L x1 y1 x2 y2 a')">+ Línea</button>
+        <button onclick="insertSymbol('A cx cy r aI aF a')">+ Arco</button>
+        <button onclick="insertSymbol('T x y t D c txt')">+ Texto</button>
+        <button onclick="insertSymbol('R x1 y1 x2 y2 a')">+ Rectángulo</button>
+      </div>
+      <div class="helpBox" id="symbolHelpText">Haz clic en una línea para ver su significado.</div>
     </div>
 
     <div class="sidebarSection">
       <h4>Opciones</h4>
       <div class="codeEditorContainer">
-        <pre class="lineNumbers" id="optionLineNumbers">1.</pre>
+        <pre class="lineNumbers" id="optionLineNumbers">0.</pre>
         <textarea class="codeTextarea" id="optionTextarea" placeholder="Enter options here..."></textarea>
       </div>
     </div>
@@ -219,24 +190,40 @@
     </div>
   </div>
 
-  <!-- Component logic scripts -->
   <script src="constructors.js"></script>
   <script src="create/main.js"></script>
   <script src="components_const.js"></script>
   <script src="components_symbols.js"></script>
   <script src="create/options.js"></script>
-
   <script>
     function updateLineNumbers(textarea, lineNumberDiv) {
       const lines = textarea.value.split("\n");
-      let count = 1;
+      let count = 0;
       const numbered = lines.map(line => line.trim() === "" ? "" : (count++) + ".").join("\n");
-      lineNumberDiv.textContent = numbered || "1.";
+      lineNumberDiv.textContent = numbered || "0.";
     }
-
     function syncScroll(textarea, lineNumbers) {
       lineNumbers.scrollTop = textarea.scrollTop;
     }
+    function insertSymbol(text) {
+      const textarea = document.getElementById("symbolTextarea");
+      textarea.value += (textarea.value ? "\n" : "") + text;
+      updateLineNumbers(textarea, document.getElementById("symbolLineNumbers"));
+    }
+    document.getElementById("symbolTextarea").addEventListener("click", e => {
+      const lines = e.target.value.split("\n");
+      const start = e.target.selectionStart;
+      const clickedLine = e.target.value.substr(0, start).split("\n").length - 1;
+      const line = lines[clickedLine] || "";
+      const help = {
+        L: 'L x1 y1 x2 y2 anchura → Línea',
+        A: 'A cx cy r anguloInicio anguloFinal anchura  → Arco',
+        T: 'T x y tamaño D centrado texto → Texto',
+        R: 'R x1 y1 x2 y2 anchura → Rectángulo'
+      };
+      const type = line.trim().split(" ")[0];
+      document.getElementById("symbolHelpText").textContent = help[type] || "Formato no reconocido.";
+    });
 
     const symbolTextarea = document.getElementById("symbolTextarea");
     const symbolLineNumbers = document.getElementById("symbolLineNumbers");
@@ -250,64 +237,38 @@
     optionTextarea.addEventListener("scroll", () => syncScroll(optionTextarea, optionLineNumbers));
     updateLineNumbers(optionTextarea, optionLineNumbers);
 
-async function drawHitbox() {
-
-    for (let hit of drawnComp.hitbox.hitbox) {
-        new RectangleArray([hit[0], hit[1]], [hit[0]+1, hit[1]+1], 1, "#f00").translate([offsetX, offsetY]).draw()
+    async function drawHitbox() {
+      for (let hit of drawnComp.hitbox.hitbox) {
+        new RectangleArray([hit[0], hit[1]], [hit[0]+1, hit[1]+1], 1, "#f00").translate([offsetX, offsetY]).draw();
+      }
     }
 
-}
-
     async function updateComponent() {
-  const name = document.getElementById("nameInput").value || "SinNombre";
-  const symbol = document.getElementById("symbolTextarea").value.trim();
-  const options = document.getElementById("optionTextarea").value.trim();
-  const hX = document.getElementById("hX").value || 0;
-  const hY = document.getElementById("hY").value || 0;
-  const hW = document.getElementById("hW").value || 0;
-  const hH = document.getElementById("hH").value || 0;
-  const author = document.getElementById("authorInput").value || "Anonimo";
+      const name = document.getElementById("nameInput").value || "SinNombre";
+      const symbol = document.getElementById("symbolTextarea").value.trim();
+      const options = document.getElementById("optionTextarea").value.trim();
+      const hX = document.getElementById("hX").value || 0;
+      const hY = document.getElementById("hY").value || 0;
+      const hW = document.getElementById("hW").value || 1;
+      const hH = document.getElementById("hH").value || 1;
+      const author = document.getElementById("authorInput").value || "Anonimo";
+      const text = `V2.0c\n${name}\nDispositivoTemporal\nDtm\n\n${symbol}\n${options}\nH ${hX} ${hY} ${hW} ${hH}\nN ${author}`;
+      drawnComp = await getComponentFromJadeText(text);
+      updateCanvas();
+    }
 
-  const text = `V2.0c
-${name}
-DispositivoTemporal
-Dtm
-
-${symbol}
-${options}
-H ${hX} ${hY} ${hW} ${hH}
-N ${author}`;
-
-  drawnComp = await getComponentFromJadeText(text);
-  updateCanvas()
-}
-
-   async function copyComponent() {
-  const name = document.getElementById("nameInput").value || "SinNombre";
-  const symbol = document.getElementById("symbolTextarea").value.trim();
-  const options = document.getElementById("optionTextarea").value.trim();
-  const hX = document.getElementById("hX").value || 0;
-  const hY = document.getElementById("hY").value || 0;
-  const hW = document.getElementById("hW").value || 0;
-  const hH = document.getElementById("hH").value || 0;
-  const author = document.getElementById("authorInput").value || "Anonimo";
-
-  const text = `\`\`\`
-V2.0c
-#${name}
-DispositivoTemporal
-Dtm
-
-${symbol}
-${options}
-H ${hX} ${hY} ${hW} ${hH}
-N ${author}
-\`\`\``;
-
-  navigator.clipboard.writeText(text)
-}
-
+    async function copyComponent() {
+      const name = document.getElementById("nameInput").value || "SinNombre";
+      const symbol = document.getElementById("symbolTextarea").value.trim();
+      const options = document.getElementById("optionTextarea").value.trim();
+      const hX = document.getElementById("hX").value || 0;
+      const hY = document.getElementById("hY").value || 0;
+      const hW = document.getElementById("hW").value || 1;
+      const hH = document.getElementById("hH").value || 1;
+      const author = document.getElementById("authorInput").value || "Anonimo";
+      const text = `\`\`\`\nV2.0c\n#${name}\nDispositivoTemporal\nDtm\n\n${symbol}\n${options}\nH ${hX} ${hY} ${hW} ${hH}\nN ${author}\n\`\`\``;
+      navigator.clipboard.writeText(text);
+    }
   </script>
-
 </body>
 </html>
