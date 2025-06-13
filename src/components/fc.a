@@ -1,0 +1,21 @@
+V2.0c
+Final de Carrera
+FC
+Vfc
+
+L 0 0 0 1 1 D
+L 1 1 0 1 1 D
+L 1 1 1 0 1 D
+L 0 0 1 0 1 D
+L 0 .5 .25 .5 1 D
+L .25 .5 .75 .25 1 D
+L .75 .5 1 .5 1 D
+L .5 .5 .5 1.5 1 D
+
+A .5 1.75 .25 0 6.28 1 D
+T .5 -.5 17 D center FC1
+H -1 0 0 
+
+X name Nombre \ FC1
+
+UT 9 0

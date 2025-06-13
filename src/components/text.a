@@ -1,0 +1,15 @@
+V2.0c
+Texto
+Texto
+txt
+
+T -1 1 17 D left Texto
+H 0 0 0 0
+
+X text Texto \ Texto
+X size Tamaño \ 17
+X col Color \ #000
+
+UT 0 0
+UZ 0 1 17
+UC 2 0

@@ -1,7 +1,8 @@
-
+let currentlyClicked = false
 
 
 function mouseupEvent(event) {
+    currentlyClicked = false
     if (event.target !== canvas) return;
     
     if (pressedShift && drawnArea) {
@@ -14,11 +15,13 @@ function mouseupEvent(event) {
         for (let c of component)
             selectComponent(c, true)
         
-    } 
-    updateCanvas()     
+    }     
+    updateCanvas()
 }
+
 held = false
-saveComponents()
+// saveComponents()
+//
 
 }
 
@@ -92,6 +95,7 @@ pressedShift = false
 drawnArea = false
 
 function mousedownEvent(event) {
+    currentlyClicked = true
     drawnArea = false;
 
     clickedX = event.pageX / dotSpace / scale;
@@ -129,9 +133,8 @@ function mousedownEvent(event) {
                 for (let comp of components)
                     if (comp.getCompName && comp.getCompName() === c.getCompName())
                         comp.toggleState()
+                    runThroughNodes()
         }
-        runThroughNodes()
-        updateCanvas()
         return
     }
 
@@ -167,6 +170,8 @@ if ('ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxT
     window.addEventListener("mousedown", (event) => mousedownEvent(event));
 }
 
+window.addEventListener("resize", () => updateCanvas())
+
 window.addEventListener("wheel", (event) => {
     scale += event.deltaY * -0.001
     if (scale < 0.3) scale = 0.3
@@ -177,12 +182,14 @@ window.addEventListener("wheel", (event) => {
 window.addEventListener("keydown", (event) => {
     
     if (document.activeElement.nodeName.toLocaleLowerCase() !== 'input')
-    switch (event.key.toLowerCase()) {
+        console.log() // Si no pones esto no funciona
+        switch (event.key.toLowerCase()) {
         case "delete": handleDeleteKeyPress(event); break
         case "r": handleRKeyPress(event); break
         case "w": handleWKeyPress(event); break
         case "q": handleQKeyPress(event); break
         case "c": handleCKeyPress(event); break
+        case "escape": handleEscKeyPress(event); break
         case "arrowup": case "arrowdown": case "arrowleft": case "arrowright": handleArrowKeyPress(event); break
     }
 });
@@ -191,4 +198,6 @@ window.addEventListener('load', () => {
     let savedData = localStorage.getItem('components')
     if (savedData)
         loadFromFileText(savedData)
+    else
+        document.getElementById('loading-screen').style.display = 'none';
 })

@@ -1,0 +1,15 @@
+V2.0c
+Condensador
+Condensador
+Cdr
+
+L 0 0 0 .85 1 D
+L -1 .85 1 .85 1 D
+L -1 1.15 1 1.15 1 D
+L 0 1.15 0 2 1 D
+
+H -1 0 0 1
+I 0 0
+I 0 2
+
+ICV L L1 L2 L3 N PE

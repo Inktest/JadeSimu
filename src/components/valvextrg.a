@@ -1,0 +1,48 @@
+V2.0c
+Válvula Extranguladora
+ValvulaExtrang
+VvE
+
+L -2 0 2 0 1
+A 0 -1.5 1.25 -5.4 -4 1
+A 0 1.5 1.25 4 5.4 1
+
+AFH 1.05 0 .115 0 6.28 1
+AFH -1.05 0 .115 0 6.28 1
+LH -1.05 0 -1.05 1.5
+LH 1.05 0 1.05 1.5
+
+LH 1.05 1.5 .375 1.5
+LH -1.05 1.5 -.25 1.5
+AH 0 1.5 .25 0 6.28 1
+LH 0 1.125 0.375 1.5
+LH 0 1.85 0.375 1.5
+
+LH -0.375 -.875 0.375 .875 1
+LH 0.375 .875 0.35 .5 1
+LH 0.375 .875 0.125 .6 1
+LH .125 .6 .35 .5 1
+TH 0 -2.15 17 D center 100%
+
+X stn Extrangulación \ 100%
+C f uni Unidireccional
+C f reg Regulable
+
+UT 16 0
+UH 3 1
+UH 4 1
+UH 5 1
+UH 6 1
+UH 7 1
+UH 8 1
+UH 9 1
+UH 10 1
+
+UH 11 2
+UH 12 2
+UH 13 2
+UH 14 2
+UH 15 2
+UH 16 2
+UH 11 1
+H -2 -1 1 1

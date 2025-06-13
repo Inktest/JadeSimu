@@ -1,8 +1,16 @@
 function handleDeleteKeyPress(event) {
    deleteSelectedObject()
 }
+
+function handleEscKeyPress(event) {
+    if (!currentlyClicked && held) {
+        deleteSelectedObject()
+        held=false
+    }
+}
+
 function handleRKeyPress(event) {
-    //rotateSelectedObject()
+    rotateSelectedObject()
 }
 
 function handleWKeyPress(event) {
@@ -15,8 +23,8 @@ function handleWKeyPress(event) {
 
 
 function handleQKeyPress(event) {
-    let aCursorX = parseInt(cursorX-offsetX) 
-    let aCursorY = parseInt(cursorY-offsetY) 
+    let aCursorX = Math.round(cursorX-offsetX) 
+    let aCursorY = Math.round(cursorY-offsetY) 
     for (let i = 0; i < wires.length; i++) {
         if ((aCursorY-wires[i].start[1])*(aCursorX-wires[i].end[0]) == (aCursorY-wires[i].end[1])*(aCursorX-wires[i].start[0])) {
             if ((wires[i].start[0] == wires[i].end[0] && 

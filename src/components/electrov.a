@@ -1,0 +1,33 @@
+V2.0c
+Electroválvula
+Bobinaeltrobalbula
+BoV
+
+L 0 0 0 1 1 D
+R -1 2 1 1 1 D
+L 0 2 0 3 1 D
+L -1 2 1 1 1 D
+
+L 1 1.5 2 1.5 1 D
+L 2 1.5 1.5 0.5 1 D
+L 1.5 0.5 2.5 0.5 1 D
+L 2.5 0.5 2 1.5 1 D
+L 2 1.5 2.5 2.5 1 D
+L 2.5 2.5 1.5 2.5 1 D
+L 1.5 2.5 2 1.5 1 D
+
+
+T -1.5 1.5 17 D right -EV
+T 0.5 0 17 D left A1
+T 0.5 3 17 D left A2
+H -1 0 2 3
+
+X non Nombre \ -EV
+X com1 Conexión 1 \ A1
+X com2 Conexión 2 \ A2
+
+UT 11 0
+UT 12 1
+UT 13 2
+
+N FER

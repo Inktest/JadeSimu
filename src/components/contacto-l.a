@@ -1,0 +1,18 @@
+V2.0c
+Contacto
+ContactoLógico
+Lct
+
+L -2 1 -.5 1 1 D
+L -.5 0 -.5 2 1 D
+L 2 1 .5 1 1 D
+L .5 0 .5 2 1 D
+S 0 0 0
+T 0 -1 17 D center S1
+
+H -1 0 0 3
+X name Nombre \ S1
+G 0 0 0 CtC
+
+US 4 1
+UT 5 0

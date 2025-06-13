@@ -1,0 +1,36 @@
+V2.0c
+Bobina
+Bobina
+Bob
+
+L 0 0 0 1 1 D
+L -1 1 1 1 1 D
+L 1 1 1 2 1 D
+L -1 1 -1 2 1 D
+L -1 2 1 2 1 D
+L 0 2 0 3 1 D
+S 0 0 2
+T -1.5 1.5 17 D right -Q
+T 0.25 0.5 17 D left A1
+T 0.25 2.66 17 D left A2
+H -1 0 1 3
+
+X name Nombre \ -Q
+X con1 Conexión 1 \ A1
+X con2 Conexión 2 \ A2
+G 0 0 2 Bob Tipo
+
+I 0 0
+I 0 3
+
+UT 7 0
+UT 8 1
+UT 9 2
+US 6 3
+
+M 0 1
+MRB 0 1 L L1 L2 L3 N
+MRB 0 1 + -
+MAC f00
+
+AP 7

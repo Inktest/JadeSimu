@@ -76,9 +76,8 @@ class RectangleArray {
     }
     
     rotate90Deg() {
-        let temp = corner1
-        this.corner1 = corner2
-        this.corner2 = temp
+        this.corner1 = [this.corner1[1], -this.corner1[0]]
+        this.corner2 = [this.corner2[1], -this.corner2[0]]
         
         return this;
     }
@@ -325,47 +324,81 @@ class StrokeCollection {
 }
 
 class Component {
-    constructor(position, name, symbol, hitbox, options, rotation, inouts) {
-        this.position = position
-        this.name = name
-        this.imageName = this.constructor.name
-        this.symbol = symbol
-        this.hitbox = hitbox
-        this.options = options
-        this.options.name = name
-        this.rotation = rotation || 0
-        this.inouts = inouts || []
+    constructor(position, name, symbol, hitbox, options, rotation, inouts, imageName) {
+        this.position = position;
+        this.name = name;
+        this.imageName = this.constructor.name == "Component" ? imageName : this.constructor.name;
+        this.symbol = symbol;
+        this.hitbox = hitbox;
+        this.options = options;
+        this.options.name = name;
+        this.rotation = rotation || 0;
+        this.inouts = inouts || [];
     }
+
     rotate90Deg() {
-        this.symbol.rotate90Deg()
-        this.hitbox.rotate90Deg()
-        this.rotation++
-        this.rotation %= 4
-        return this
-    } 
-    
+        this.symbol.rotate90Deg();
+        this.hitbox.rotate90Deg();
+        this.rotation++;
+        this.rotation %= 4;
+        return this;
+    }
+
     translate(position) {
-        this.position = [this.position[0] + position[0], this.position[1] + position[1]]
-        return this
+        this.position = [this.position[0] + position[0], this.position[1] + position[1]];
+        return this;
     }
 
     roundPosition() {
-        this.position = [Math.round(this.position[0]), Math.round(this.position[1])]
+        this.position = [Math.round(this.position[0]), Math.round(this.position[1])];
     }
 
     moveTo(position) {
-        this.position = position
-        return this
+        this.position = position;
+        return this;
     }
 
     getEffectiveHitbox() {
-        return this.hitbox.getEffectiveHitbox(this.position)
+        return this.hitbox.getEffectiveHitbox(this.position);
     }
 
     getPropagationInouts(entryIndex) {
         return this.inouts.map((_, idx) => idx).filter(idx => idx !== entryIndex);
     }
+
+    update() {}
+
+    clone() {
+        let c = new Component(
+            [...this.position],
+            this.name,
+            this.symbol.clone(),
+            this.hitbox.clone(),
+            this.options.clone(),
+            this.rotation,
+            JSON.parse(JSON.stringify(this.inouts)),
+            this.imageName
+        );
+        c.update = this.update
+        c.updateFunctions = this.updateFunctions
+        c.getPropagationInouts = this.getPropagationInouts
+        c.getCompName = this.getCompName
+        c.toggleState = this.toggleState
+        c.simuCanClick = this.simuCanClick
+        c.simulate = this.simulate
+        c.activatedReqs = this.activatedReqs
+        c.activatedPre = this.activatedPre
+        c.activatedActions = this.activatedActions
+        c.flange = this.flange
+        c.flangeSet = this.flangeSet
+        c.getVoltageSupply = this.getVoltageSupply
+        c.recalculate = this.recalculate
+        c.id = this.id
+        c.symbolOffsets = this.symbolOffsets
+        return c
+    }
 }
+
 
 class ComponentSymbol {
     constructor(strokes) {

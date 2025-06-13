@@ -4,23 +4,14 @@ class ComponentOptions {
         this.name = name
     }
 
-    addOptions() {
-        let optionsDiv = document.getElementById("optionsDiv");
+    addOptions(hideDelete) {
+        let optionsDiv = document.getElementById("optionsDivSimu");
         let nameDiv = document.createElement("div");
         nameDiv.className = "nameDiv";
         nameDiv.innerHTML = this.name;
     
-        let deleteButton = createImageButton(`imgs/delete.png`)
-        deleteButton.className = "deleteButton"
-        deleteButton.style.position = "absolute";
 
-        let nameDivRect = nameDiv.getBoundingClientRect();
-        deleteButton.style.top = nameDivRect.top + "px";
-        deleteButton.style.right = nameDivRect.right + "px";
-        deleteButton.onclick = deleteSelectedObject;
-    
-        nameDiv.appendChild(deleteButton);
-    
+   
         optionsDiv.appendChild(nameDiv);
     
         let extraHeight = 0;
@@ -62,8 +53,7 @@ class TextboxOption {
         textbox.autocomplete = "off"
         textbox.oninput = () => {
             this.value = this.getValue()
-            if (selectedComponent.length == 1) 
-                selectedComponent[0].update()
+            drawnComp.update()
         }
 
         div.appendChild(document.createTextNode(this.name + " "));
@@ -108,7 +98,7 @@ class CheckboxOption {
         textbox.id = "opt-chk-" + this.id
         textbox.onchange = () => {
             this.value = this.getValue()
-            if (selectedComponent.length == 1) selectedComponent[0].update()
+            drawnComp.update()
         }
 
         div.appendChild(document.createTextNode(this.name + " "));
@@ -126,6 +116,12 @@ class CheckboxOption {
         return new CheckboxOption(this.name, this.value, this.id)
     }
 
+}
+
+function clearOptions() {
+    let div = document.getElementById("optionsDivSimu")
+    div.innerHTML = ""
+    div.style = "height: 0px; visibility: hidden"
 }
 
 class ImageSelectOption {
@@ -152,7 +148,8 @@ class ImageSelectOption {
                     this.value = b[1]
                 if (this.value.rotateTimes) this.value.rotateTimes(rotation)
                 if (this.value.color) this.value.color = SELECTED_COLOR
-                if (selectedComponent.length == 1) selectedComponent[0].update()
+                drawnComp.update()
+
             }
             div.appendChild(btn)
             

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Jade Simu</title>
+  <link rel="icon" href="../logo.png" type="image/x-icon">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+    }
+    .componentOptionsDiv, .componentOptionsDiv2 {
+      position: absolute;
+      width: 270px;
+      background: #f5f5f5;
+      border-radius: 10px;
+      border: 3px solid #2e2a24;
+      padding: 10px;
+      box-sizing: border-box;
+      font-family: sans-serif;
+      z-index: 10;
+    }
+    .componentOptionsDiv { top: 60px; right: 10px; }
+    .componentOptionsDiv2 { top: 60px; left: 10px; }
+
+    .updateButton {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      background-color: #2E86C1;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .updateButton:hover { background-color: #21618C; }
+
+    .sidebarSection {
+      margin-bottom: 15px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 10px;
+    }
+    .sidebarSection h4 {
+      margin: 0 0 8px 0;
+      font-size: 14px;
+    }
+    .codeEditorContainer {
+      display: flex;
+      width: 100%;
+      height: 100px;
+      overflow: hidden;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-family: monospace;
+      font-size: 13px;
+    }
+    .lineNumbers {
+      background: #eee;
+      color: #666;
+      text-align: right;
+      user-select: none;
+      min-width: 30px;
+      padding-top: 2px;
+      border-right: 1px solid #ccc;
+      font-size: 13px;
+    }
+    .codeTextarea {
+      flex: 1;
+      border: none;
+      resize: none;
+      outline: none;
+      height: 100%;
+      padding-left: 5px;
+      padding-top: 2px;
+      font-family: monospace;
+      font-size: 13px;
+      line-height: 1.4em;
+      overflow: auto;
+      box-sizing: border-box;
+    }
+    input[type="text"], input[type="number"], select {
+      width: 100%;
+      padding: 5px;
+      font-size: 14px;
+      box-sizing: border-box;
+      margin-bottom: 5px;
+    }
+    .hitboxRow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 5px;
+    }
+    .hitboxRow input { width: 48px; }
+    .navbarDiv, .navbarDiv2, .versionDiv {
+      position: absolute;
+      width: 100%;
+    }
+    .navbarDiv { height: 55px; background: #f5f5f5; top: 0px; border: 3px solid #2e2a24; }
+    .navbarDiv2 { height: 50px; top: 30px; left: 3px; }
+    .versionDiv { height: 50px; top: 2px; pointer-events: none; }
+    .helpBox {
+      font-size: 12px;
+      background: #fffbe6;
+      border: 1px solid #cfc580;
+      padding: 5px;
+      margin-top: 5px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbarDiv"></div>
+  <div class="navbarDiv2"></div>
+  <div class="versionDiv"><div style="text-align: right; font-size: 10px; padding-right: 5px;">v1.1.5c</div></div>
+  <canvas id="cadeCanvas"></canvas>
+
+  <div class="componentOptionsDiv2" id="optionsDivSimu" style="visibility: hidden;"></div>
+
+  <div class="componentOptionsDiv" id="optionsDiv">
+    <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+      <button class="updateButton" onclick="drawHitbox()">Hitbox</button>
+      <button class="updateButton" onclick="updateComponent()">Actualizar</button>
+    </div>
+    <button class="updateButton" onclick="copyComponent()">Copiar</button>
+
+    <div class="sidebarSection">
+      <h4>Nombre</h4>
+      <input type="text" id="nameInput" placeholder="Nombre del componente">
+    </div>
+
+    <div class="sidebarSection">
+      <h4>Símbolo</h4>
+      <div class="codeEditorContainer">
+        <pre class="lineNumbers" id="symbolLineNumbers">1.</pre>
+        <textarea class="codeTextarea" id="symbolTextarea"></textarea>
+      </div>
+      <select id="symbolSelector" onchange="showSymbolHelp()">
+        <option value="">Selecciona un símbolo...</option>
+        <option value="L x1 y1 x2 y2 a">Línea</option>
+        <option value="A cx cy r aI aF a">Arco</option>
+        <option value="T x y t D c txt">Texto</option>
+        <option value="R x1 y1 x2 y2 a">Rectángulo</option>
+        <option value="P x1 y1 rad l rot a">Polígono</option>
+        <option value="D x1 y1 x2 y2 l a">Discontinua</option>
+      </select>
+      <button onclick="insertSymbol()">Añadir símbolo</button>
+      <div class="helpBox" id="symbolHelpText">Selecciona un símbolo para ver ayuda.</div>
+    </div>
+
+    <div class="sidebarSection">
+      <h4>Opciones</h4>
+      <div class="codeEditorContainer">
+        <pre class="lineNumbers" id="optionLineNumbers">1.</pre>
+        <textarea class="codeTextarea" id="optionTextarea"></textarea>
+      </div>
+      <select id="optionSelector" onchange="showOptionHelp()">
+        <option value="">Selecciona una opción...</option>
+        <option value="COLOR rojo">COLOR</option>
+        <option value="ANCHO 2">ANCHO</option>
+        <option value="BORDE 0">BORDE</option>
+        <!-- Añade más aquí -->
+      </select>
+      <button onclick="insertOption()">Añadir opción</button>
+      <div class="helpBox" id="optionHelpText">Selecciona una opción para ver ayuda.</div>
+    </div>
+
+    <div class="sidebarSection">
+      <h4>Otros</h4>
+      <label>Hitbox:</label>
+      <div class="hitboxRow">
+        <input type="number" id="hX" placeholder="X">
+        <input type="number" id="hY" placeholder="Y">
+        <input type="number" id="hW" placeholder="W">
+        <input type="number" id="hH" placeholder="H">
+      </div>
+      <label>Creador:</label>
+      <input type="text" id="authorInput" placeholder="Autor">
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="constructors.js"></script>
+  <script src="create/main.js"></script>
+  <script src="components_const.js"></script>
+  <script src="components_symbols.js"></script>
+  <script src="create/options.js"></script>
+  <script>
+    const symbolHelp = {
+      "L": "Línea: L x1 y1 x2 y2 ancho",
+      "A": "Arco: A cx cy radio angInicio angFinal ancho",
+      "T": "Texto: T x y tamaño D centrado texto",
+      "R": "Rectángulo: R x1 y1 x2 y2 ancho",
+      "P": "Polígono: P x1 y1 radio lados rotación ancho",
+      "D": "Discontinua: D x1 y1 x2 y2 largo ancho"
+    };
+
+    const optionHelp = {
+      "COLOR": "COLOR color → Define el color principal.",
+      "ANCHO": "ANCHO n → Define el ancho de trazo.",
+      "BORDE": "BORDE 0|1 → Mostrar u ocultar bordes."
+    };
+
+    function showSymbolHelp() {
+      const val = document.getElementById("symbolSelector").value.split(" ")[0];
+      document.getElementById("symbolHelpText").textContent = symbolHelp[val] || "";
+    }
+
+    function insertSymbol() {
+      const val = document.getElementById("symbolSelector").value;
+      if (!val) return;
+      const ta = document.getElementById("symbolTextarea");
+      ta.value += (ta.value ? "\n" : "") + val;
+      updateLineNumbers(ta, document.getElementById("symbolLineNumbers"));
+    }
+
+    function showOptionHelp() {
+      const val = document.getElementById("optionSelector").value.split(" ")[0];
+      document.getElementById("optionHelpText").textContent = optionHelp[val] || "";
+    }
+
+    function insertOption() {
+      const val = document.getElementById("optionSelector").value;
+      if (!val) return;
+      const ta = document.getElementById("optionTextarea");
+      ta.value += (ta.value ? "\n" : "") + val;
+      updateLineNumbers(ta, document.getElementById("optionLineNumbers"));
+    }
+
+    function updateLineNumbers(textarea, lineNumberDiv) {
+      const lines = textarea.value.split("\n");
+      let count = 1;
+      const numbered = lines.map(line => line.trim() === "" ? "" : (count++) + ".").join("\n");
+      lineNumberDiv.textContent = numbered || "1.";
+    }
+
+    function syncScroll(textarea, lineNumbers) {
+      lineNumbers.scrollTop = textarea.scrollTop;
+    }
+
+    document.getElementById("symbolTextarea").addEventListener("input", () =>
+      updateLineNumbers(symbolTextarea, symbolLineNumbers));
+    document.getElementById("symbolTextarea").addEventListener("scroll", () =>
+      syncScroll(symbolTextarea, symbolLineNumbers));
+    updateLineNumbers(symbolTextarea, symbolLineNumbers);
+
+    document.getElementById("optionTextarea").addEventListener("input", () =>
+      updateLineNumbers(optionTextarea, optionLineNumbers));
+    document.getElementById("optionTextarea").addEventListener("scroll", () =>
+      syncScroll(optionTextarea, optionLineNumbers));
+    updateLineNumbers(optionTextarea, optionLineNumbers);
+
+    async function drawHitbox() {
+      for (let hit of drawnComp.hitbox.hitbox) {
+        new RectangleArray([hit[0], hit[1]], [hit[0] + 1, hit[1] + 1], 1, "#f00")
+          .translate([offsetX, offsetY])
+          .draw();
+      }
+    }
+
+    async function updateComponent() {
+      const name = document.getElementById("nameInput").value || "SinNombre";
+      const symbol = document.getElementById("symbolTextarea").value.trim();
+      const options = document.getElementById("optionTextarea").value.trim();
+      const hX = document.getElementById("hX").value || 0;
+      const hY = document.getElementById("hY").value || 0;
+      const hW = document.getElementById("hW").value || 1;
+      const hH = document.getElementById("hH").value || 1;
+      const author = document.getElementById("authorInput").value || "Anonimo";
+      const text = `V2.0c\n${name}\nDispositivoTemporal\nDtm\n\n${symbol}\n${options}\nH ${hX} ${hY} ${hW} ${hH}\nN ${author}`;
+      drawnComp = await getComponentFromJadeText(text);
+      updateCanvas();
+    }
+
+    async function copyComponent() {
+      const name = document.getElementById("nameInput").value || "SinNombre";
+      const symbol = document.getElementById("symbolTextarea").value.trim();
+      const options = document.getElementById("optionTextarea").value.trim();
+      const hX = document.getElementById("hX").value || 0;
+      const hY = document.getElementById("hY").value || 0;
+      const hW = document.getElementById("hW").value || 1;
+      const hH = document.getElementById("hH").value || 1;
+      const author = document.getElementById("authorInput").value || "Anonimo";
+      const text = `\`\`\`\nV2.0c\n#${name}\nDispositivoTemporal\nDtm\n\n${symbol}\n${options}\nH ${hX} ${hY} ${hW} ${hH}\nN ${author}\n\`\`\``;
+      navigator.clipboard.writeText(text);
+    }
+  </script>
+</body>
+</html>

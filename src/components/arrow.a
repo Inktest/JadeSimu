@@ -1,0 +1,14 @@
+V2.0c
+Continuación de Linea
+Arrow
+Arr
+
+L -0.5 0 0.5 0 1 D
+L -0.5 0 0 1 1 D
+L 0.5 0 0 1 1 D
+T 1 .5 17 D left X0
+
+H -1 0 0 0
+
+X txt Texto \ X0
+UT 3 0

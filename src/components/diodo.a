@@ -1,0 +1,27 @@
+V2.0c
+Diodo
+Diodo
+Led
+
+L 0 0 0 1 1 D
+L -.5 1 .5 1 1 D
+L -.5 1 0 2 1 D
+L .5 1 0 2 1 D
+L -.5 2 .5 2 1 D
+L 0 2 0 3 1 D
+S 0 0 2
+T -.75 1.5 17 D right -D
+T .25 .5 17 D left 1
+T .25 2.76 17 D left 2
+H -1 0 0 2
+
+X name Nombre \ -D
+X con1 Conexión 1 \ 1
+X con2 Conexión 2 \ 2
+G 0 0 2 Dio Tipo
+
+I 0 0
+I 0 3
+
+VINC 1 + 0 L L1 L2 L3 +
+VINC 0 - 1 N -

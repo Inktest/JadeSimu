@@ -1,0 +1,37 @@
+V2.0c
+Contacto Temporizado
+ContactoTemporizado
+CTm
+
+L 0 0 0 1 1 D
+L 0 3 0 4 1 D
+L 0 3 -1 1 1 D
+LH 0 3 .9 .9 1 D
+LH 0 1 1 1 1 D
+
+LH -.4 2.1 .4 2.1 1 D
+LH -.5 1.9 .5 1.9 1 D
+L -.4 2.1 -2.5 2.1 D
+L -.5 1.9 -2.5 1.9 D
+S 24 -2 2
+T -3.25 2 17 D right -KT
+T .25 .5 17 D left 13
+T .25 3.5 17 D left 14
+
+H -3 0 0 3
+
+X name Nombre \ -KT
+X con1 Conexión 1 \ 13
+X con2 Conexión 2 \ 14
+C f nc NC?
+G 24 -2 2 Cnt
+
+UT 10 0
+UT 11 1
+UT 12 2
+UNH 2 3
+UH 3 3
+UH 4 3
+UH 5 3
+UH 6 3
+US 9 4

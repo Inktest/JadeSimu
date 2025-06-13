@@ -1,0 +1,38 @@
+V2.0c
+Contacto Conmutado
+Conmutador
+CCo
+
+L 0 0 0 1 1 D
+L -0.8 3.2 0 1 1 D
+LH 0.8 3.2 0 1 1 D
+L -0.5 3 -1 3 1 D
+L -1 3 -1 4 1 D
+L 0.5 3 1 3 1 D
+L 1 3 1 4 1 D
+T -1.5 2 17 D right -K
+T 0.25 0.5 17 D left 11
+T -0.75 3.75 17 D left 12
+T 1.25 3.75 17 D left 14
+
+H -1 0 1 3
+X name Nombre \ -K
+X con1 Conexión 1 \ 11
+X con2 Conexión 2 \ 12
+X con3 Conexión 3 \ 14
+C f inv Invertir Contacto
+
+I 0 0
+I -1 4
+I 1 4
+
+UT 7 0
+UT 8 1
+UT 9 2
+UT 10 3
+UNH 1 4
+UH 2 4
+
+AS 7
+TCH 2 inv
+ICA 1 0 1 2

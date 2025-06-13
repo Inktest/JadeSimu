@@ -77,8 +77,12 @@ function calculateHitboxMap() {
 
 function rotateSelectedObject() {
     if (selectedComponent.length == 0) return
-    for (let c of selectedComponent)
+    for (let c of selectedComponent) {
+        let dif = [c.position[1]-selectedComponent[0].position[1], -(c.position[0]-selectedComponent[0].position[0])]
     c.rotate90Deg()
+    c.moveTo(selectedComponent[0].position)
+    c.translate(dif)
+}
     updateCanvas()
     calculateHitboxMap()
 }
@@ -143,6 +147,7 @@ function loadFromFileText(contents) {
       loadv1(lines)
       console.log("Loaded file from v1")
       updateCanvas()
+      document.getElementById('loading-screen').style.display = 'none';
       return
     }
     if (lines[0] === "v1.1") {
@@ -150,6 +155,7 @@ function loadFromFileText(contents) {
       loadv1_1(lines)
       console.log("Loaded file from v1.1")
       updateCanvas()
+      document.getElementById('loading-screen').style.display = 'none';
       return
     }
     if (lines[0] === "v1.1.1") {
@@ -157,7 +163,16 @@ function loadFromFileText(contents) {
       loadv1_1_1(lines)
       console.log("Loaded file from v1.1.1")
       updateCanvas()
+      document.getElementById('loading-screen').style.display = 'none';
       return
     }
+    if (lines[0] === "v2") {
+        prepareFileLoad()
+        loadv2(lines)
+        console.log("Loaded file from v2")
+        updateCanvas()
+        return
+    }
     alert("Versión del archivo no soportada")
+    document.getElementById('loading-screen').style.display = 'none';
 }

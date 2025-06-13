@@ -1,0 +1,60 @@
+V2.0c
+Pinza Neumática
+PinzaNeumatica
+Npz
+
+R 3 0 9 4 1 D
+L 7 0 7 4 1 D
+L 7 2 2 2 2 D
+
+L 9 0 8.66 4 1 D
+L 8.33 0 8.66 4 1 D
+L 8.33 0 8 4 1 D
+L 7.5 0 8 4 1 D
+L 7.5 0 7 4 1 D
+L 7.5 0 7 4 1 D
+
+LH 8 4 8 5 1 D
+L 4 4 4 5 1 D
+
+L 0 .5 2 .5 1 D
+L 0 3.5 2 3.5 1 D
+L 2 .5 2 3.5 1 D
+
+LH 2 2 0 0 1 D
+LH 2 2 0 4 1 D
+
+S 0 0 0
+S 0 0 0
+
+T 5 -1.5 17 D right a0
+T 10 -1.5 17 D left a1
+
+H 0 0 8 3
+
+X s0 Sensor Cerrado \ a0
+X s1 Sensor Abierto \ a1
+C f dobleE Doble Efecto
+C f rot Pinza Rotativa
+G 0 0 0 AcS Sensor
+
+UNH 3 2
+UNH 4 2
+UNH 5 2
+UNH 6 2
+UNH 7 2
+UNH 8 2
+UH 9 2
+
+UNH 11 3
+UNH 12 3
+UNH 13 3
+UH 14 3
+UH 15 3
+
+UH 18 4
+UH 19 4
+UT 18 0
+UT 19 1
+USNV 16 0 4 6 -1
+USNV 17 1 4 10 -1

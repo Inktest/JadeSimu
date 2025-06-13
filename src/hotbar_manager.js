@@ -1,40 +1,8 @@
-const COMPONENTS_LIST = [
-    
-    new Texto(),
-    //new Fuente(),
-    //new Tierra(),
-    //new FuenteAlimentacion(),
-    //new Transformador()
-    //new Diferencial(),
-    //new ReleTermico(),
-    //new Diodo(),
-    //new Contactor(),
-    //new Conmutador(),
-    //new Pulsador(),
-    //new PulsadorConmutado(),
-    //new ContactoTemporizado(),
-    //new ConmutadorTemporizado(),
-    //new Bobina(),
-    //new MotorAC(),
-    // new MotorDC(),
-    //new Piloto(),
-    //new EightDisplay(),
-    //new Fusible(),
-    //new Condensador(),
-    //new Grafcet(),
-    //new GrafcetTransicion(),
-    new Arrow(),
-    //new Vaiven(),
-    //new FC(),
-    //new TemporizacionLogica(),
-    //new ContactoLogico(),
-    //new BobinaLogica(),
-    //new S71215C(),
-    //new S7SM1223(),
-]
+
 
 let dirHandle;
 let currFile;
+let prevCompState = []
 
 class ComponentGroup {
     constructor(name, imageName, elements) {
@@ -44,51 +12,61 @@ class ComponentGroup {
     }
 }
 
+const COMPONENTS_LIST = [
+    
+    getComponentFromJadeFile("components/text.a"),
+    getComponentFromJadeFile("components/arrow.a"),
+]
+
 
 const GROUP_LIST = [
     new ComponentGroup("Alimentación", "Fuente", [
-        new Fuente(),
-        new Tierra(),
-        new FuenteAlimentacion(),
-        new Transformador()
+        getComponentFromJadeFile("components/fuente.a"),
+        getComponentFromJadeFile("components/tierra.a"),
+        getComponentFromJadeFile("components/fuente-a.a"),
+        getComponentFromJadeFile("components/transformador.a")
     ]),
-    new ComponentGroup("Protecciones", "Diferencial", [
-        new Diferencial(),
-        new ReleTermico(),
-        new Diodo(),
-        new Condensador()
+    new ComponentGroup("Protecciones", "ReleTermico", [
+        //new Diferencial(),
+        getComponentFromJadeFile("components/rele-t.a"),
+        getComponentFromJadeFile("components/diodo.a"),
+        getComponentFromJadeFile("components/condensador.a")
     ]),
     new ComponentGroup("Contactos", "Contactor", [
-        new Contactor(),
-        new Conmutador(),
-        new Pulsador(),
-        new PulsadorConmutado(),
-        new ContactoTemporizado(),
-        new ConmutadorTemporizado(),
-        new Fusible()
+        getComponentFromJadeFile("components/contactor.a"),
+        getComponentFromJadeFile("components/contactofuerza.a"),
+        getComponentFromJadeFile("components/conmutador.a"),
+        getComponentFromJadeFile("components/pulsador.a"),
+        getComponentFromJadeFile("components/conmutador-p.a"),
+        getComponentFromJadeFile("components/contacto-t.a"),
+        getComponentFromJadeFile("components/conmutador-t.a"),
+        getComponentFromJadeFile("components/fusible.a")
     ]),
     new ComponentGroup("Actuadores", "Bobina", [
-        new Bobina(),
-        new MotorAC(),
-        new Piloto(),
-        new EightDisplay(),
-        new Vaiven(),
+        getComponentFromJadeFile("components/bobina.a"),
+        getComponentFromJadeFile("components/electrov.a"),
+        getComponentFromJadeFile("components/motorac.a"),
+        getComponentFromJadeFile("components/piloto.a"),
+        getComponentFromJadeFile("components/7seg.a"),
+        getComponentFromJadeFile("components/vaiven.a"),
     ]),
     new ComponentGroup("Grafcet", "Grafcet", [
-        new Grafcet(),
-        new GrafcetTransicion(),
-        new FC(),
-        new TemporizacionLogica(),
-        new ContactoLogico(),
-        new BobinaLogica()
+        getComponentFromJadeFile("components/etapa.a"),
+        getComponentFromJadeFile("components/transicion.a"),
+        getComponentFromJadeFile("components/fc.a"),
+        getComponentFromJadeFile("components/temp-l.a"),
+        getComponentFromJadeFile("components/contacto-l.a"),
+        getComponentFromJadeFile("components/bobina-l.a")
     ]),
     new ComponentGroup("Neumática", "ActuadorLineal", [
-        new ActuadorLineal(),
-        new ActuadorGiratorio(),
-        new PinzaNeumatica()
+       getComponentFromJadeFile("components/linear.a"),
+       getComponentFromJadeFile("components/girat.a"),
+        getComponentFromJadeFile("components/pinza.a"),
+        getComponentFromJadeFile("components/valvextrg.a"),
+        getComponentFromJadeFile("components/ud-man.a")
     ]),
     new ComponentGroup("Autómatas", "S71215C", [
-        new S71215C()
+        getComponentFromJadeFile("components/s7-1215C.a")
     ])
 ]
 
@@ -135,9 +113,10 @@ const abreviatures = {
 
 function stopSimulation() {
     simuActivated = false
-    let savedData = localStorage.getItem('components')
-    if (savedData)
-        loadFromFileText(savedData)
+   components = []
+   for (let comp of prevCompState) {
+    components.push(comp.clone())
+   }
 
 
 updateCanvas()
@@ -149,30 +128,35 @@ let btn = createImageButton(`imgs/new.png`)
 btn.className = "navbarButton"
 btn.title = "Nuevo Proyecto"
 btn.onclick = () => {
-    stopSimulation()
-    components = []
-    wires = []
-    currGrafcetStages = []
+    const confirmReset = isSaved?false:confirm("¿Quieres crear un nuevo proyecto?");
+    if (!confirmReset) return;
 
-    page_width = 1748
-    page_height = 1240
-    page_margin = 3
-    page_vertical = false
+    stopSimulation();
+    components = [];
+    wires = [];
+    currGrafcetStages = [];
 
-    project_author = "Pablo Espinar"
-    project_name = "Proyecto 1"
-    project_name_size = "35"
-    updateCanvas()
-    saveComponents()
-    currFile = ""
-}
+    page_width = 1748;
+    page_height = 1240;
+    page_margin = 3;
+    page_vertical = false;
+
+    project_name = "Proyecto 1";
+    project_name_size = "35";
+    project_subname = "";
+    currFile = "";
+    updateCanvas();
+    saveComponents();
+};
+
 
 navbarDiv.appendChild(btn)
 
 function getSaveText() {
-    let componentsText = `v1.1.1\n${page_vertical}\u{001d}${project_name}\u{001d}${project_name_size}\u{001d}${project_author}\u{001d}${page_height}\u{001d}${page_width}\u{001d}${page_margin}\n`
+    isSaved = false
+    let componentsText = `v2\n${page_vertical}\u{001d}${project_name}\u{001d}${project_name_size}\u{001d}${project_author}\u{001d}${page_height}\u{001d}${page_width}\u{001d}${page_margin}\u{001d}${compactBox}\u{001d}${project_subname}\u{001d}${project_fecha}\u{001d}${project_pag}\u{001d}${nogrid}\n`
     for (var i in components) {
-        componentsText += `${components[i].position[0]}\u{001d}${components[i].position[1]}\u{001d}${abreviatures[components[i].name]}`
+        componentsText += `${components[i].position[0]}\u{001d}${components[i].position[1]}\u{001d}${components[i].rotation}\u{001d}${components[i].id}`
         for (option of components[i].options.options) {
             //console.log(option)
             if (typeof option.value === "object") { 
@@ -211,8 +195,8 @@ btn.onclick = async () => {
         }
         
     }
-
     
+    isSaved = true
     downloadTextFile(project_name?project_name+".jad":"jadeFile.jad", getSaveText())
 }
 navbarDiv.appendChild(btn)
@@ -461,7 +445,7 @@ btn.onclick = () => {
    nameDiv.className = "nameDiv";
    nameDiv.innerHTML = "Opciones";
    optionsDiv.appendChild(nameDiv);
-    optionsDiv.style = `height: 175px; visibility: visible`;
+    optionsDiv.style = `height: 275px; visibility: visible`;
 
     addTextboxToOptionsDiv("height", "Altura", page_height, 50, (height) => {page_height = isNaN(parseInt(height))?page_height:parseInt(height)})
     addTextboxToOptionsDiv("width", "Anchura", page_width, 50, (width) => {page_width = isNaN(parseInt(width))?page_width:parseInt(width)})
@@ -471,9 +455,15 @@ btn.onclick = () => {
     addTextboxToOptionsDiv("nameSize", "Tamaño Texto", project_name_size, 25, (name) => {project_name_size = name})
     addTextboxToOptionsDiv("author", "Autor", project_author, 100, (name) => {project_author = name})
     addCheckboxToOptionsDiv("vertical", "Página Vertical", page_vertical, (val) => {page_vertical = val})
-/*var project_name = "Proyecto 1"
-var project_name_size = 35
-var project_author = "Pablo Espinar"*/
+    addCheckboxToOptionsDiv("comact", "Cajetín Compacto", compactBox, (val) => {compactBox = val})
+    addCheckboxToOptionsDiv("as", "No Grid", nogrid, (val) => {nogrid = val})
+
+    addTextboxToOptionsDiv("subname", "Parte", project_subname, 100, (name) => {project_subname = name})
+    addTextboxToOptionsDiv("fec", "Fecha", project_fecha, 100, (name) => {project_fecha = name})
+    addTextboxToOptionsDiv("pag", "Página", project_pag, 100, (name) => {project_pag = name})
+/*    project_subname = boxData[8]
+    project_fecha = boxData[9]
+    project_pag = boxData[10]*/
 
 }
 navbarDiv.appendChild(btn)
@@ -599,7 +589,9 @@ updateCanvas();
         
             // Function to extract prefix, number, and suffix
             function extractParts(str) {
-                let match = str.match(/^([A-Za-z]*)(\d+)([A-Za-z]*)$/i); // Match [Prefix][Number][Suffix]
+                let match;
+                if (str)
+                    match = str.match(/^([A-Za-z]*)(\d+)([A-Za-z]*)$/i); // Match [Prefix][Number][Suffix]
                 return match ? { prefix: match[1] || "", num: parseInt(match[2]), suffix: match[3] || "" } : null;
             }
         
@@ -651,10 +643,13 @@ btn.className = "navbarButton"
 btn.title = "Simular"
 btn.onclick = () => {
     if (!simuActivated) {
+        prevCompState = []
+        for (let comp of components) {
+            prevCompState.push(comp.clone())
+        }
     simuActivated = true
-    saveComponents()
     convertComponentsToNodes()  
-        runThroughNodes()
+    runThroughNodes()
 
     return
 }
@@ -997,7 +992,7 @@ function addComponent(comp, copy) {
             while (currGrafcetsNumbers.indexOf(grafVal) != -1) {
                 grafVal++
             }
-            c.symbol.strokes[11].text = grafVal
+            c.symbol.strokes[6].text = grafVal
             c.options.options[0].setValue(grafVal)
             currGrafcetStages.push(c)
         
@@ -1008,33 +1003,40 @@ function addComponent(comp, copy) {
     return c
 }
 
-for (let i = 0; i < COMPONENTS_LIST.length; i++) {
+async function loadComponents() {
+    for (let compp of COMPONENTS_LIST) {
+        let comp = await compp
+        let btn = createImageButton(`imgs/components/${comp.imageName}.png`)
+        btn.className = "navbarButton"
+        btn.title = comp.name
+        btn.onclick = () => {
+            let c = addComponent(comp)
+            unselectSelectedComponent()
+            selectComponent(c)
+        }
 
-    let btn = createImageButton(`imgs/components/${COMPONENTS_LIST[i].imageName}.png`)
-    btn.className = "navbarButton"
-    btn.title = COMPONENTS_LIST[i].name
-    btn.onclick = () => {
-        let c = addComponent(COMPONENTS_LIST[i])
-        unselectSelectedComponent()
-        selectComponent(c)
-
-    
+        navbarDiv.appendChild(btn)
     }
-
-    navbarDiv.appendChild(btn)
 }
+
+loadComponents().then(() => {
+
+
+
 
 for (let group of GROUP_LIST) {
      let btn = createImageButton(`imgs/components/${group.imageName}.png`)
     btn.className = "navbarButton"
-    btn.onclick = () => {
+    btn.onclick = async () => {
         groupDiv.innerHTML = ''
-        for (let component of group.elements) {
+        for (let comp of group.elements) {
+            let component = await comp
              let btn2 = createImageButton(`imgs/components/${component.imageName}.png`)
+            console.log(component.imageName)
             btn2.className = "navbarButton"
             btn2.title = component.name
-            btn2.onclick = () => {
-                let c = addComponent(component)
+            btn2.onclick = async () => {
+                let c = await addComponent(component)
                 unselectSelectedComponent()
                 c.roundPosition()
                 selectComponent(c)
@@ -1045,3 +1047,6 @@ for (let group of GROUP_LIST) {
     }
     navbarDiv.appendChild(btn)
 }
+
+
+})

@@ -1,0 +1,45 @@
+V2.0c
+Contactor
+ContactoFuerza
+CtF
+
+H -3 0 2 3
+
+L 0 0 0 1
+L 2 0 2 1
+L 4 0 4 1
+L 0 4 0 3
+L 2 4 2 3
+L 4 4 4 3
+
+L 0 3 -1 1
+L 2 3 1 1
+L 4 3 3 1
+
+A 0 0.75 .25 1.57 4.71 1
+A 2 0.75 .25 1.57 4.71 1
+A 4 0.75 .25 1.57 4.71 1
+
+T -1.25 2 17 D right -KM
+T .25 .5 17 D left 1
+T 2.25 .5 17 D left 2
+T 4.25 .5 17 D left 3
+T .25 3.5 17 D left 4
+T 2.25 3.5 17 D left 5
+T 4.25 3.5 17 D left 6
+
+X name Nombre \ -KM
+X con1 Conexión 1 \ 1
+X con2 Conexión 2 \ 2
+X con3 Conexión 3 \ 3
+X con4 Conexión 4 \ 4
+X con5 Conexión 5 \ 5
+X con6 Conexión 6 \ 6
+
+UT 12 0
+UT 13 1
+UT 14 2
+UT 15 3
+UT 16 4
+UT 17 5
+UT 18 6
