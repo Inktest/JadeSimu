@@ -58,6 +58,7 @@ const loadv2 = async (line) => {
     project_subname = boxData[8]?boxData[8]:""
     project_fecha = boxData[9]?boxData[9]:""
     project_pag = boxData[10]?boxData[10]:""
+    nogrid = boxData[11]?boxData[11]==="true":false
 
     console.log(boxData)
 

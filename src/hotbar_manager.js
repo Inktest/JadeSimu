@@ -154,7 +154,7 @@ navbarDiv.appendChild(btn)
 
 function getSaveText() {
     isSaved = false
-    let componentsText = `v2\n${page_vertical}\u{001d}${project_name}\u{001d}${project_name_size}\u{001d}${project_author}\u{001d}${page_height}\u{001d}${page_width}\u{001d}${page_margin}\u{001d}${compactBox}\u{001d}${project_subname}\u{001d}${project_fecha}\u{001d}${project_pag}\n`
+    let componentsText = `v2\n${page_vertical}\u{001d}${project_name}\u{001d}${project_name_size}\u{001d}${project_author}\u{001d}${page_height}\u{001d}${page_width}\u{001d}${page_margin}\u{001d}${compactBox}\u{001d}${project_subname}\u{001d}${project_fecha}\u{001d}${project_pag}\u{001d}${nogrid}\n`
     for (var i in components) {
         componentsText += `${components[i].position[0]}\u{001d}${components[i].position[1]}\u{001d}${components[i].rotation}\u{001d}${components[i].id}`
         for (option of components[i].options.options) {
@@ -445,7 +445,7 @@ btn.onclick = () => {
    nameDiv.className = "nameDiv";
    nameDiv.innerHTML = "Opciones";
    optionsDiv.appendChild(nameDiv);
-    optionsDiv.style = `height: 250px; visibility: visible`;
+    optionsDiv.style = `height: 275px; visibility: visible`;
 
     addTextboxToOptionsDiv("height", "Altura", page_height, 50, (height) => {page_height = isNaN(parseInt(height))?page_height:parseInt(height)})
     addTextboxToOptionsDiv("width", "Anchura", page_width, 50, (width) => {page_width = isNaN(parseInt(width))?page_width:parseInt(width)})
@@ -456,6 +456,7 @@ btn.onclick = () => {
     addTextboxToOptionsDiv("author", "Autor", project_author, 100, (name) => {project_author = name})
     addCheckboxToOptionsDiv("vertical", "Página Vertical", page_vertical, (val) => {page_vertical = val})
     addCheckboxToOptionsDiv("comact", "Cajetín Compacto", compactBox, (val) => {compactBox = val})
+    addCheckboxToOptionsDiv("as", "No Grid", nogrid, (val) => {nogrid = val})
 
     addTextboxToOptionsDiv("subname", "Parte", project_subname, 100, (name) => {project_subname = name})
     addTextboxToOptionsDiv("fec", "Fecha", project_fecha, 100, (name) => {project_fecha = name})

@@ -11,6 +11,7 @@ var page_margin = 3
 var page_vertical = false
 
 var isSaved = false
+var nogrid = false
 
 var project_name = "Proyecto 1"
 var project_subname = "Parte 1"
@@ -62,6 +63,7 @@ function updateCanvas(noUpdateRes) {
 context.fillStyle = "#ffffff"
 context.fillRect(0, 0, canvas.width, canvas.height)
 
+    if(!nogrid)
   drawGrid()
   drawComponents()
   drawWires()

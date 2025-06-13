@@ -136,7 +136,6 @@ function downloadTextFile(name, content) {
 }
 
 function saveComponents() {
-    console.log("saveComponents")
     localStorage.setItem("components", getSaveText())
 }
 
