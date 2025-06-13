@@ -38,6 +38,35 @@ if (!text.startsWith("V2.0c")) return "Not valid";
                         );
                         break;
 
+                      case "P":
+    let centroX = parseFloat(line[1]);
+    let centroY = parseFloat(line[2]);
+    let radio = parseFloat(line[3]);
+    let lados = parseInt(line[4]);
+    let rotacion = parseFloat(line[5]) - 90; // en grados
+    let anchura = parseFloat(line[6]);
+
+    let anguloPaso = 2 * Math.PI / lados;
+    // Se ajusta la rotación para que el lado inferior esté horizontal en rotación 0
+    let anguloInicial = (rotacion * Math.PI / 180 + Math.PI) + (Math.PI / lados);
+
+    for (let i = 0; i < lados; i++) {
+        let ang1 = anguloInicial + i * anguloPaso;
+        let ang2 = anguloInicial + ((i + 1) % lados) * anguloPaso;
+
+        let x1 = centroX + radio * Math.cos(ang1);
+        let y1 = centroY + radio * Math.sin(ang1);
+        let x2 = centroX + radio * Math.cos(ang2);
+        let y2 = centroY + radio * Math.sin(ang2);
+
+        let l = new Line([x1, y1], [x2, y2], anchura, DEFAULT_COLOR);
+        symbolArray.push(l);
+    }
+    break;
+
+
+
+
                         case "D":
     x1 = parseFloat(line[1]);
     y1 = parseFloat(line[2]);
@@ -126,6 +155,7 @@ if (!text.startsWith("V2.0c")) return "Not valid";
                             )
                         )
                     break
+                    
 
                      case "RH":
                         symbolArray.push(
@@ -719,7 +749,7 @@ if (!text.startsWith("V2.0c")) return "Not valid";
                                 return str.match(/^([A-Za-z]*)(0)([A-Za-z]*)$/i) != null
                             }
 
-                            comp.symbol.strokes[parseFloat(line[1])].hide = isEtapaZero(comp.options.options[parseInt(line[2])].getValue())
+                            comp.symbol.strokes[parseFloat(line[1])].hide = !isEtapaZero(comp.options.options[parseInt(line[2])].getValue())
                         });
                         break;
 

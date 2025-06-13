@@ -10,9 +10,16 @@ var page_height = 1240
 var page_margin = 3
 var page_vertical = false
 
+var isSaved = false
+
 var project_name = "Proyecto 1"
-var project_name_size = 35
+var project_subname = "Parte 1"
+var project_fecha = "13/06/2025"
+var project_pag = "1/1"
+var project_name_size = 40
 var project_author = "Pablo Espinar"
+
+var compactBox = true
 
 const dotSize = 1
 const dotSpace = 20
@@ -58,6 +65,9 @@ context.fillRect(0, 0, canvas.width, canvas.height)
   drawGrid()
   drawComponents()
   drawWires()
+  if (compactBox)
+  drawBoxCompact()
+  else
   drawBox()
 
   if (selectedComponent.length > 0) 
@@ -92,6 +102,53 @@ function drawBoxLine(x1, y1, x2, y2) {
 }
 
 function drawBox() {
+    
+    rel_height = page_vertical?page_width:page_height
+    rel_width = page_vertical?page_height:page_width
+
+   drawBoxLine(page_vertical?page_margin:1, page_vertical?1:page_margin, page_vertical?page_margin:1, Math.floor(rel_height/20)-2)
+   drawBoxLine(page_vertical?page_margin:1, page_vertical?1:page_margin, Math.floor(rel_width/20)-2, page_vertical?1:page_margin)
+   drawBoxLine(Math.floor(rel_width/20)-2, page_vertical?1:page_margin, Math.floor(rel_width/20)-2, Math.floor(rel_height/20)-2)
+   drawBoxLine(page_vertical?page_margin:1, Math.floor(rel_height/20)-2, Math.floor(rel_width/20)-2, Math.floor(rel_height/20)-2)
+
+   drawBoxLine(Math.floor(rel_width/20)-40,  Math.floor(rel_height/20)-6, Math.floor(rel_width/20)-2,  Math.floor(rel_height/20)-6)
+   
+   drawBoxLine(Math.floor(rel_width/20)-16, Math.floor(rel_height/20)-6, Math.floor(rel_width/20)-16, Math.floor(rel_height/20)-2)
+   drawBoxLine(Math.floor(rel_width/20)-28, Math.floor(rel_height/20)-6, Math.floor(rel_width/20)-28, Math.floor(rel_height/20)-2)
+
+   drawBoxLine(Math.floor(rel_width/20)-40, Math.floor(rel_height/20)-6, Math.floor(rel_width/20)-40, Math.floor(rel_height/20)-2)
+   
+     drawBoxLine(Math.floor(rel_width/20)-40,  Math.floor(rel_height/20)-4.5, Math.floor(rel_width/20)-28,  Math.floor(rel_height/20)-4.5)
+     
+   drawBoxLine(Math.floor(rel_width/20)-16,  Math.floor(rel_height/20)-4.5, Math.floor(rel_width/20)-2,  Math.floor(rel_height/20)-4.5)
+      drawBoxLine(Math.floor(rel_width/20)-8, Math.floor(rel_height/20)-6, Math.floor(rel_width/20)-8, Math.floor(rel_height/20)-4.5)
+
+context.fillStyle = BOX_COLOR
+
+ context.textBaseline = "middle"
+        context.textAlign = "left"
+            context.font = `${36*scale}px Arial`
+        context.fillText("JadeSimu", (Math.floor(rel_width/20)-36.5+offsetX)*dotSpace*scale,(Math.floor(rel_height/20)-3+offsetY)*dotSpace*scale)
+         img = new Image()
+        img.src = 'imgs/logo_outline.png'
+        context.drawImage(img, (Math.floor(rel_width/20)-39.5+offsetX)*dotSpace*scale, (Math.floor(rel_height/20)-4.5+offsetY)*dotSpace*scale, 50*scale, 50*scale)
+
+context.font = `${project_name_size*scale}px Arial`
+        context.fillText(project_name, (Math.floor(rel_width/20)-27.5+offsetX)*dotSpace*scale,(Math.floor(rel_height/20)-3.75+offsetY)*dotSpace*scale)
+
+        context.font = `${17*scale}px Arial`
+        context.fillText(project_author, (Math.floor(rel_width/20)-39.5+offsetX)*dotSpace*scale,(Math.floor(rel_height/20)-5.25+offsetY)*dotSpace*scale)
+        context.font = `${32*scale}px Arial`
+        context.fillText(project_subname, (Math.floor(rel_width/20)-15+offsetX)*dotSpace*scale,(Math.floor(rel_height/20)-3.25+offsetY)*dotSpace*scale)
+
+        context.font = `${17*scale}px Arial`
+        context.fillText(project_fecha, (Math.floor(rel_width/20)-15+offsetX)*dotSpace*scale,(Math.floor(rel_height/20)-5.25+offsetY)*dotSpace*scale)
+         context.font = `${17*scale}px Arial`
+        context.fillText(project_pag, (Math.floor(rel_width/20)-7+offsetX)*dotSpace*scale,(Math.floor(rel_height/20)-5.25+offsetY)*dotSpace*scale)
+
+}
+
+function drawBoxCompact() {
 
     rel_height = page_vertical?page_width:page_height
     rel_width = page_vertical?page_height:page_width

@@ -128,28 +128,33 @@ let btn = createImageButton(`imgs/new.png`)
 btn.className = "navbarButton"
 btn.title = "Nuevo Proyecto"
 btn.onclick = () => {
-    stopSimulation()
-    components = []
-    wires = []
-    currGrafcetStages = []
+    const confirmReset = isSaved?false:confirm("¿Quieres crear un nuevo proyecto?");
+    if (!confirmReset) return;
 
-    page_width = 1748
-    page_height = 1240
-    page_margin = 3
-    page_vertical = false
+    stopSimulation();
+    components = [];
+    wires = [];
+    currGrafcetStages = [];
 
-    project_author = "Pablo Espinar"
-    project_name = "Proyecto 1"
-    project_name_size = "35"
-    updateCanvas()
-    saveComponents()
-    currFile = ""
-}
+    page_width = 1748;
+    page_height = 1240;
+    page_margin = 3;
+    page_vertical = false;
+
+    project_name = "Proyecto 1";
+    project_name_size = "35";
+    project_subname = "";
+    currFile = "";
+    updateCanvas();
+    saveComponents();
+};
+
 
 navbarDiv.appendChild(btn)
 
 function getSaveText() {
-    let componentsText = `v2\n${page_vertical}\u{001d}${project_name}\u{001d}${project_name_size}\u{001d}${project_author}\u{001d}${page_height}\u{001d}${page_width}\u{001d}${page_margin}\n`
+    isSaved = false
+    let componentsText = `v2\n${page_vertical}\u{001d}${project_name}\u{001d}${project_name_size}\u{001d}${project_author}\u{001d}${page_height}\u{001d}${page_width}\u{001d}${page_margin}\u{001d}${compactBox}\u{001d}${project_subname}\u{001d}${project_fecha}\u{001d}${project_pag}\n`
     for (var i in components) {
         componentsText += `${components[i].position[0]}\u{001d}${components[i].position[1]}\u{001d}${components[i].rotation}\u{001d}${components[i].id}`
         for (option of components[i].options.options) {
@@ -190,8 +195,8 @@ btn.onclick = async () => {
         }
         
     }
-
     
+    isSaved = true
     downloadTextFile(project_name?project_name+".jad":"jadeFile.jad", getSaveText())
 }
 navbarDiv.appendChild(btn)
@@ -440,7 +445,7 @@ btn.onclick = () => {
    nameDiv.className = "nameDiv";
    nameDiv.innerHTML = "Opciones";
    optionsDiv.appendChild(nameDiv);
-    optionsDiv.style = `height: 175px; visibility: visible`;
+    optionsDiv.style = `height: 250px; visibility: visible`;
 
     addTextboxToOptionsDiv("height", "Altura", page_height, 50, (height) => {page_height = isNaN(parseInt(height))?page_height:parseInt(height)})
     addTextboxToOptionsDiv("width", "Anchura", page_width, 50, (width) => {page_width = isNaN(parseInt(width))?page_width:parseInt(width)})
@@ -450,9 +455,14 @@ btn.onclick = () => {
     addTextboxToOptionsDiv("nameSize", "Tamaño Texto", project_name_size, 25, (name) => {project_name_size = name})
     addTextboxToOptionsDiv("author", "Autor", project_author, 100, (name) => {project_author = name})
     addCheckboxToOptionsDiv("vertical", "Página Vertical", page_vertical, (val) => {page_vertical = val})
-/*var project_name = "Proyecto 1"
-var project_name_size = 35
-var project_author = "Pablo Espinar"*/
+    addCheckboxToOptionsDiv("comact", "Cajetín Compacto", compactBox, (val) => {compactBox = val})
+
+    addTextboxToOptionsDiv("subname", "Parte", project_subname, 100, (name) => {project_subname = name})
+    addTextboxToOptionsDiv("fec", "Fecha", project_fecha, 100, (name) => {project_fecha = name})
+    addTextboxToOptionsDiv("pag", "Página", project_pag, 100, (name) => {project_pag = name})
+/*    project_subname = boxData[8]
+    project_fecha = boxData[9]
+    project_pag = boxData[10]*/
 
 }
 navbarDiv.appendChild(btn)

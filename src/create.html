@@ -15,7 +15,7 @@
     }
     .componentOptionsDiv, .componentOptionsDiv2 {
       position: absolute;
-      width: 260px;
+      width: 270px;
       background: #f5f5f5;
       border-radius: 10px;
       border: 3px solid #2e2a24;
@@ -24,14 +24,9 @@
       font-family: sans-serif;
       z-index: 10;
     }
-    .componentOptionsDiv {
-      top: 60px;
-      right: 10px;
-    }
-    .componentOptionsDiv2 {
-      top: 60px;
-      left: 10px;
-    }
+    .componentOptionsDiv { top: 60px; right: 10px; }
+    .componentOptionsDiv2 { top: 60px; left: 10px; }
+
     .updateButton {
       width: 100%;
       padding: 8px;
@@ -43,9 +38,8 @@
       cursor: pointer;
       font-weight: bold;
     }
-    .updateButton:hover {
-      background-color: #21618C;
-    }
+    .updateButton:hover { background-color: #21618C; }
+
     .sidebarSection {
       margin-bottom: 15px;
       border-bottom: 1px solid #ccc;
@@ -71,13 +65,9 @@
       text-align: right;
       user-select: none;
       min-width: 30px;
-      padding: 0;
-      margin: 0;
-      border-right: 1px solid #ccc;
-      overflow: hidden;
-      line-height: 1.4em;
-      font-size: 13px;
       padding-top: 2px;
+      border-right: 1px solid #ccc;
+      font-size: 13px;
     }
     .codeTextarea {
       flex: 1;
@@ -85,23 +75,21 @@
       resize: none;
       outline: none;
       height: 100%;
-      padding: 0;
-      margin: 0;
-      overflow: auto;
+      padding-left: 5px;
+      padding-top: 2px;
       font-family: monospace;
       font-size: 13px;
       line-height: 1.4em;
+      overflow: auto;
       box-sizing: border-box;
-      padding-left: 5px;
-      padding-top: 2px;
     }
-    input[type="text"], input[type="number"] {
+    input[type="text"], input[type="number"], select {
       width: 100%;
       padding: 5px;
       font-size: 14px;
       box-sizing: border-box;
+      margin-bottom: 5px;
     }
-    .miscRow { margin-top: 10px; }
     .hitboxRow {
       display: flex;
       flex-wrap: wrap;
@@ -122,11 +110,7 @@
       border: 1px solid #cfc580;
       padding: 5px;
       margin-top: 5px;
-    }
-    .symbolHelpBtns button {
-      width: 49%;
-      margin-bottom: 4px;
-      font-size: 12px;
+      white-space: pre-wrap;
     }
   </style>
 </head>
@@ -137,6 +121,7 @@
   <canvas id="cadeCanvas"></canvas>
 
   <div class="componentOptionsDiv2" id="optionsDivSimu" style="visibility: hidden;"></div>
+
   <div class="componentOptionsDiv" id="optionsDiv">
     <div style="display: flex; gap: 5px; margin-bottom: 10px;">
       <button class="updateButton" onclick="drawHitbox()">Hitbox</button>
@@ -146,102 +131,135 @@
 
     <div class="sidebarSection">
       <h4>Nombre</h4>
-      <input type="text" id="nameInput" placeholder="Name">
+      <input type="text" id="nameInput" placeholder="Nombre del componente">
     </div>
 
     <div class="sidebarSection">
       <h4>Símbolo</h4>
       <div class="codeEditorContainer">
         <pre class="lineNumbers" id="symbolLineNumbers">1.</pre>
-        <textarea class="codeTextarea" id="symbolTextarea" placeholder="Enter symbol code here..."></textarea>
+        <textarea class="codeTextarea" id="symbolTextarea"></textarea>
       </div>
-      <div class="symbolHelpBtns">
-        <button onclick="insertSymbol('L x1 y1 x2 y2 a')">+ Línea</button>
-        <button onclick="insertSymbol('D x1 y1 x2 y2 l a')">+ Discontinua</button>
-        <button onclick="insertSymbol('A cx cy r aI aF a')">+ Arco</button>
-        <button onclick="insertSymbol('T x y t D c txt')">+ Texto</button>
-        <button onclick="insertSymbol('R x1 y1 x2 y2 a')">+ Rectángulo</button>
-      </div>
-      <div class="helpBox" id="symbolHelpText">Haz clic en una línea para ver su significado.</div>
+      <select id="symbolSelector" onchange="showSymbolHelp()">
+        <option value="">Selecciona un símbolo...</option>
+        <option value="L x1 y1 x2 y2 a">Línea</option>
+        <option value="A cx cy r aI aF a">Arco</option>
+        <option value="T x y t D c txt">Texto</option>
+        <option value="R x1 y1 x2 y2 a">Rectángulo</option>
+        <option value="P x1 y1 rad l rot a">Polígono</option>
+        <option value="D x1 y1 x2 y2 l a">Discontinua</option>
+      </select>
+      <button onclick="insertSymbol()">Añadir símbolo</button>
+      <div class="helpBox" id="symbolHelpText">Selecciona un símbolo para ver ayuda.</div>
     </div>
 
     <div class="sidebarSection">
       <h4>Opciones</h4>
       <div class="codeEditorContainer">
-        <pre class="lineNumbers" id="optionLineNumbers">0.</pre>
-        <textarea class="codeTextarea" id="optionTextarea" placeholder="Enter options here..."></textarea>
+        <pre class="lineNumbers" id="optionLineNumbers">1.</pre>
+        <textarea class="codeTextarea" id="optionTextarea"></textarea>
       </div>
+      <select id="optionSelector" onchange="showOptionHelp()">
+        <option value="">Selecciona una opción...</option>
+        <option value="COLOR rojo">COLOR</option>
+        <option value="ANCHO 2">ANCHO</option>
+        <option value="BORDE 0">BORDE</option>
+        <!-- Añade más aquí -->
+      </select>
+      <button onclick="insertOption()">Añadir opción</button>
+      <div class="helpBox" id="optionHelpText">Selecciona una opción para ver ayuda.</div>
     </div>
 
     <div class="sidebarSection">
       <h4>Otros</h4>
-      <div class="miscRow">
-        <label>Hitbox:</label>
-        <div class="hitboxRow">
-          <input type="number" id="hX" placeholder="X">
-          <input type="number" id="hY" placeholder="Y">
-          <input type="number" id="hW" placeholder="W">
-          <input type="number" id="hH" placeholder="H">
-        </div>
+      <label>Hitbox:</label>
+      <div class="hitboxRow">
+        <input type="number" id="hX" placeholder="X">
+        <input type="number" id="hY" placeholder="Y">
+        <input type="number" id="hW" placeholder="W">
+        <input type="number" id="hH" placeholder="H">
       </div>
-      <div class="miscRow">
-        <label>Creador:</label><br>
-        <input type="text" id="authorInput" placeholder="Author name">
-      </div>
+      <label>Creador:</label>
+      <input type="text" id="authorInput" placeholder="Autor">
     </div>
   </div>
 
+  <!-- SCRIPTS -->
   <script src="constructors.js"></script>
   <script src="create/main.js"></script>
   <script src="components_const.js"></script>
   <script src="components_symbols.js"></script>
   <script src="create/options.js"></script>
   <script>
+    const symbolHelp = {
+      "L": "Línea: L x1 y1 x2 y2 ancho",
+      "A": "Arco: A cx cy radio angInicio angFinal ancho",
+      "T": "Texto: T x y tamaño D centrado texto",
+      "R": "Rectángulo: R x1 y1 x2 y2 ancho",
+      "P": "Polígono: P x1 y1 radio lados rotación ancho",
+      "D": "Discontinua: D x1 y1 x2 y2 largo ancho"
+    };
+
+    const optionHelp = {
+      "COLOR": "COLOR color → Define el color principal.",
+      "ANCHO": "ANCHO n → Define el ancho de trazo.",
+      "BORDE": "BORDE 0|1 → Mostrar u ocultar bordes."
+    };
+
+    function showSymbolHelp() {
+      const val = document.getElementById("symbolSelector").value.split(" ")[0];
+      document.getElementById("symbolHelpText").textContent = symbolHelp[val] || "";
+    }
+
+    function insertSymbol() {
+      const val = document.getElementById("symbolSelector").value;
+      if (!val) return;
+      const ta = document.getElementById("symbolTextarea");
+      ta.value += (ta.value ? "\n" : "") + val;
+      updateLineNumbers(ta, document.getElementById("symbolLineNumbers"));
+    }
+
+    function showOptionHelp() {
+      const val = document.getElementById("optionSelector").value.split(" ")[0];
+      document.getElementById("optionHelpText").textContent = optionHelp[val] || "";
+    }
+
+    function insertOption() {
+      const val = document.getElementById("optionSelector").value;
+      if (!val) return;
+      const ta = document.getElementById("optionTextarea");
+      ta.value += (ta.value ? "\n" : "") + val;
+      updateLineNumbers(ta, document.getElementById("optionLineNumbers"));
+    }
+
     function updateLineNumbers(textarea, lineNumberDiv) {
       const lines = textarea.value.split("\n");
-      let count = 0;
+      let count = 1;
       const numbered = lines.map(line => line.trim() === "" ? "" : (count++) + ".").join("\n");
-      lineNumberDiv.textContent = numbered || "0.";
+      lineNumberDiv.textContent = numbered || "1.";
     }
+
     function syncScroll(textarea, lineNumbers) {
       lineNumbers.scrollTop = textarea.scrollTop;
     }
-    function insertSymbol(text) {
-      const textarea = document.getElementById("symbolTextarea");
-      textarea.value += (textarea.value ? "\n" : "") + text;
-      updateLineNumbers(textarea, document.getElementById("symbolLineNumbers"));
-    }
-    document.getElementById("symbolTextarea").addEventListener("click", e => {
-      const lines = e.target.value.split("\n");
-      const start = e.target.selectionStart;
-      const clickedLine = e.target.value.substr(0, start).split("\n").length - 1;
-      const line = lines[clickedLine] || "";
-      const help = {
-        L: 'L x1 y1 x2 y2 anchura → Línea',
-        A: 'A cx cy r anguloInicio anguloFinal anchura  → Arco',
-        T: 'T x y tamaño D centrado texto → Texto',
-        R: 'R x1 y1 x2 y2 anchura → Rectángulo',
-        D: "D x1 y1 x2 y2 longitud anchura → Línea Discontinua"
-      };
-      const type = line.trim().split(" ")[0];
-      document.getElementById("symbolHelpText").textContent = help[type] || "Formato no reconocido.";
-    });
 
-    const symbolTextarea = document.getElementById("symbolTextarea");
-    const symbolLineNumbers = document.getElementById("symbolLineNumbers");
-    symbolTextarea.addEventListener("input", () => updateLineNumbers(symbolTextarea, symbolLineNumbers));
-    symbolTextarea.addEventListener("scroll", () => syncScroll(symbolTextarea, symbolLineNumbers));
+    document.getElementById("symbolTextarea").addEventListener("input", () =>
+      updateLineNumbers(symbolTextarea, symbolLineNumbers));
+    document.getElementById("symbolTextarea").addEventListener("scroll", () =>
+      syncScroll(symbolTextarea, symbolLineNumbers));
     updateLineNumbers(symbolTextarea, symbolLineNumbers);
 
-    const optionTextarea = document.getElementById("optionTextarea");
-    const optionLineNumbers = document.getElementById("optionLineNumbers");
-    optionTextarea.addEventListener("input", () => updateLineNumbers(optionTextarea, optionLineNumbers));
-    optionTextarea.addEventListener("scroll", () => syncScroll(optionTextarea, optionLineNumbers));
+    document.getElementById("optionTextarea").addEventListener("input", () =>
+      updateLineNumbers(optionTextarea, optionLineNumbers));
+    document.getElementById("optionTextarea").addEventListener("scroll", () =>
+      syncScroll(optionTextarea, optionLineNumbers));
     updateLineNumbers(optionTextarea, optionLineNumbers);
 
     async function drawHitbox() {
       for (let hit of drawnComp.hitbox.hitbox) {
-        new RectangleArray([hit[0], hit[1]], [hit[0]+1, hit[1]+1], 1, "#f00").translate([offsetX, offsetY]).draw();
+        new RectangleArray([hit[0], hit[1]], [hit[0] + 1, hit[1] + 1], 1, "#f00")
+          .translate([offsetX, offsetY])
+          .draw();
       }
     }
 

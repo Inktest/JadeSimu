@@ -23,8 +23,8 @@ LH -2 6 -1 4.75 1 D
 T -2.25 3 17 D right -M
 T -1.25 .5 12 D left U1
 T 0.15 0.5 12 D left V1
-T 2 0.5 12 W1 D left
-T 3.25 .5 12 PE D left
+T 2 0.5 12 W1 D W1
+T 3.25 .5 12 PE D PE
 
 TH -1.25 5.5 12 D left W2
 TH .15 5.5 12 D left U2

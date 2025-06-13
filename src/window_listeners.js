@@ -1,7 +1,8 @@
-
+let currentlyClicked = false
 
 
 function mouseupEvent(event) {
+    currentlyClicked = false
     if (event.target !== canvas) return;
     
     if (pressedShift && drawnArea) {
@@ -17,8 +18,10 @@ function mouseupEvent(event) {
     }     
     updateCanvas()
 }
+
 held = false
-saveComponents()
+// saveComponents()
+//
 
 }
 
@@ -92,6 +95,7 @@ pressedShift = false
 drawnArea = false
 
 function mousedownEvent(event) {
+    currentlyClicked = true
     drawnArea = false;
 
     clickedX = event.pageX / dotSpace / scale;
@@ -178,12 +182,14 @@ window.addEventListener("wheel", (event) => {
 window.addEventListener("keydown", (event) => {
     
     if (document.activeElement.nodeName.toLocaleLowerCase() !== 'input')
-    switch (event.key.toLowerCase()) {
+        console.log() // Si no pones esto no funciona
+        switch (event.key.toLowerCase()) {
         case "delete": handleDeleteKeyPress(event); break
         case "r": handleRKeyPress(event); break
         case "w": handleWKeyPress(event); break
         case "q": handleQKeyPress(event); break
         case "c": handleCKeyPress(event); break
+        case "escape": handleEscKeyPress(event); break
         case "arrowup": case "arrowdown": case "arrowleft": case "arrowright": handleArrowKeyPress(event); break
     }
 });

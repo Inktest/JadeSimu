@@ -22,10 +22,7 @@ LH -0.375 -.875 0.375 .875 1
 LH 0.375 .875 0.35 .5 1
 LH 0.375 .875 0.125 .6 1
 LH .125 .6 .35 .5 1
-
-
 TH 0 -2.15 17 D center 100%
-
 
 X stn Extrangulación \ 100%
 C f uni Unidireccional

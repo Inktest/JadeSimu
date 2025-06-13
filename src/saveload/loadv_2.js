@@ -36,7 +36,8 @@ const loadv2 = async (line) => {
         "CtF": "components/contactofuerza.a",
         "BoV": "components/electrov.a",
         "VvE": "components/valvextrg.a",
-        "UdM": "components/ud-man.a"
+        "UdM": "components/ud-man.a",
+        Wr2: "components/cable.a"
     }
 
     // CCT
@@ -53,7 +54,12 @@ const loadv2 = async (line) => {
     page_height = boxData[4]?parseInt(boxData[4]):1240
     page_width = boxData[5]?parseInt(boxData[5]):1748
     page_margin = boxData[6]?parseInt(boxData[6]):3
+    compactBox = boxData[7]?boxData[7]==="true":true
+    project_subname = boxData[8]?boxData[8]:""
+    project_fecha = boxData[9]?boxData[9]:""
+    project_pag = boxData[10]?boxData[10]:""
 
+    console.log(boxData)
 
     for (let i = 1; i < line.length-1; i++) {
         currLine = line[i].split(`\u{001d}`)
@@ -63,7 +69,7 @@ const loadv2 = async (line) => {
         abreviature = currLine[3]
         currLine.splice(0, 4)
         lines = currLine
-    // console.log({abv: abreviature, c1: firstCoord, c2: secondCoord, line: lines})
+        if (abreviaturesLookup[abreviature]) {
     let c = await getComponentFromJadeFile(abreviaturesLookup[abreviature])
     c = await addComponent(c)
     c.moveTo([firstCoord,secondCoord])
@@ -94,6 +100,7 @@ const loadv2 = async (line) => {
     selectComponent(c)
     unselectSelectedComponent()
     held = false;
+    }
 }
 updateCanvas()
 convertDiagramToNodes()

@@ -1,6 +1,14 @@
 function handleDeleteKeyPress(event) {
    deleteSelectedObject()
 }
+
+function handleEscKeyPress(event) {
+    if (!currentlyClicked && held) {
+        deleteSelectedObject()
+        held=false
+    }
+}
+
 function handleRKeyPress(event) {
     rotateSelectedObject()
 }
