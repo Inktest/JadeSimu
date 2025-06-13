@@ -78,8 +78,8 @@ const abreviatures = {
     "Vaivén": "Vvn",
     "Final de Carrera": "Vfc",
     "Temporizador": "Ton",
-    "Contacto Lógico": "Lct",
-    "Bobina Lógica": "Lbn",
+    "Contacto Logico": "Lct",
+    "Bobina Logica": "Lbn",
     "Alimentación": "Vcc",
     "Contacto Pulsador": "Swt",
     "S7 1200 1215C": "S75",
@@ -691,7 +691,7 @@ btn.onclick = () => {
             marcasMap[marca].push(currEtapa.etapa.options.options[0].value)
         }
         
-        let c = addComponent(new ContactoLógico()).moveTo([2 + 3*(i+1), 5]);
+        let c = addComponent(new ContactoLogico()).moveTo([2 + 3*(i+1), 5]);
         c.options.options[0].value = i;
         c.options.options[1].value = CONTACTO_NC_COLLECTION;
         grafcetSCLCodeEtapaCero += ` NOT "Etapa ${i}" AND`
@@ -740,7 +740,7 @@ btn.onclick = () => {
 
     console.log(grafcetSCLCodeEtapaCero + "\n\n" + grafcetSCLCodeFaseEtapas)
 
-    let c2 = addComponent(new BobinaLógica()).moveTo([3*(i+2)-1, 5]);
+    let c2 = addComponent(new BobinaLogica()).moveTo([3*(i+2)-1, 5]);
     c2.options.options[0].value = "0";
     c2.options.options[1].value = BOBINA_SET_COLLECTION;
     selectComponent(c2);
@@ -751,7 +751,7 @@ btn.onclick = () => {
  let currMarcaTemp = 0
 
     for (let [marca, etapasMarca] of Object.entries(marcasMap)) {
-    c = addComponent(new ContactoLógico()).moveTo([5, currHeight + 5])
+    c = addComponent(new ContactoLogico()).moveTo([5, currHeight + 5])
     c.options.options[0].value = etapasMarca[0];
     c.options.options[1].value = NONE_COLLECTION;
     selectComponent(c);
@@ -767,7 +767,7 @@ btn.onclick = () => {
     } else {
 
 
-    c = addComponent(new BobinaLógica()).moveTo([9, currHeight + 5])
+    c = addComponent(new BobinaLogica()).moveTo([9, currHeight + 5])
     c.options.options[1].value = NONE_COLLECTION;
     if (marca.replace(/[ ]*?\:\=[ ]*?1[ ]*?/, "") !== marca) {
         c.options.options[1].value = BOBINA_SET_COLLECTION;
@@ -786,7 +786,7 @@ btn.onclick = () => {
     
  for (let i = 0; i < etapasMarca.length; i++) {
             currHeight += 4
-            c = addComponent(new ContactoLógico()).moveTo([5, currHeight])
+            c = addComponent(new ContactoLogico()).moveTo([5, currHeight])
             c.options.options[0].value = etapasMarca[i];
             c.options.options[1].value = NONE_COLLECTION;
             selectComponent(c);
@@ -895,7 +895,7 @@ function calculateContactMatrix(currEtapa, index) {
             } else {
                 
                 lastContactPos = [5 + 3*k, 5 + 4*l + currHeight]
-                let c = addComponent(new ContactoLógico()).moveTo(lastContactPos);
+                let c = addComponent(new ContactoLogico()).moveTo(lastContactPos);
 
                 if (mat[k][l].startsWith("+")) {
                     let tmp = mat[k][l].split("")
@@ -942,14 +942,14 @@ function calculateContactMatrix(currEtapa, index) {
 wires.push(new Line([7 + 3*currMatX, 6 + currHeight], [7 + 3*currMatX, 6 + 4*pluses + currHeight], 1, DEFAULT_COLOR, false))
 for (var i in sets) {
     lastContactPos = [lastContactPos[0]+3, lastContactPos[1]]
-let c = addComponent(new ContactoLógico()).moveTo(lastContactPos);
+let c = addComponent(new ContactoLogico()).moveTo(lastContactPos);
                 c.options.options[0].value = sets[i].etapa.options.options[0].value;
                 c.options.options[1].value = NONE_COLLECTION;
                 selectComponent(c);
                 unselectSelectedComponent(c);
             }
             lastContactPos = [lastContactPos[0]+3, lastContactPos[1]]
-            c = addComponent(new BobinaLógica().clone()).moveTo(lastContactPos);
+            c = addComponent(new BobinaLogica().clone()).moveTo(lastContactPos);
                             c.options.options[0].value = currEtapa.etapa.options.options[0].value;
                             c.options.options[1].value = BOBINA_SET_COLLECTION;
                             selectComponent(c);
@@ -961,7 +961,7 @@ for (var i in sets) {
         currHeight += 4
     }
     wires.push(new Line([lastContactPos[0]-2, lastContactPos[1]+1], [lastContactPos[0]-2, lastContactPos[1]-3], 1, DEFAULT_COLOR, false))
-c = addComponent(new BobinaLógica().clone()).moveTo(lastContactPos);
+c = addComponent(new BobinaLogica().clone()).moveTo(lastContactPos);
                             c.options.options[0].value = sets[i].etapa.options.options[0].value;
                             c.options.options[1].value = BOBINA_RESET_COLLECTION;
                             selectComponent(c);

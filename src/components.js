@@ -597,7 +597,7 @@ class Arrow extends Component {
             }
 }
 
-class ContactoLógico extends Component {
+class ContactoLogico extends Component {
     constructor(position) {
         super(position, "Contacto", new ComponentSymbol([
             new Line([-2,1],[-.5,1],1,DEFAULT_COLOR),
@@ -622,7 +622,7 @@ class ContactoLógico extends Component {
             }
 
             clone() {
-                let newobj = new ContactoLógico(this.position)
+                let newobj = new ContactoLogico(this.position)
                 newobj.name = this.name
                 newobj.symbol = this.symbol.clone()
                 newobj.hitbox = this.hitbox.clone()
@@ -631,9 +631,9 @@ class ContactoLógico extends Component {
             }
 }
 
-class BobinaLógica extends Component {
+class BobinaLogica extends Component {
     constructor(position) {
-        super(position, "Bobina Lógica", new ComponentSymbol([
+        super(position, "Bobina Logica", new ComponentSymbol([
             new Line([-2,1],[-1,1],1,DEFAULT_COLOR),
             new Arc([0, 1], 1, Math.PI/2+0.3, 3*Math.PI/2-0.3, 1, DEFAULT_COLOR),
             new Arc([0, 1], 1, 3*Math.PI/2+0.3, Math.PI/2-0.3, 1, DEFAULT_COLOR),
@@ -656,7 +656,7 @@ class BobinaLógica extends Component {
             }
 
             clone() {
-                let newobj = new BobinaLógica(this.position)
+                let newobj = new BobinaLogica(this.position)
                 newobj.name = this.name
                 newobj.symbol = this.symbol.clone()
                 newobj.hitbox = this.hitbox.clone()

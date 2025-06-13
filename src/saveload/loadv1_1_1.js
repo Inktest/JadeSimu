@@ -28,6 +28,7 @@ const loadv1_1_1 = (line) => {
     // console.log({abv: abreviature, c1: firstCoord, c2: secondCoord, line: lines})
     finalText.push(firstCoord + `\u{001d}` + secondCoord + `\u{001d}0\u{001d}` + abreviature + `\u{001d}` + lines.join(`\u{001d}`))
     
+
 }
 
 loadv2(finalText)
