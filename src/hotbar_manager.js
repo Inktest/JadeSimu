@@ -28,6 +28,7 @@ const GROUP_LIST = [
     ]),
     new ComponentGroup("Protecciones", "ReleTermico", [
         //new Diferencial(),
+        getComponentFromJadeFile("components/magneto.a"),
         getComponentFromJadeFile("components/rele-t.a"),
         getComponentFromJadeFile("components/diodo.a"),
         getComponentFromJadeFile("components/condensador.a")
@@ -40,7 +41,8 @@ const GROUP_LIST = [
         getComponentFromJadeFile("components/conmutador-p.a"),
         getComponentFromJadeFile("components/contacto-t.a"),
         getComponentFromJadeFile("components/conmutador-t.a"),
-        getComponentFromJadeFile("components/fusible.a")
+        getComponentFromJadeFile("components/fusible.a"),
+        getComponentFromJadeFile("components/borna.a")
     ]),
     new ComponentGroup("Actuadores", "Bobina", [
         getComponentFromJadeFile("components/bobina.a"),

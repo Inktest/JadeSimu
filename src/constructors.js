@@ -288,7 +288,7 @@ class StrokeCollection {
         this.strokes.forEach(s => {
             newStrokes.push(s.clone())
         });
-       return new StrokeCollection(newStrokes, this.color, this.id)
+       return new StrokeCollection(newStrokes, this.color, this.id, this.hide)
     }
 
     draw() {

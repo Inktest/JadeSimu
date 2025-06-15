@@ -1,0 +1,30 @@
+V2.0c
+Magnetotérmico
+Disyuntor
+Mtt
+
+
+S 39 0 0
+S 39 2 0
+S 39 4 0
+S 39 6 0
+
+R -1.25 -2.75 -2.75 -1.25 1 D
+L -2 -2.75 -2 -1.25 1 D
+L -2.75 -2 -1.25 -2 1 D
+D -2 -1 -2 3 .25 1 D
+D 0 3 -2 3 .25 1 D
+D 0 1 -2 1 .25 1 D
+L -2.75 -2 -3.5 -2 1 D 
+L -3.5 -1.5 -3.5 -2.5 1 D 
+
+
+C t c2 Segundo Polo
+C t c3 Tercer Polo
+C t c4 Cuarto Polo
+
+UNH 1 0
+UNH 2 1
+UNH 3 2
+
+H -3 -4 7 4

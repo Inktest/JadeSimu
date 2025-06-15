@@ -1,0 +1,18 @@
+V2.0c
+Borna
+Borna
+Brn
+
+A 0 0 0.25 0 6.28 1
+L 0 .25 0 1 1
+L 0 -.25 0 -1 1
+T -.5 0 17 D right X1
+T .25 .5 17 D left 1
+C f up Una conexión
+X gp Grupo \ X1
+X num Número \ 1
+
+UNH 2 0
+UT 3 1
+UT 4 2
+H -1 -1 0 0
