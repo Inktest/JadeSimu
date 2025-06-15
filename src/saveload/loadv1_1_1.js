@@ -26,8 +26,10 @@ const loadv1_1_1 = (line) => {
         currLine.splice(0, 3)
         lines = currLine
     console.log({abv: abreviature, c1: firstCoord, c2: secondCoord, line: lines})
+    if (abreviature == "Wre") 
+    finalText.push(firstCoord + `\u{001d}` + secondCoord + `\u{001d}0\u{001d}` + abreviature + `\u{001d}` + (parseFloat(lines[1]) - parseFloat(secondCoord))+ `\u{001d}` + (parseFloat(lines[0]) - parseFloat(firstCoord)))
+    else
     finalText.push(firstCoord + `\u{001d}` + secondCoord + `\u{001d}0\u{001d}` + abreviature + `\u{001d}` + lines.join(`\u{001d}`))
-    
 
 }
 finalText.push("")
