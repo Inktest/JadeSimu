@@ -182,7 +182,7 @@ window.addEventListener("wheel", (event) => {
 
 window.addEventListener("keydown", (event) => {
     
-    if (document.activeElement.nodeName.toLocaleLowerCase() !== 'input')
+    if (document.activeElement.nodeName.toLocaleLowerCase() !== 'input') {
         console.log() // Si no pones esto no funciona
         switch (event.key.toLowerCase()) {
         case "delete": handleDeleteKeyPress(event); break
@@ -192,6 +192,7 @@ window.addEventListener("keydown", (event) => {
         case "c": handleCKeyPress(event); break
         case "escape": handleEscKeyPress(event); break
         case "arrowup": case "arrowdown": case "arrowleft": case "arrowright": handleArrowKeyPress(event); break
+        }
     }
 });
 
