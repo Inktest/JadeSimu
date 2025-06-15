@@ -94,7 +94,7 @@ selectedY = 0
 pressedShift = false
 drawnArea = false
 
-function mousedownEvent(event) {
+async function mousedownEvent(event) {
     currentlyClicked = true
     drawnArea = false;
 
@@ -106,7 +106,8 @@ function mousedownEvent(event) {
     if (!event.shiftKey) unselectSelectedComponent();
 
     if (currWire != null && currWire.end != [0, 0]) {
-        let cW = new WireComponent(currWire.start);
+        let cW = await getComponentFromJadeFile("components/cable.a")
+        cW.position = currWire.start
         cW.options.options[0].setValue(currWire.start[1] - currWire.end[1]);
         cW.options.options[1].setValue(currWire.start[0] - currWire.end[0]);
         let c = addComponent(cW);
