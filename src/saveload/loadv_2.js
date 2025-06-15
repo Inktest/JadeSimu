@@ -38,6 +38,7 @@ const loadv2 = async (line) => {
         "VvE": "components/valvextrg.a",
         "UdM": "components/ud-man.a",
         Wr2: "components/cable.a",
+        Wre: "components/cable.a",
         Brn: "components/borna.a",
         Mtt: "components/magneto.a"
     }
