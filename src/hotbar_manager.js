@@ -317,8 +317,23 @@ btn.className = "navbarButton"
 btn.title = "Imprimir"
 btn.onclick = () => {
 
+    const pdfWidth = page_vertical ? page_height : page_width;
+    const pdfHeight = page_vertical ? page_width : page_height;
+    
+    const pdf = new jsPDF({
+        orientation: page_vertical ? 'p' : 'l',
+        unit: 'px',
+        format: [pdfWidth/26.089, pdfHeight/26.089]
+    });
+
+    for (let comp of components) {
+        comp.drawToPdf(pdf)
+    }
+
+    pdf.save(project_name ? `${project_name}.pdf` : "vector_jade.pdf");
+
     //const { jsPDF } = window.jspdf;
-    let prevScale = scale;
+    /*let prevScale = scale;
     let prevOffsetX = offsetX;
     let prevOffsetY = offsetY;
 
@@ -346,7 +361,7 @@ btn.onclick = () => {
     offsetX = prevOffsetX
     offsetY = prevOffsetY
     updateCanvas()
-
+*/
 }
 
 navbarDiv.appendChild(btn)

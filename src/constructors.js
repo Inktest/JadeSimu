@@ -1,4 +1,16 @@
 
+function pdfSetDrawColor(pdf, color) {
+    let hex = color.replace('#', '');
+    if (hex.length === 3) {
+        hex = hex.split('').map(char => char + char).join('');
+    }
+
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    pdf.setDrawColor(r, g, b);
+}
+
 class Rectangle {
     constructor(corner1, corner2, color, hide) {
         this.corner1 = corner1
@@ -67,6 +79,27 @@ class RectangleArray {
     clone() {
         return new RectangleArray(this.corner1, this.corner2, this.width, this.color, this.hide)
     }
+
+    drawToPdf(pdf, pos) {
+        if (this.hide) return;
+        pdf.setLineWidth(this.width / 10);
+        console.log(this.color)
+    pdfSetDrawColor(pdf, this.color)
+
+        function _line(start, end) {
+            pdf.line(
+            start[0] + pos[0], 
+            start[1] + pos[1], 
+            end[0] + pos[0], 
+            end[1] + pos[1]
+        );
+        }
+
+        _line(this.corner1, [this.corner1[0], this.corner2[1]])
+        _line(this.corner1, [this.corner2[0], this.corner1[1]])
+        _line(this.corner2, [this.corner1[0], this.corner2[1]])
+        _line(this.corner2, [this.corner2[0], this.corner1[1]])
+    }
     
     draw() {
         new Line(this.corner1, [this.corner1[0], this.corner2[1]], this.width, this.color, this.hide).draw()
@@ -127,6 +160,7 @@ class Arc {
     }
 }
 
+
 class Line {
     constructor(start, end, width, color, hide) {
         this.start = start
@@ -144,6 +178,19 @@ class Line {
 
     clone() {
         return new Line(this.start, this.end, this.width, this.color, !this.hide)
+    }
+
+    drawToPdf(pdf, pos) {
+        if (!this.hide) return;
+        pdf.setLineWidth(this.width / 10);
+    pdfSetDrawColor(pdf, this.color)
+
+        pdf.line(
+            this.start[0] + pos[0], 
+            this.start[1] + pos[1], 
+            this.end[0] + pos[0], 
+            this.end[1] + pos[1]
+        );
     }
 
     draw() {
@@ -366,6 +413,10 @@ class Component {
         return this.inouts.map((_, idx) => idx).filter(idx => idx !== entryIndex);
     }
 
+    drawToPdf(pdf) {
+        return this.symbol.drawToPdf(pdf, this.position)
+    }
+
     update() {}
 
     clone() {
@@ -410,6 +461,13 @@ class ComponentSymbol {
             s.color = color
         });
     }
+
+    drawToPdf(pdf, pos) {
+        this.strokes.forEach(s => {
+            if (s.drawToPdf) s.drawToPdf(pdf, pos)
+        });
+    }
+
     rotate90Deg() {
         this.strokes.forEach(s => {
             s.rotate90Deg()
